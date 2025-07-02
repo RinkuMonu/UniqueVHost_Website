@@ -1,0 +1,176 @@
+/* Clearfix Utility */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Background Utility */
+.bg-cover-center {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Placeholder Styling */
+input::placeholder,
+textarea::placeholder {
+  color: #aaa;
+  opacity: 1;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #aaa;
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+  color: #aaa;
+}
+
+/* Unordered List Reset */
+.ul-reset {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Full Overlay Before */
+.full-cover::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  content: '';
+}
+
+/* Full Overlay Bottom Before */
+.full-bottom::before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  content: '';
+}
+
+/* Media Query Utilities */
+
+/* XXL: 1400px - 1600px */
+@media screen and (min-width: 1400px) and (max-width: 1600px) {
+  .xxl-only {
+    font-size: 18px;
+    padding: 2rem;
+  }
+}
+
+/* XL: ≤ 1400px */
+@media screen and (max-width: 1400px) {
+  .xl-only {
+    font-size: 17px;
+    padding: 1.5rem;
+  }
+}
+
+/* LG: ≤ 1200px */
+@media screen and (max-width: 1200px) {
+  .lg-only {
+    display: none;
+  }
+
+  .lg-text {
+    font-size: 16px;
+  }
+}
+
+/* MD: ≤ 992px */
+@media screen and (max-width: 992px) {
+  .md-only {
+    display: block;
+    padding: 1rem;
+  }
+
+  .md-center {
+    text-align: center;
+  }
+}
+
+/* SM: ≤ 768px */
+@media screen and (max-width: 768px) {
+  .sm-hide {
+    display: none !important;
+  }
+
+  .sm-text {
+    font-size: 15px;
+  }
+}
+
+/* XS: ≤ 576px */
+@media screen and (max-width: 576px) {
+  .xs-only {
+    font-size: 14px;
+    padding: 0.75rem;
+  }
+
+  .xs-full {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* XSS: ≤ 400px */
+@media screen and (max-width: 400px) {
+  .xss-only {
+    font-size: 13px;
+    padding: 0.5rem;
+  }
+
+  .xss-hide {
+    display: none;
+  }
+}
+
+/* Example Background Color Utilities */
+.bg-primary {
+  background: #3498db;
+}
+
+.bg-secondary {
+  background: #2ecc71;
+}
+
+.bg-dark {
+  background: #2d3436;
+}
+
+.bg-light {
+  background: #f0f0f0;
+}
+
+.bg-danger {
+  background: #e74c3c;
+}
+
+.bg-warning {
+  background: #f39c12;
+}
+
+.bg-info {
+  background: #00bcd4;
+}
+
+.bg-success {
+  background: #2ecc71;
+}
+
+.bg-white {
+  background: #ffffff;
+}
+
+.bg-black {
+  background: #000000;
+}
+
