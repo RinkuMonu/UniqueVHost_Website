@@ -1,10 +1,25 @@
-"use client";
-// import Plans from '@/components/elitehostingfeaturearea';
+"use client"
+import Plans from '@/components/Plans';
 import Faqs from '@/components/faqs';
 import LatestBlog from '@/components/latestblog';
 import Testimonials from '@/components/testimonials';
 import Image from 'next/image';
 import Link from 'next/link';
+// import "@/styles/style.css";
+// import "@/styles/plug.css";
+// import "@/styles/bootstrap.css";
+// import "@/styles/animation.css";
+// import "@/styles/header.css";
+// import "@/styles/nav.css";
+// import "@/styles/forms.css";
+// import "@/styles/style2.css";
+// import "@/styles/mobile.css"; 
+// import '@/styles/site-elements.css'
+// import "@/styles/reset.css";
+// import "@/styles/typography.css"
+// // import "bootstrap-icons/font/bootstrap-icons.css";
+// // import '@fortawesome/fontawesome-free/css/all.min.css'
+
 
 const SharedHostingPage = () => {
   const features = [
@@ -116,7 +131,7 @@ const hostingOptions = [
         </div>
       </div>
 
-   {/* <Plans/> */}
+   <Plans/>
  <div className="rts-hosting-feature-area section__padding body-bg-2">
       <div className="container">
         <div className="section-inner">
@@ -158,7 +173,7 @@ const hostingOptions = [
       </div>
     </div>
 
-     <div className="rts-hosting-type pb--120">
+     <div className="rts-hosting-type section__padding pb--120">
       <div className="container">
         <div className="row">
           <div className="col-12">
