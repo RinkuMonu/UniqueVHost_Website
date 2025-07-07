@@ -61,8 +61,8 @@ export default function Page() {
               </div>
               <div className="col-span-12 md:col-span-5">
                 <div className="about-content-area">
-                  <h2 className="section-title text-4xl font-bold">About Elitehost</h2>
-                  <p className="desc">Since our founding in 2011, Elitehost has offered web hosting solutions that continually innovate new ways to deliver on our mission: empowering people to harness their brands online.</p>
+                  <h2 className="section-title text-4xl font-bold pb-3">About Elitehost</h2>
+                  <p className="desc pb-5">Since our founding in 2011, Elitehost has offered web hosting solutions that continually innovate new ways to deliver on our mission: empowering people to harness their brands online.</p>
                   <div className="about-feature-area">
                     <ul>
                       <li>
