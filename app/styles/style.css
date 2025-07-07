@@ -20777,7 +20777,7 @@
   
   .rts-contact-map-area {
     height: 100%;
-    margin-right: 30px;
+    /* margin-right: 30px; */
   }
   .rts-contact-map-area .contact-map-area-fluid {
     height: 100%;
