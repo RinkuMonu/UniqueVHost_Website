@@ -1,6 +1,8 @@
-import AdditionalServices from '@/components/AdditionalServices';
-import Plans from '@/components/Plans'
-import React from 'react'
+"use client";
+import AdditionalServices from "@/components/AdditionalServices";
+import Plans from "@/components/Plans";
+import React from "react";
+import Image from "next/image";
 import "@/app/styles/style.css";
 import "@/app/styles/plug.css";
 import "@/app/styles/bootstrap.css";
@@ -8,131 +10,103 @@ import "@/app/styles/animation.css";
 import "@/app/styles/header.css";
 import "@/app/styles/nav.css";
 import "@/app/styles/forms.css";
-// import "@/app/styles/styles2.css";
 import "@/app/styles/mobile.css";
 import "@/app/styles/site-elements.css";
 import "@/app/styles/reset.css";
 import "@/app/styles/typography.css";
+
 function Page() {
-    const features = [
-  {
-    icon: "/images/feature/feature-01.svg",
-    title: "Free WHM & cPanel",
-    description: "We guarantee it you don't have to worry about it.",
-  },
-  {
-    icon: "/images/feature/feature-02.svg",
-    title: "Performance Optimized",
-    description: "If your website is slow or down then you losing customers.",
-  },
-  {
-    icon: "/images/feature/feature-03.svg",
-    title: "Super Easy to Use",
-    description: "Our custom control panel to use and removes the headache",
-  },
-  {
-    icon: "/images/feature/feature-04.svg",
-    title: "24/7 Expert Support",
-    description: "Our custom control panel to use and removes the headache",
-  },
-];
-
-const wordpressHostingServices = [
-  {
-    title: "Security",
-    items: [
-      { id: "wpMalwareScan", label: "Malware Scanning for WP (₹600/month)" },
-      { id: "wpFirewall", label: "WordPress Firewall (₹800/month)" },
-      { id: "wpLoginGuard", label: "Login Protection & CAPTCHA (₹300/month)" },
-    ],
-  },
-  {
-    title: "Performance",
-    items: [
-      { id: "wpCache", label: "Advanced Caching (₹700/month)" },
-      { id: "imageCDN", label: "Image CDN + Compression (₹500/month)" },
-      { id: "lazyLoad", label: "Lazy Load Images (Free)" },
-    ],
-  },
-  {
-    title: "Support",
-    items: [
-      { id: "wpExpert", label: "WordPress Expert Help (₹1000/month)" },
-      { id: "themeSupport", label: "Theme Installation Help (₹400 one-time)" },
-      { id: "pluginHelp", label: "Plugin Troubleshooting (₹600/month)" },
-    ],
-  },
-  {
-    title: "Add-ons",
-    items: [
-      { id: "autoUpdate", label: "Auto Update Plugins & Themes (₹300/month)" },
-      { id: "stagingSite", label: "Staging Environment (₹900/month)" },
-      { id: "dailyBackupWP", label: "Daily Cloud Backups (₹700/month)" },
-    ],
-  },
-];
-
+  const features = [
+    {
+      icon: "/images/feature/feature-01.svg",
+      title: "Free WHM & cPanel",
+      description: "We guarantee it you don't have to worry about it.",
+    },
+    {
+      icon: "/images/feature/feature-02.svg",
+      title: "Performance Optimized",
+      description: "If your website is slow or down then you losing customers.",
+    },
+    {
+      icon: "/images/feature/feature-03.svg",
+      title: "Super Easy to Use",
+      description: "Our custom control panel to use and removes the headache.",
+    },
+    {
+      icon: "/images/feature/feature-04.svg",
+      title: "24/7 Expert Support",
+      description: "Get fast help from WordPress experts anytime you need.",
+    },
+  ];
 
   return (
     <>
-        <div className="rts-breadcrumb-area body-bg-2">
-      <div className="container">
-        <div className="breadcrumb-inner">
-          <div className="row align-items-center">
-            <div className="col-lg-7 order-change">
-              <div className="breadcrumb-content">
-                <h1 className="heading-title" >
-                  Unbeatable WordPress Hosting: Power & Speed
-                </h1>
-                <p className="desc">
-                  Unlock the full potential of your WordPress website with our unbeatable hosting plans!
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="breadcrumb-image-area" style={{display:"flex", justifyContent:"center"}}>
-                <img src="/images/banner/breadcrumb-02.webp" width="373" alt="" />
-              </div>
-            </div>
+      {/* Hero Section */}
+      <section className="relative bg-[#FFF8F4] py-20 overflow-hidden">
+        <div className="container mx-auto px-4 grid md:grid-cols-2 items-center gap-12 relative z-10">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-[#FD5D07] via-[#FFB703] to-[#FD5D07] bg-clip-text text-transparent animate-gradient-x">
+              Unbeatable WordPress Hosting: Power & Speed
+            </h1>
+            <p className="text-lg md:text-xl text-[#313149] max-w-xl mb-8">
+              Unlock the full potential of your WordPress website with our unbeatable hosting plans!
+            </p>
+            <a
+              href="#"
+              className="inline-block px-8 py-3 bg-[#FD5D07] text-white rounded-full font-semibold shadow-md hover:bg-[#e04d00] transition-all"
+            >
+              Get Started
+            </a>
+          </div>
+          <div className="flex justify-center">
+            <Image
+              src="/images/banner/breadcrumb-02.webp"
+              alt="WordPress Hosting"
+              width={400}
+              height={400}
+              className="rounded-xl transition-transform hover:scale-105"
+            />
           </div>
         </div>
-      </div>
-      <div className="breadcrumb-shape-area">
-        <img src="/images/banner/breadcrumb-shape.svg" alt="" />
-      </div>
-    </div>
+        <div className="absolute -top-24 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+        <div className="absolute -bottom-24 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+      </section>
 
-    <Plans/>
+      {/* Plans Section */}
+      <Plans />
 
-      <section className="rts-feature section__padding">
-      <div className="container">
-        <div className="row">
-          <div className="rts-section text-center">
-            <h2 className="rts-section__title">Why EliteHost</h2>
-          </div>
-        </div>
-        <div className="row gy-30">
-          {features.map((item, index) => (
-            <div className="col-xl-3 col-lg-6 col-md-6" key={index}>
-              <div className="single__feature">
-                <div className="single__feature--box">
-                  <div className="single__feature--box-icon">
-                    <img src={item.icon} alt={item.title} />
-                  </div>
-                  <h5 className="single__feature--box-title">{item.title}</h5>
-                  <p className="single__feature--box-description">{item.description}</p>
+      {/* Why EliteHost Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#001233] mb-12">Why EliteHost</h2>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((item, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 text-center border border-transparent hover:border-[#FD5D07] hover:-translate-y-2"
+              >
+                <div className="flex justify-center mb-4">
+                  <Image
+                    src={item.icon}
+                    alt={item.title}
+                    width={60}
+                    height={60}
+                    className="transition-transform group-hover:scale-110"
+                  />
                 </div>
+                <h5 className="font-semibold text-lg text-[#001233] mb-2">{item.title}</h5>
+                <p className="text-sm text-[#4C5671]">{item.description}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-<AdditionalServices />
-
+      {/* Additional Services */}
+      <AdditionalServices />
     </>
-  )
+  );
 }
 
-export default Page
+export default Page;

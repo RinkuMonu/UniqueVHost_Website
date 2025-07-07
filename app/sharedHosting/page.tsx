@@ -12,14 +12,11 @@ import "@/app/styles/animation.css";
 import "@/app/styles/header.css";
 import "@/app/styles/nav.css";
 import "@/app/styles/forms.css";
-// import "@/app/styles/styles2.css";
 import "@/app/styles/mobile.css";
 import "@/app/styles/site-elements.css";
 import "@/app/styles/reset.css";
 import "@/app/styles/typography.css";
 import AdditionalServices from "@/components/AdditionalServices";
-// import "bootstrap-icons/font/bootstrap-icons.css";
-// // import '@fortawesome/fontawesome-free/css/all.min.css'
 
 const SharedHostingPage = () => {
   const features = [
@@ -27,8 +24,6 @@ const SharedHostingPage = () => {
     "Integration with Other Services",
     "Performance and Speed",
   ];
-
-  
 
   const hostingOptions = [
     {
@@ -63,130 +58,104 @@ const SharedHostingPage = () => {
   return (
     <div>
       {/* Breadcrumb Area */}
-      <div className="rts-breadcrumb-area body-bg-2">
-        <div className="container">
-          <div className="breadcrumb-inner">
-            <div className="row align-items-center">
-              <div className="col-lg-6 order-change">
-                <div className="breadcrumb-content">
-                  <h1 className="heading-title">Shared Website Hosting</h1>
-                  <p className="desc">
-                    Fast, secure, and affordable hosting plans for any budget
-                  </p>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="breadcrumb-image-area">
-                  <img
-                    src="/images/banner/breadcrumb-01.webp"
-                    width={460}
-                    height={460}
-                    alt="Shared Hosting Banner"
-                    style={{ display: "flex", justifyContent: "center" }}
-                  />
-                </div>
-              </div>
-            </div>
+      <div className="relative bg-[#FFF8F4] py-20 overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+        <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+
+        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-10 items-center relative z-10">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-[#FD5D07] via-[#FFB703] to-[#FD5D07] bg-clip-text text-transparent animate-gradient-x">
+              Shared Website Hosting
+            </h1>
+            <p className="text-lg md:text-xl text-[#4C5671] mb-4">
+              Fast, secure, and affordable hosting plans for any budget
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <img
+              src="/images/banner/breadcrumb-01.webp"
+              alt="Shared Hosting Banner"
+              className=" rounded-xl transition-transform hover:scale-105"
+              width={500}
+              height={500}
+            />
           </div>
         </div>
-        <div className="breadcrumb-shape-area">
+        <div className="breadcrumb-shape-area absolute bottom-4 left-0 opacity-50">
           <Image
             src="/images/banner/breadcrumb-shape.svg"
-            width={100}
-            height={100}
+            width={300}
+            height={300}
             alt="Breadcrumb Shape"
           />
         </div>
       </div>
 
       <Plans />
-      <div className="rts-hosting-feature-area section__padding body-bg-2">
-        <div className="container">
-          <div className="section-inner">
-            <div className="row">
-              <div className="col-lg-5">
-                <div className="left-side-image">
-                  <img
-                    src="/images/feature/feature-hero-10.webp"
-                    width={419}
-                    alt=""
-                  />
-                </div>
-              </div>
-              <div className="col-lg-7">
-                <div className="right-side-content">
-                  <div className="section-title-area area-2 text-start">
-                    <h2 className="section-title">
-                      Looking for reliable hosting solutions to Business
-                    </h2>
-                    <p className="desc">
-                      Leverage the power of cloud storage to streamline your
-                      data management and enhance productivity. Our cloud
-                      storage solutions offer scalable and flexible plans to fit
-                      your growing needs, ensuring you only pay for what you
-                      use.
-                    </p>
-                  </div>
-                  <ul className="feature-list">
-                    {features.map((item, idx) => (
-                      <li key={idx}>
-                        <i className="fa-solid fa-check"></i> {item}
-                        {/* Or use: <FaCheck className="me-2" /> {item} */}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
+
+      <div className="bg-[#F9FAFB] py-20">
+        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+          <div className="rounded-xl overflow-hidden ">
+            <img
+              src="/images/feature/feature-hero-10.webp"
+              alt=""
+              className="w-full object-cover transition-transform hover:scale-105"
+            />
+          </div>
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#001233] mb-4">
+              Looking for reliable hosting solutions to Business
+            </h2>
+            <p className="text-[#152960] mb-6">
+              Leverage the power of cloud storage to streamline your data
+              management and enhance productivity. Our cloud storage solutions
+              offer scalable and flexible plans to fit your growing needs,
+              ensuring you only pay for what you use.
+            </p>
+            <ul className="space-y-3">
+              {features.map((item, idx) => (
+                <li key={idx} className="flex items-center gap-2 text-[#313149]">
+                  <i className="fa-solid fa-check text-[#FD5D07]"></i> {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
 
-      <div className="rts-hosting-type section__padding pb--120">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="row justify-content-center">
-                <div className="section-title-area text-center">
-                  <h2 className="section-title">Shared Hosting Feature</h2>
-                </div>
-              </div>
-            </div>
+      <div className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
+              Shared Hosting Feature
+            </h2>
           </div>
-          {/* hosting option */}
-          <div className="row mt--60">
-            <div className="col-lg-12">
-              <div className="rts-hosting-inner">
-                <div className="row g-5">
-                  {hostingOptions.map((item, idx) => (
-                    <div className="col-lg-3 col-md-6" key={idx}>
-                      <div className="rts-hosting-type__single area-2">
-                        <div className="hosting-icon">
-                          <img src={item.icon} alt="" />
-                        </div>
-                        <a href={item.link} className="title">
-                          {item.title}
-                        </a>
-                        <p className="excerpt">{item.description}</p>
-                        <a
-                          href={item.link}
-                          className="primary__btn border__btn"
-                        >
-                          View Details{" "}
-                          <i className="fa-regular fa-long-arrow-right"></i>
-                        </a>
-                      </div>
-                    </div>
-                  ))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {hostingOptions.map((item, idx) => (
+              <div
+                key={idx}
+                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl p-6 text-center transition-all hover:-translate-y-2"
+              >
+                <div className="flex justify-center mb-4">
+                  <img src={item.icon} alt="" className="w-16 h-16 transition-transform group-hover:scale-110" />
                 </div>
+                <Link href={item.link} className="text-lg font-semibold text-[#001233] hover:text-[#FD5D07] mb-2 block">
+                  {item.title}
+                </Link>
+                <p className="text-sm text-[#4C5671] mb-4">{item.description}</p>
+                <Link
+                  href={item.link}
+                  className="inline-flex items-center px-4 py-2 border border-[#FD5D07] text-[#FD5D07] rounded-full hover:bg-[#FD5D07] hover:text-white transition-all"
+                >
+                  View Details <i className="fa-regular fa-long-arrow-right ml-2"></i>
+                </Link>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
       <AdditionalServices />
-
     </div>
   );
 };
