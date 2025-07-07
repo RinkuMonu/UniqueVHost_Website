@@ -1,277 +1,147 @@
 "use client"
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react'
 
-function Plans() {
-     const [activeTab, setActiveTab] = useState('monthly');
-    
-      // Pricing plans data
-      const pricingPlans = [
-        {
-          id: 'monthly',
-          label: 'Monthly',
-          plans: [
-            {
-              type: 'Basic Plan',
-              price: '$7.20',
-              sub: '/ mo',
-              renews: 'Renews at $5.32/month'
-            },
-            {
-              type: 'Business Plan',
-              price: '$7.20',
-              sub: '/ mo',
-              renews: 'Renews at $5.32/month'
-            },
-            {
-              type: 'Pro Plan',
-              price: '$7.20',
-              sub: '/ mo',
-              renews: 'Renews at $5.32/month'
-            }
-          ]
-        },
-        {
-          id: 'yearly',
-          label: 'Yearly',
-          plans: [
-            {
-              type: 'Basic Plan',
-              price: '$17.20',
-              sub: '/ yr',
-              renews: 'Renews at $15.32/yearly'
-            },
-            {
-              type: 'Business Plan',
-              price: '$17.20',
-              sub: '/ yr',
-              renews: 'Renews at $15.32/yearly'
-            },
-            {
-              type: 'Pro Plan',
-              price: '$17.20',
-              sub: '/ yr',
-              renews: 'Renews at $15.32/yearly'
-            }
-          ]
-        },
-        {
-          id: '3year',
-          label: '3 Year',
-          plans: [
-            {
-              type: 'Basic Plan',
-              price: '$37.20',
-              sub: '/ 3yr',
-              renews: 'Renews at $35.32/3yr'
-            },
-            {
-              type: 'Business Plan',
-              price: '$37.20',
-              sub: '/ 3yr',
-              renews: 'Renews at $35.32/3yr'
-            },
-            {
-              type: 'Pro Plan',
-              price: '$37.20',
-              sub: '/ 3yr',
-              renews: 'Renews at $35.32/3yr'
-            }
-          ]
-        }
-      ];
-    
-      // Features data
-      const features = [
-        {
-          id: 'plan-features',
-          title: 'Plan Features',
-          rows: [
-            { name: 'Disk Space', basic: '20 GB SSD', business: '20 GB SSD', pro: '50 GB SSD' },
-            { name: 'File (Inode) Limit', basic: '300.000', business: '300.000', pro: '600.000' },
-            { name: 'Bandwidth', basic: 'Unmetered', business: 'Unmetered', pro: 'Unmetered' },
-            { name: 'Hosted Domains', basic: '4', business: 'Unlimited', pro: 'Unlimited' },
-            { name: 'Parked Domains', basic: 'Unlimited', business: 'Unlimited', pro: 'Unlimited' },
-            { name: 'Subdomains', basic: '32', business: 'Unlimited', pro: 'Unlimited' },
-            { 
-              name: 'Backups', 
-              basic: 'Twice a Week', 
-              business: 'Twice a Week + Autobackup', 
-              pro: 'Twice a Week + Autobackup' 
-            }
-          ]
-        },
-        {
-          id: 'email-features',
-          title: 'Email Features',
-          rows: [
-            { name: 'Email Accounts', basic: '100', business: 'Unlimited', pro: 'Unlimited' },
-            { name: 'Email Storage', basic: '1 GB', business: '5 GB', pro: '10 GB' },
-            { name: 'Email Forwarders', basic: 'Unlimited', business: 'Unlimited', pro: 'Unlimited' },
-            { name: 'Auto-Responders', basic: 'Yes', business: 'Yes', pro: 'Yes' },
-            { name: 'Mailing Lists', basic: 'No', business: 'Yes', pro: 'Yes' },
-            { name: 'Spam Protection', basic: 'Basic', business: 'Advanced', pro: 'Advanced' }
-          ]
-        },
-        {
-          id: 'database-features',
-          title: 'Databases Features',
-          rows: [
-            { name: 'MySQL Databases', basic: '5', business: 'Unlimited', pro: 'Unlimited' },
-            { name: 'PostgreSQL Databases', basic: '1', business: '5', pro: 'Unlimited' },
-            { name: 'Database Storage', basic: '1 GB', business: '5 GB', pro: '10 GB' },
-            { name: 'phpMyAdmin', basic: 'Yes', business: 'Yes', pro: 'Yes' },
-            { name: 'Remote MySQL', basic: 'Yes', business: 'Yes', pro: 'Yes' }
-          ]
-        },
-        {
-          id: 'mysql-features',
-          title: 'MySQL Databases',
-          rows: [
-            { name: 'Max Connections', basic: '50', business: '100', pro: '200' },
-            { name: 'Max User Connections', basic: '20', business: '50', pro: '100' },
-            { name: 'Query Cache', basic: 'Yes', business: 'Yes', pro: 'Yes' },
-            { name: 'InnoDB Support', basic: 'Yes', business: 'Yes', pro: 'Yes' }
-          ]
-        },
-        {
-          id: 'server-features',
-          title: 'Server Features',
-          rows: [
-            { name: 'PHP Version', basic: '8.0', business: '8.0', pro: '8.0' },
-            { name: 'SSH Access', basic: 'Yes', business: 'Yes', pro: 'Yes' },
-            { name: 'Cron Jobs', basic: 'Yes', business: 'Yes', pro: 'Yes' },
-            { name: 'Git Support', basic: 'Yes', business: 'Yes', pro: 'Yes' },
-            { name: 'Node.js Support', basic: 'No', business: 'Yes', pro: 'Yes' },
-            { name: 'Ruby Support', basic: 'No', business: 'Yes', pro: 'Yes' }
-          ]
-        }
-      ];
-    
-      const activePlan = pricingPlans.find(plan => plan.id === activeTab);
-       useEffect(() => {
-    // typeof window !== 'undefined' &&
-    //   require('bootstrap/dist/js/bootstrap.bundle.min.js');
-  }, []);
+import Image from 'next/image'
+import React, { useState } from 'react'
+
+export default function Plans() {
+  const [activeTab, setActiveTab] = useState('monthly')
+  const [openFeature, setOpenFeature] = useState('plan-features') // default open
+
+  const pricingPlans = [
+    {
+      id: 'monthly',
+      label: 'Monthly',
+      plans: [
+        { type: 'Basic Plan', price: '$7.20', sub: '/ mo', renews: 'Renews at $5.32/month' },
+        { type: 'Business Plan', price: '$7.20', sub: '/ mo', renews: 'Renews at $5.32/month' },
+        { type: 'Pro Plan', price: '$7.20', sub: '/ mo', renews: 'Renews at $5.32/month' }
+      ]
+    },
+    {
+      id: 'yearly',
+      label: 'Yearly',
+      plans: [
+        { type: 'Basic Plan', price: '$17.20', sub: '/ yr', renews: 'Renews at $15.32/yearly' },
+        { type: 'Business Plan', price: '$17.20', sub: '/ yr', renews: 'Renews at $15.32/yearly' },
+        { type: 'Pro Plan', price: '$17.20', sub: '/ yr', renews: 'Renews at $15.32/yearly' }
+      ]
+    },
+    {
+      id: '3year',
+      label: '3 Year',
+      plans: [
+        { type: 'Basic Plan', price: '$37.20', sub: '/ 3yr', renews: 'Renews at $35.32/3yr' },
+        { type: 'Business Plan', price: '$37.20', sub: '/ 3yr', renews: 'Renews at $35.32/3yr' },
+        { type: 'Pro Plan', price: '$37.20', sub: '/ 3yr', renews: 'Renews at $35.32/3yr' }
+      ]
+    }
+  ]
+
+  const features = [
+    {
+      id: 'plan-features',
+      title: 'Plan Features',
+      rows: [
+        { name: 'Disk Space', basic: '20 GB SSD', business: '20 GB SSD', pro: '50 GB SSD' },
+        { name: 'File (Inode) Limit', basic: '300,000', business: '300,000', pro: '600,000' },
+        { name: 'Bandwidth', basic: 'Unmetered', business: 'Unmetered', pro: 'Unmetered' },
+        { name: 'Hosted Domains', basic: '4', business: 'Unlimited', pro: 'Unlimited' },
+        { name: 'Parked Domains', basic: 'Unlimited', business: 'Unlimited', pro: 'Unlimited' },
+        { name: 'Subdomains', basic: '32', business: 'Unlimited', pro: 'Unlimited' },
+        { name: 'Backups', basic: 'Twice a Week', business: 'Twice a Week + Autobackup', pro: 'Twice a Week + Autobackup' }
+      ]
+    },
+    {
+      id: 'email-features',
+      title: 'Email Features',
+      rows: [
+        { name: 'Email Accounts', basic: '100', business: 'Unlimited', pro: 'Unlimited' },
+        { name: 'Email Storage', basic: '1 GB', business: '5 GB', pro: '10 GB' },
+        { name: 'Email Forwarders', basic: 'Unlimited', business: 'Unlimited', pro: 'Unlimited' },
+        { name: 'Auto-Responders', basic: 'Yes', business: 'Yes', pro: 'Yes' },
+        { name: 'Mailing Lists', basic: 'No', business: 'Yes', pro: 'Yes' },
+        { name: 'Spam Protection', basic: 'Basic', business: 'Advanced', pro: 'Advanced' }
+      ]
+    }
+    // You can continue adding more sections if needed
+  ]
+
+  const activePlan = pricingPlans.find(plan => plan.id === activeTab)
 
   return (
-   
-     <section className="rts-plan section__padding">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="rts-section text-center w-560">
-            <h3 className="rts-section__title">Choose Your Plan</h3>
-          </div>
+    <section className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <h1 className="text-center text-3xl font-bold mb-10">Choose Your Plan</h1>
+
+        {/* Tabs */}
+        <div className="flex justify-center gap-4 mb-10">
+          {pricingPlans.map(plan => (
+            <button
+              key={plan.id}
+              className={`px-5 py-2 border rounded font-medium ${
+                activeTab === plan.id ? 'bg-orange-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
+              } transition`}
+              onClick={() => setActiveTab(plan.id)}
+            >
+              {plan.label}
+            </button>
+          ))}
         </div>
-        
-        <div className="row justify-content-center">
-          <div className="col-lg-4 col-md-5">
-            <div className="rts-pricing-plan__tab color-primary">
-              <div className="tab__button">
-                <div className="tab__button__item">
-                  {pricingPlans.map((plan) => (
-                    <button
-                      key={plan.id}
-                      className={`tab__btn ${activeTab === plan.id ? 'active' : ''}`}
-                      onClick={() => setActiveTab(plan.id)}
-                    >
-                      {plan.label}
+
+        {/* Table */}
+        <div className="overflow-x-auto mb-12">
+          <table className="min-w-full border rounded-lg">
+            <thead>
+              <tr>
+                <th className="p-4 border bg-white">
+                  <Image src="/images/pricing/pricing-image.svg" alt="Pricing" width={150} height={150} />
+                </th>
+                {activePlan.plans.map((plan, idx) => (
+                  <th key={idx} className="p-4 border text-center bg-white">
+                    <div className="font-semibold text-lg">{plan.type}</div>
+                    <div className="text-xs text-gray-500">{plan.renews}</div>
+                    <div className="text-2xl font-bold mt-2">{plan.price}<sub className="text-sm">{plan.sub}</sub></div>
+                    <button className="mt-3 px-4 py-1 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+                      Get Started
                     </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+          </table>
         </div>
 
-        <div className="tab__content open">
-          <div className="row">
-            <div className="col-lg-12 p--0 overflow-x-scroll">
-              <div className="rts-plan__table overflow-hidden">
-                <table className="table-bordered">
-                  <thead>
-                    <tr>
-                      <th className="package__left">
-                        <Image 
-                          src="/images/pricing/pricing-image.svg" 
-                          alt="Pricing" 
-                          width={100} 
-                          height={100}
-                        />
-                      </th>
-                      {activePlan.plans.map((plan, index) => (
-                        <th key={index} className="package__item">
-                          <div className="package__item__info">
-                            <span className="package__type">{plan.type}</span>
-                            <span className="start">{plan.renews}</span>
-                            <h5 className="card-plan__price">
-                              {plan.price} <sub>{plan.sub}</sub>
-                            </h5>
-                            <div className="card-plan__cartbtn">
-                              <a href="#">Get Started</a>
-                            </div>
-                          </div>
-                        </th>
+        {/* Accordion */}
+        <div className="space-y-4">
+          {features.map(feature => (
+            <div key={feature.id} className="border rounded bg-white">
+              <button
+                onClick={() => setOpenFeature(openFeature === feature.id ? null : feature.id)}
+                className="w-full flex justify-between items-center px-5 py-3 font-medium text-left"
+              >
+                {feature.title}
+                <span className="text-xl">{openFeature === feature.id ? '−' : '+'}</span>
+              </button>
+              {openFeature === feature.id && (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border-t">
+                    <tbody>
+                      {feature.rows.map((row, idx) => (
+                        <tr key={idx} className="border-b">
+                          <td className="p-3 border-r font-medium bg-gray-50">{row.name}</td>
+                          <td className="p-3 border-r text-center">{row.basic}</td>
+                          <td className="p-3 border-r text-center">{row.business}</td>
+                          <td className="p-3 text-center">{row.pro}</td>
+                        </tr>
                       ))}
-                    </tr>
-                  </thead>
-                </table>
-
-                <div className="accordion accordion-flush" id="rts-accordion">
-                  {features.map((feature, index) => (
-                    <div key={feature.id} className={`accordion-item ${index === 0 ? 'active' : ''}`}>
-                      <div className="accordion-header" id={`heading-${feature.id}`}>
-                        <h4 
-                          className={`accordion-button ${index === 0 ? 'collapse show' : 'collapsed'}`}
-                          data-bs-toggle="collapse"
-                          data-bs-target={`#${feature.id}`}
-                          aria-expanded={index === 0 ? 'true' : 'false'}
-                          aria-controls={feature.id}
-                        >
-                          {feature.title}
-                        </h4>
-                      </div>
-                      <div 
-                        id={feature.id} 
-                        className={`accordion-collapse collapse ${index === 0 ? 'show' : ''}`}
-                        aria-labelledby={`heading-${feature.id}`}
-                        data-bs-parent="#rts-accordion"
-                      >
-                        <div className="accordion-body">
-                          <table className="table-bordered">
-                            <tbody>
-                              {feature.rows.map((row, rowIndex) => (
-                                <tr key={rowIndex} data-filter="hardware">
-                                  <td className="package__left">
-                                    {row.name}
-                                    <span 
-                                      className="tolltip" 
-                                      data-bs-toggle="tooltip" 
-                                      data-bs-placement="bottom" 
-                                      title="Explore, discover, and learn on our innovative and informative website."
-                                    >
-                                      <i className="fa-light fa-circle-question"></i>
-                                    </span>
-                                  </td>
-                                  <td className="package__item">{row.basic}</td>
-                                  <td className="package__item">{row.business}</td>
-                                  <td className="package__item">{row.pro}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    </tbody>
+                  </table>
                 </div>
-              </div>
+              )}
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
   )
 }
-
-export default Plans

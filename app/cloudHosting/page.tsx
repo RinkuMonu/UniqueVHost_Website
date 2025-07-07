@@ -3,11 +3,22 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Testimonials from '@/components/ui/testimonials';
+// import Testimonials from '@/components/ui/testimonials';
 import Plans from '@/components/Plans';
-import Faqs from '@/components/ui/faqs';
-import LatestBlog from '@/components/ui/latestblog';
-
+import AdditionalServices from '@/components/AdditionalServices';
+// import Faqs from '@/components/ui/faqs';
+import "@/app/styles/style.css";
+import "@/app/styles/plug.css";
+import "@/app/styles/bootstrap.css";
+import "@/app/styles/animation.css";
+import "@/app/styles/header.css";
+import "@/app/styles/nav.css";
+import "@/app/styles/forms.css";
+// import "@/app/styles/styles2.css";
+import "@/app/styles/mobile.css";
+import "@/app/styles/site-elements.css";
+import "@/app/styles/reset.css";
+import "@/app/styles/typography.css";
 const Page = () => {
 
 
@@ -87,12 +98,12 @@ const cloudHostingServices = [
             <div className="col-lg-6 order-change">
               <div className="breadcrumb-content">
                 
-                 <h1 className="heading-title" style={{ maxWidth: '477px' }}>Cloud Hosting</h1>
+                 <h1 className="heading-title">Cloud Hosting</h1>
                            <p className="desc">Control and flexibility when your business needs it</p>
               </div>
             </div>
             <div className="col-lg-6">
-              <div className="breadcrumb-image-area">
+              <div className="breadcrumb-image-area" style={{display:'flex', justifyContent:'center'}}>
                 <Image
                   src="/images/banner/breadcrumb-04.webp"
                   width={332}
@@ -142,37 +153,7 @@ const cloudHostingServices = [
                 </div>
             </section>
 
-
-
-     <section className=" bg-light " style={{"paddingTop":"110px" , "paddingBottom":"110px"}}>
-                <div className="container"  >
-                    <h2 className="text-center mb-5 text-black fw-bold">Additional VPS Hosting Services</h2>
-                    <div className="row g-4">
-                        {cloudHostingServices.map((section, idx) => (
-                            <div className="col-md-3" key={idx}>
-                                <div className="bg-white  border-4 rounded-3 shadow-md p-4 h-100" style={{"borderLeft":"2px solid #fd5d07"}}>
-                                    <h5 className="fw-bold mb-4 fs-4  text-uppercase ">{section.title}</h5>
-                                    {section.items.map((item) => (
-                                        <div className="form-check mb-2" key={item.id}>
-                                            <input
-                                                className="form-check-input border border-dark bg-transparent shadow-none"
-                                                type="checkbox"
-                                                id={item.id}
-                                            />
-                                            <label className="form-check-label " htmlFor={item.id}>
-                                               <p className='fs-5'> {item.label}</p>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                   <div className="d-flex justify-content-center mt-5 ">
-                              <a href="#" className='get-started-btn px-4'>Buy Now</a>
-                            </div>
-            </section>
+<AdditionalServices />
   </>
   );
 };
