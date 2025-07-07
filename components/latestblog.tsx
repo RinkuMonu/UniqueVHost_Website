@@ -2,17 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import "@/app/styles/style.css";
-import "@/app/styles/plug.css";
-import "@/app/styles/bootstrap.css";
-import "@/app/styles/animation.css";
-import "@/app/styles/header.css";
-import "@/app/styles/nav.css";
-import "@/app/styles/forms.css";
-import "@/app/styles/mobile.css"; 
-import '@/app/styles/site-elements.css'
-import "@/app/styles/reset.css";
-import "@/app/styles/typography.css"
+
 export default function LatestBlog() {
   const blogs = [
     {
@@ -45,52 +35,53 @@ export default function LatestBlog() {
   ];
 
   return (
-    <section className="rts-blog body-bg-2 pt--120 pb--60">
-      <div className="container">
-        <div className="row justify-content-center justify-content-md-start">
-          <div className="col-md-12 col-sm-10">
-            <div className="rts-section text-center">
-              <h2 className="rts-section__title">Latest Article</h2>
-            </div>
-          </div>
+    <section className="py-24 bg-gradient-to-br from-amber-50 via-white to-amber-100">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Latest Articles</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">Get the latest tips and insights on web hosting, performance optimization, and online growth.</p>
         </div>
 
-        <div className="row g-30 mb--60 justify-content-center justify-content-md-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {blogs.map((blog, index) => (
-            <div className="col-lg-4 col-md-6 col-sm-10" key={index}>
-              <div className="rts-blog__single">
+            <div
+              key={index}
+              className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition transform hover:-translate-y-1 flex flex-col"
+            >
+              <div className="relative h-56 overflow-hidden">
                 <Link href="/blog-details">
                   <Image
-                    className="blog__thumb"
                     src={blog.img}
-                    alt="Blog post thumb"
-                    width={500}
-                    height={300}
+                    alt="Blog Thumbnail"
+                    fill
+                    className="object-cover hover:scale-105 transition duration-500"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-70 hover:opacity-50 transition"></div>
                 </Link>
-                <div className="rts-blog__single--meta">
-                  <div className="cat__date">
-                    <Link href="#" className="cat">
-                      {blog.category}
-                    </Link>
-                    <span className="date">{blog.date}</span>
+              </div>
+
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex justify-between items-center text-xs mb-2">
+                  <span className="bg-amber-500 text-white px-2 py-0.5 rounded-full">{blog.category}</span>
+                  <span className="text-gray-400">{blog.date}</span>
+                </div>
+                <Link href="/blog-details" className="text-lg font-bold text-gray-900 mb-3 hover:text-amber-600 transition">
+                  {blog.title}
+                </Link>
+
+                <div className="flex items-center mt-auto pt-4 border-t border-gray-100">
+                  <div className="w-10 h-10 rounded-full overflow-hidden mr-3 border-2 border-amber-500">
+                    <Image
+                      src={blog.authorImg}
+                      alt={blog.authorName}
+                      width={40}
+                      height={40}
+                      className="object-cover"
+                    />
                   </div>
-                  <Link href="/blog-details" className="title">
-                    {blog.title}
-                  </Link>
-                  <div className="rts-blog__single--author">
-                    <div className="author">
-                      <Image
-                        src={blog.authorImg}
-                        alt={blog.authorName}
-                        width={50}
-                        height={50}
-                      />
-                    </div>
-                    <div className="author__content">
-                      <Link href="#">{blog.authorName}</Link>
-                      <span>{blog.authorRole}</span>
-                    </div>
+                  <div>
+                    <p className="text-gray-800 font-medium">{blog.authorName}</p>
+                    <p className="text-gray-500 text-xs">{blog.authorRole}</p>
                   </div>
                 </div>
               </div>
@@ -98,13 +89,10 @@ export default function LatestBlog() {
           ))}
         </div>
 
-        {/* View all blogs button */}
-        <div className="row">
-          <div className="col-12 text-center mt-4">
-            <Link href="/blog" className="rts-btn btn-primary">
-              View All Blogs
-            </Link>
-          </div>
+        <div className="text-center mt-12">
+          <Link href="/blog" className="inline-block px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-full font-medium transition shadow-md">
+            View All Blogs
+          </Link>
         </div>
       </div>
     </section>

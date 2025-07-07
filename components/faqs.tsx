@@ -11,6 +11,7 @@ import "@/app/styles/mobile.css";
 import '@/app/styles/site-elements.css'
 import "@/app/styles/reset.css";
 import "@/app/styles/typography.css"
+
 function Faqs() {
   const faqItems = [
     {
@@ -30,13 +31,13 @@ function Faqs() {
     },
     {
       id: 4,
-      question: 'Why is domain name registration required?',
-      answer: 'Above all else, we strive to deliver outstanding customer experiences. When you buy a domain name from EliteHost, we guarantee it will be handed over.',
+      question: 'Can I transfer my domain to EliteHost?',
+      answer: 'Absolutely! Transferring is easy and often comes with free renewal perks. We’ll guide you through every step.',
     },
     {
       id: 5,
-      question: 'Why is domain name registration required?',
-      answer: 'Above all else, we strive to deliver outstanding customer experiences. When you buy a domain name from EliteHost, we guarantee it will be handed over.',
+      question: 'Do I get free privacy protection?',
+      answer: 'Yes! We include free WHOIS privacy protection with most domains to keep your personal data safe.',
     },
   ];
 
@@ -47,34 +48,35 @@ function Faqs() {
   };
 
   return (
-    <section className="rts-hosting-faq section__padding">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-8">
-            <div className="rts-section text-center">
-              <h2 className="rts-section__title mb-0">Frequently asked questions</h2>
-            </div>
-            <div className="rts-faq__accordion">
-              <div className="accordion" id="faqAccordion">
-                {faqItems.map((item) => (
-                  <div className="accordion-item" key={item.id}>
-                    <h4 className="accordion-header">
-                      <button
-                        className={`accordion-button ${activeId === item.id ? '' : 'collapsed'}`}
-                        type="button"
-                        onClick={() => toggleAccordion(item.id)}
-                      >
-                        {item.question}
-                      </button>
-                    </h4>
-                    <div className={`accordion-collapse collapse ${activeId === item.id ? 'show' : ''}`}>
-                      <div className="accordion-body">{item.answer}</div>
-                    </div>
-                  </div>
-                ))}
+    <section className="py-24 bg-gradient-to-br from-amber-50 via-white to-amber-100">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Frequently Asked Questions</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">Find answers to the most common questions about our domain services and hosting plans.</p>
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqItems.map((item) => (
+            <div
+              key={item.id}
+              className={`rounded-xl border border-gray-200 bg-white shadow-sm transition-all ${activeId === item.id ? "border-amber-500 shadow-md" : ""}`}
+            >
+              <button
+                onClick={() => toggleAccordion(item.id)}
+                className="w-full flex justify-between items-center px-6 py-4 text-left text-lg font-medium text-gray-900 focus:outline-none"
+              >
+                {item.question}
+                <span className={`transform transition-transform ${activeId === item.id ? "rotate-180 text-amber-500" : "rotate-0 text-gray-400"}`}>
+                  ▼
+                </span>
+              </button>
+              <div
+                className={`px-6 overflow-hidden transition-max-height duration-300 ease-in-out ${activeId === item.id ? "max-h-60 py-4" : "max-h-0 py-0"}`}
+              >
+                <p className="text-gray-600">{item.answer}</p>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -10,78 +10,59 @@ import "@/app/styles/mobile.css";
 import '@/app/styles/site-elements.css'
 import "@/app/styles/reset.css";
 import "@/app/styles/typography.css"
+
 export default function SecureManagementFeatures() {
   return (
-    <div className="rts-hosting-feature-area section__padding">
-      <div className="container">
-        <div className="section-inner">
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="left-side-image">
-                <Image
-                  src="/images/feature/feature-hero-08.webp"
-                  alt="Feature Hero"
-                  width={574}
-                  height={574}
-                />
+    <div className="py-20 bg-amber-50">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left image */}
+          <div className="flex justify-center">
+            <Image
+              src="/images/feature/feature-hero-08.webp"
+              alt="Feature Hero"
+              width={574}
+              height={574}
+              className="rounded-xl "
+            />
+          </div>
+
+          {/* Right content */}
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b-4 border-amber-500 inline-block pb-1">
+              Secure Remote Management Protocols
+            </h2>
+
+            {[
+              {
+                icon: "/images/feature/feature-05.svg",
+                title: "SSL Certificates",
+                desc: "Encrypt data and build trust with industry-standard SSL certificates.",
+              },
+              {
+                icon: "/images/feature/feature-06.svg",
+                title: "DDoS Protection",
+                desc: "Stay online and secure with advanced DDoS mitigation tools.",
+              },
+              {
+                icon: "/images/feature/feature-07.svg",
+                title: "Two-Factor Authentication",
+                desc: "Add an extra layer of security with 2FA for all critical logins.",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex items-start bg-white rounded-xl p-5 mb-5 border border-gray-100 shadow-sm hover:shadow-lg transition"
+              >
+                <div className="w-14 h-14 flex-shrink-0 rounded-full bg-gradient-to-r flex items-center justify-center shadow-lg mr-4">
+                  <Image src={item.icon} alt={item.title} width={30} height={30} />
+                </div>
+                <div>
+                  <h6 className="text-lg font-semibold text-gray-900 mb-1">{item.title}</h6>
+                  <p className="text-gray-600 text-sm">{item.desc}</p>
+                </div>
               </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="rts-whychoose__content area-3">
-                <h2 className="rts-whychoose__content--title">
-                  Secure Remote Management Protocols
-                </h2>
-
-                {/* single content */}
-                <div className="single">
-                  <div className="single__image">
-                    <Image
-                      src="/images/feature/feature-05.svg"
-                      alt="SSL Certificates"
-                      width={60}
-                      height={60}
-                    />
-                  </div>
-                  <div className="single__content">
-                    <h6>SSL Certificates:</h6>
-                    <p>Find the perfect domain name with various extensions (.com, .net, .org, etc.).</p>
-                  </div>
-                </div>
-
-                {/* single content */}
-                <div className="single">
-                  <div className="single__image">
-                    <Image
-                      src="/images/feature/feature-06.svg"
-                      alt="DDoS Protection"
-                      width={60}
-                      height={60}
-                    />
-                  </div>
-                  <div className="single__content">
-                    <h6>DDoS Protection</h6>
-                    <p>Enjoy affordable domain registration fees.</p>
-                  </div>
-                </div>
-
-                {/* single content */}
-                <div className="single">
-                  <div className="single__image">
-                    <Image
-                      src="/images/feature/feature-07.svg"
-                      alt="Two-Factor Authentication"
-                      width={60}
-                      height={60}
-                    />
-                  </div>
-                  <div className="single__content">
-                    <h6>Two-Factor Authentication (2FA)</h6>
-                    <p>Get assistance anytime with our round-the-clock support team.</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

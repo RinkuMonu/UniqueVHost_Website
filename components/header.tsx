@@ -18,12 +18,17 @@ const navLinks = [
   },
   {
     name: "About",
-    href: "/about",
+    href: "/aboutus",
     type: "link",
   },
   {
     name: "Blog",
     href: "/blog",
+    type: "link",
+  },
+  {
+    name: "Products",
+    href: "/productdetail",
     type: "link",
   },
   {
@@ -62,25 +67,13 @@ const navLinks = [
     ],
   },
   {
-    name: "Features",
-    href: "#",
-    type: "dropdown",
-    submenus: [
-      { title: "WHMCS Template", href: "https://hostie-whmcs.themewant.com/?systpl=elitehost" },
-      { title: "Shared Hosting", href: "https://hostie-whmcs.themewant.com/index.php/store/shared-hosting?systpl=elitehost" },
-      { title: "VPS Hosting", href: "https://hostie-whmcs.themewant.com/index.php/store/vps-hosting?systpl=elitehost" },
-      { title: "Announcement", href: "https://hostie-whmcs.themewant.com/index.php/announcements?systpl=elitehost" },
-    ],
-  },
-  {
     name: "Help Center",
     href: "#",
     type: "dropdown",
     submenus: [
       { title: "FAQ", href: "/faq" },
-      { title: "Support", href: "/support" },
-      { title: "Contact", href: "/contact" },
-      { title: "Knowledgebase", href: "/knowledgebase" },
+      // { title: "Support", href: "/support" },
+      { title: "Contact", href: "/contactus" },
     ],
   },
  

@@ -23,12 +23,12 @@ export default function Newsletter() {
   };
 
   return (
-    <div className="rts-newsletter">
+    <div className="rts-newsletter mt-10">
       <div className="container">
         <div className="row">
           <div className="rts-newsletter__box">
             <div className="rts-newsletter__box--content">
-              <h3 className="title">Sign up for web hosting today!</h3>
+              <h3 className="text-5xl font-medium mb-10">Sign up for web hosting today!</h3>
               <form className="newsletter__form" onSubmit={handleSubmit}>
                 <input
                   type="email"
@@ -37,6 +37,7 @@ export default function Newsletter() {
                   required
                   value={email}
                   onChange={(e : any) => setEmail(e.target.value)}
+                  className="w-full "
                 />
                 <button type="submit" className="btn__two secondary__bg secondary__color">
                   Subscribe
