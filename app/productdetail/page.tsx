@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { HardDriveIcon, CpuIcon, GlobeIcon, ShieldIcon, ServerIcon, CloudIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 type Plan = {
   id: string
@@ -284,7 +285,7 @@ export default function ProductDetailV3Page() {
         </div>
       </div>
 
-      <div className=" mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className=" mx-auto py-12 ">
 
 
         {/* Plan Selection Grid */}
@@ -292,7 +293,7 @@ export default function ProductDetailV3Page() {
          <div className="max-w-5xl mx-auto ">
            {/* Header */}
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Simple, Transparent Pricing</h2>
+            <h2 className="text-5xl font-bold text-gray-900 mb-2">Simple, Transparent Pricing</h2>
             <p className="text-lg text-gray-600">Choose the perfect plan for your needs</p>
           </div>
 
@@ -401,8 +402,8 @@ export default function ProductDetailV3Page() {
         </div>
 
         {/* Add-ons Section */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-8 mb-12 border border-white">
-          <h2 className="text-3xl font-bold text-[#001233] mb-2 text-center">Boost Your Hosting with Add-ons</h2>
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl  p-8 mb-12 border border-white">
+          <h2 className="text-5xl font-bold text-[#001233] mb-2 text-center">Boost Your Hosting with Add-ons</h2>
           <p className="text-[#4C5671] text-center mb-8 max-w-2xl mx-auto">Customize your hosting package with these powerful add-ons to get exactly what you need.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {addons.map((addon) => {
@@ -428,7 +429,7 @@ export default function ProductDetailV3Page() {
                       id={addon.id}
                       checked={selectedAddons.has(addon.id)}
                       onCheckedChange={(checked) => handleAddonToggle(addon.id, !!checked)}
-                      className="border-[#FD5D07] data-[state=checked]:bg-[#FD5D07] data-[state=checked]:text-white h-5 w-5"
+                      className="border-[#FD5D07] data-[state=checked]:bg-[#FD5D07] data-[state=checked]:text-white h-5 w-5 mr-3"
                     />
                     <Label htmlFor={addon.id} className="text-[#001233] text-base cursor-pointer">
                       Add to Plan
@@ -443,7 +444,7 @@ export default function ProductDetailV3Page() {
 
 
         {/* Final Summary and Checkout */}
-        <div className="bg-gradient-to-r from-[#FD5D07] to-[#FF7B3A] text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center">
+        <div className="bg-gradient-to-r from-[#FD5D07] to-[#FF7B3A] text-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto">
           <div className="text-center md:text-left mb-6 md:mb-0">
             <h3 className="text-3xl font-bold mb-2">Ready to Get Started?</h3>
             <p className="text-lg text-white/90">
@@ -461,9 +462,9 @@ export default function ProductDetailV3Page() {
               ${finalTotalPrice.toFixed(2)}
               <span className="text-2xl font-medium text-white/90">/{isYearlyBilling ? "yr" : "mo"}</span>
             </span>
-            <Button className="bg-white text-[#FD5D07] hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105">
+            <Link href="/checkout"  className="bg-white text-[#FD5D07] hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105">
               Proceed to Checkout
-            </Button>
+            </Link>
           </div>
         </div>
       </div>
