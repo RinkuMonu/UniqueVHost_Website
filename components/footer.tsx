@@ -1,6 +1,16 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Phone, Mail, MailOpen, ArrowRight, Facebook, Instagram, Linkedin, X, LinkIcon } from "lucide-react"
+import {
+  Phone,
+  Mail,
+  MailOpen,
+  ArrowRight,
+  Facebook,
+  Instagram,
+  Linkedin,
+  X,
+  LinkIcon,
+} from "lucide-react"
 
 export default function Footer() {
   const paymentMethods = [
@@ -40,10 +50,7 @@ export default function Footer() {
     { name: "Domain Checker", href: "/domain-checker" },
     { name: "WHMCS Template", href: "https://elitehost-whmcs.themewant.com/?systpl=elitehost" },
     { name: "Announcement", href: "https://elitehost-whmcs.themewant.com/index.php/announcements?systpl=elitehost" },
-    {
-      name: "Shared Hosting",
-      href: "https://elitehost-whmcs.themewant.com/index.php/store/shared-hosting?systpl=elitehost",
-    },
+    { name: "Shared Hosting", href: "https://elitehost-whmcs.themewant.com/index.php/store/shared-hosting?systpl=elitehost" },
     { name: "VPS Hosting", href: "https://elitehost-whmcs.themewant.com/index.php/store/vps-hosting?systpl=elitehost" },
   ]
 
@@ -52,166 +59,123 @@ export default function Footer() {
     { icon: Instagram, href: "https://www.instagram.com", label: "Instagram" },
     { icon: Linkedin, href: "https://www.linkedin.com", label: "LinkedIn" },
     { icon: X, href: "https://www.x.com", label: "X (Twitter)" },
-    { icon: LinkIcon, href: "https://www.behance.com", label: "Behance" }, // Using LinkIcon for Behance
+    { icon: LinkIcon, href: "https://www.behance.com", label: "Behance" },
   ]
 
   return (
-    <footer className=" rts-footer site-footer-one section__padding body-bg-2">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Widget 1: Logo & Contact */}
-          <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            <div className="w-full lg:w-[280px]">
-              <Link href="/" aria-label="main page link" className="mb-6 block">
-                <Image src="/placeholder.svg?height=40&width=150" alt="Elitehost Logo" width={150} height={40} />
-              </Link>
-              <p className="text-base leading-relaxed mb-6">
-                {"1811 Silverside Rd, Wilmington "} <br /> {"DE 19810, USA"}
-              </p>
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center">
-                  <div className="icon mr-3 text-elite-primary">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <a href="tel:+8060008899" className="hover:text-elite-primary transition-colors">
-                    +806 (000) 88 99
-                  </a>
-                </div>
-                <div className="flex items-center">
-                  <div className="icon mr-3 text-elite-primary">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <a href="mailto:info@elitehost.com" className="hover:text-elite-primary transition-colors">
-                    info@elitehost.com
-                  </a>
-                </div>
-              </div>
-              <div className="w-full h-px bg-elite-default-border my-6"></div>
-              <div className="payment__method">
-                <ul className="flex flex-wrap gap-3">
-                  {paymentMethods.map((method, index) => (
-                    <li key={index}>
-                      <Image src={method.src || "/placeholder.svg"} alt={method.alt} width={40} height={24} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
+    <footer className="relative bg-white text-gray-700 pt-20 pb-10 overflow-hidden">
+      {/* After/Before style blobs */}
+      <div className="absolute -top-10 -left-16 w-80 h-80 bg-orange-100 rounded-full  opacity-30 "></div>
+      <div className="absolute -bottom-10 -right-20 w-80 h-80 bg-orange-200 rounded-full  opacity-30 "></div>
+      {/* <div className="absolute -top-20 right-1/3 w-96 h-96 bg-gradient-to-r from-orange-100 to-orange-200 rounded-full  opacity-20 "></div> */}
+
+      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
+        {/* Logo & Contact */}
+        <div>
+          <Link href="/" className="inline-block mb-6">
+            <Image src="/images/logo/logo-1.svg" alt="Logo" width={150} height={40} />
+          </Link>
+          <p className="text-gray-500 mb-4">
+            1811 Silverside Rd, Wilmington <br /> DE 19810, USA
+          </p>
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center gap-2">
+              <Phone className="w-5 h-5 text-orange-500" />
+              <a href="tel:+8060008899" className="hover:text-orange-500 transition-colors">+806 (000) 88 99</a>
+            </div>
+            <div className="flex items-center gap-2">
+              <Mail className="w-5 h-5 text-orange-500" />
+              <a href="mailto:info@elitehost.com" className="hover:text-orange-500 transition-colors">info@elitehost.com</a>
             </div>
           </div>
+          {/* <div className="flex flex-wrap gap-3 border-t border-gray-200 pt-4">
+            {paymentMethods.map((method, i) => (
+              <Image key={i} src={method.src} alt={method.alt} width={40} height={24} />
+            ))}
+          </div> */}
+        </div>
 
-          {/* Widget 2: Feature & Help */}
-          <div className="col-span-1 md:col-span-1 lg:col-span-1">
-            <div className="mb-8 lg:mb-0">
-              <h5 className="text-elite-widget-title text-lg font-semibold mb-6">Feature</h5>
-              <ul className="space-y-3">
-                {featureLinks.map((link, index) => (
-                  <li key={index}>
-                    <Link href={link.href} className="hover:text-elite-primary transition-colors text-base">
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-8">
-              <h5 className="text-elite-widget-title text-lg font-semibold mb-6">Help</h5>
-              <ul className="space-y-3">
-                {helpLinks.map((link, index) => (
-                  <li key={index}>
-                    <Link href={link.href} className="hover:text-elite-primary transition-colors text-base">
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+        {/* Feature & Help */}
+        <div>
+          <h5 className="text-gray-900 text-lg font-bold mb-4">Feature</h5>
+          <ul className="space-y-2 mb-6">
+            {featureLinks.map((link, i) => (
+              <li key={i}>
+                <Link href={link.href} className="hover:text-orange-500 transition-colors">{link.name}</Link>
+              </li>
+            ))}
+          </ul>
+          <h5 className="text-gray-900 text-lg font-bold mb-4">Help</h5>
+          <ul className="space-y-2">
+            {helpLinks.map((link, i) => (
+              <li key={i}>
+                <Link href={link.href} className="hover:text-orange-500 transition-colors">{link.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          {/* Widget 3: Hosting & Company */}
-          <div className="col-span-1 md:col-span-1 lg:col-span-1">
-            <div className="mb-8 lg:mb-0">
-              <h5 className="text-elite-widget-title text-lg font-semibold mb-6">Hosting</h5>
-              <ul className="space-y-3">
-                {hostingLinks.map((link, index) => (
-                  <li key={index}>
-                    <Link href={link.href} className="hover:text-elite-primary transition-colors text-base">
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-8">
-              <h5 className="text-elite-widget-title text-lg font-semibold mb-6">Company</h5>
-              <ul className="space-y-3">
-                {companyLinks.map((link, index) => (
-                  <li key={index}>
-                    <Link href={link.href} className="hover:text-elite-primary transition-colors text-base">
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+        {/* Hosting & Company */}
+        <div>
+          <h5 className="text-gray-900 text-lg font-bold mb-4">Hosting</h5>
+          <ul className="space-y-2 mb-6">
+            {hostingLinks.map((link, i) => (
+              <li key={i}>
+                <Link href={link.href} className="hover:text-orange-500 transition-colors">{link.name}</Link>
+              </li>
+            ))}
+          </ul>
+          <h5 className="text-gray-900 text-lg font-bold mb-4">Company</h5>
+          <ul className="space-y-2">
+            {companyLinks.map((link, i) => (
+              <li key={i}>
+                <Link href={link.href} className="hover:text-orange-500 transition-colors">{link.name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          {/* Widget 4: Newsletter & Social Media */}
-          <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            <div className="w-full lg:w-[307px] lg:ml-auto">
-              <h5 className="text-elite-widget-title text-lg font-semibold mb-6">Join Our Newsletter</h5>
-              <p className="text-base leading-relaxed mb-6">{"We'll send you news and offers."}</p>
-              <form action="#" className="relative mb-8">
-                <input
-                  type="email"
-                  className="w-full py-4 pl-5 pr-12 rounded-md bg-elite-newsletter-bg text-elite-newsletter-text placeholder-elite-newsletter-text focus:outline-none focus:ring-1 focus:ring-elite-primary"
-                  name="email"
-                  placeholder="Enter mail"
-                  required
-                />
-                <span className="absolute right-10 top-1/2 -translate-y-1/2 text-elite-newsletter-text">
-                  <MailOpen className="w-5 h-5" />
-                </span>
-                <button
-                  type="submit"
-                  aria-label="Submit"
-                  className="absolute right-0 top-0 h-full w-12 flex items-center justify-center bg-elite-newsletter-icon-bg text-white rounded-r-md hover:bg-elite-primary transition-colors"
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </form>
-              <div className="social__media">
-                <h5 className="text-elite-widget-title text-lg font-semibold mb-6">social media</h5>
-                <div className="flex space-x-3">
-                  {socialMediaLinks.map((social, index) => (
-                    <a
-                      key={index}
-                      href={social.href}
-                      aria-label={`social-link-${social.label}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-10 h-10 flex items-center justify-center rounded-full bg-elite-social-icon-bg text-white hover:bg-elite-social-icon-hover-bg transition-colors"
-                    >
-                      <social.icon className="w-5 h-5" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
+        {/* Newsletter & Social */}
+        <div>
+          <h5 className="text-gray-900 text-lg font-bold mb-4">Join Our Newsletter</h5>
+          <p className="text-gray-500 mb-4">Get updates and special offers.</p>
+          <form action="#" className="relative mb-6">
+            <input
+              type="email"
+              className="w-full py-3 pl-4 pr-14 rounded-lg bg-gray-50 border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              placeholder="Enter your email"
+            />
+            <span className="absolute right-14 top-1/2 -translate-y-1/2 text-gray-400">
+              <MailOpen className="w-5 h-5" />
+            </span>
+            <button
+              type="submit"
+              className="absolute right-0 top-0 h-full px-4 bg-orange-500 text-white rounded-r-lg hover:bg-orange-600 transition-colors"
+            >
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </form>
+          <h5 className="text-gray-900 text-lg font-bold mb-4">Follow Us</h5>
+          <div className="flex space-x-3">
+            {socialMediaLinks.map((social, i) => (
+              <a
+                key={i}
+                href={social.href}
+                aria-label={social.label}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 hover:bg-orange-500 hover:text-white transition-all border border-gray-200"
+              >
+                <social.icon className="w-5 h-5" />
+              </a>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Copyright Section */}
-      {/* <div className="w-full h-px bg-elite-default-border my-12"></div>
-      <div className="rts__footer__copyright is__common">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <p className="text-elite-text-light text-sm">
-              &copy; 2025 Premium Web Hosting, Cloud, VPS, AI Website Builder & Domain Registration Services.
-            </p>
-          </div>
-        </div>
-      </div> */}
+      <div className="border-t border-gray-200 mt-12 pt-6 text-center text-gray-500 text-sm">
+        &copy; 2025 Premium Web Hosting, Cloud, VPS, AI Website Builder & Domain Registration Services.
+      </div>
     </footer>
   )
 }

@@ -40,8 +40,8 @@ export default function DedicatedServersPage() {
       {/* Hero Section */}
       <div className="relative bg-[#FFF8F4] py-24 overflow-hidden">
         {/* Decorative blurred shapes */}
-        <div className="absolute -top-32 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-32 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full blur-3xl"></div>
+        <div className="absolute -top-32 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+        <div className="absolute -bottom-32 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
 
         <div className="container mx-auto px-4 relative z-10 grid md:grid-cols-2 items-center gap-12">
           {/* Left content */}
@@ -307,8 +307,8 @@ export default function DedicatedServersPage() {
           {/* Features Section */}
           <Card className="relative mt-12 bg-gradient-to-br from-[#FFF8F4] to-[#FFFFFF] rounded-2xl shadow-xl border-0 overflow-hidden">
             {/* Decorative blurred circles */}
-            <div className="absolute -top-24 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full blur-3xl"></div>
-            <div className="absolute -bottom-24 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full blur-3xl"></div>
+            <div className="absolute -top-24 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+            <div className="absolute -bottom-24 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
 
             <CardHeader className="text-center relative z-10">
               <CardTitle className="text-[#001233] text-2xl md:text-3xl font-bold">

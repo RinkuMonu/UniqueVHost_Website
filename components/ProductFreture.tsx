@@ -5,8 +5,8 @@ export default function ProductFreture() {
   return (
     <section className="relative py-20 bg-gradient-to-r from-[#FFF8F4] to-[#FFF2E6] overflow-hidden mb-10">
       {/* Decorative background shapes */}
-      <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full blur-3xl"></div>
+      <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+      <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
 
       <div className="container mx-auto px-4 text-center relative z-10">
         <h2 className="text-3xl md:text-4xl font-bold text-[#001233] mb-4">Why Developers Love Our Cloud</h2>

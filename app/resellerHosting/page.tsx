@@ -1,182 +1,116 @@
-"use client"
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import AdditionalServices from "@/components/AdditionalServices";
+import Plans from "@/components/Plans";
 
-import Testimonials from '@/components/testimonials';
-import Plans from '@/components/Plans';
-import Faqs from '@/components/faqs';
-import LatestBlog from '@/components/latestblog';
-import AdditionalServices from '@/components/AdditionalServices';
-import "@/app/styles/style.css";
-import "@/app/styles/plug.css";
-import "@/app/styles/bootstrap.css";
-import "@/app/styles/animation.css";
-import "@/app/styles/header.css";
-import "@/app/styles/nav.css";
-import "@/app/styles/forms.css";
-// import "@/app/styles/styles2.css";
-import "@/app/styles/mobile.css";
-import "@/app/styles/site-elements.css";
-import "@/app/styles/reset.css";
-import "@/app/styles/typography.css";
 const Page = () => {
-
-
-const hostingFeatures = [
-  {
-    icon: '/images/hosting/07.svg',
-    title: 'All the Essentials',
-    desc: 'Manage everything from one single dashboard (cPanel).',
-    link: '/shared-hosting',
-  },
-  {
-    icon: '/images/hosting/08.svg',
-    title: 'WHM Control',
-    desc: 'Create and modify your clients’ hosting accounts with Web Host.',
-    link: '/wordpress-hosting',
-  },
-  {
-    icon: '/images/hosting/09.svg',
-    title: 'Account Management Tools',
-    desc: 'Whether you want to set up client invoices or brand the existing.',
-    link: '/cloud-hosting',
-  },
-  {
-    icon: '/images/hosting/10.svg',
-    title: 'State-of-Art Technology',
-    desc: 'Deliver fast, reliable, and secure hosting to your clients, thanks.',
-    link: '/reseller-hosting',
-  },
-];
-
-
-
-  const resellerHostingServices = [
-  {
-    title: "Branding",
-    items: [
-      { id: "whiteLabel", label: "White-label Branding (Included)" },
-      { id: "customLogo", label: "Custom Logo Integration (₹500 one-time)" },
-      { id: "clientPanel", label: "Branded Client Panel (₹800/month)" },
-    ],
-  },
-  {
-    title: "Resource Management",
-    items: [
-      { id: "whmAccess", label: "WHM Access (Free)" },
-      { id: "accountLimits", label: "Account Limit Control (Free)" },
-      { id: "autoSuspend", label: "Auto Suspend Inactive Clients (₹300/month)" },
-    ],
-  },
-  {
-    title: "Support & Tools",
-    items: [
-      { id: "billingSoftware", label: "Billing Software Integration (₹1000/month)" },
-      { id: "ticketSystem", label: "Client Ticket System (₹700/month)" },
-      { id: "priorityResellerSupport", label: "Priority Reseller Support (₹1200/month)" },
-    ],
-  },
-  {
-    title: "Add-ons",
-    items: [
-      { id: "extraCpanel", label: "Additional cPanel License (₹100/month/client)" },
-      { id: "emailMarketing", label: "Email Marketing Tool (₹600/month)" },
-      { id: "dailyResellerBackup", label: "Automated Daily Backups (₹900/month)" },
-    ],
-  },
-];
+  const hostingFeatures = [
+    {
+      icon: "/images/hosting/07.svg",
+      title: "All the Essentials",
+      desc: "Manage everything from one single dashboard (cPanel).",
+      link: "/shared-hosting",
+    },
+    {
+      icon: "/images/hosting/08.svg",
+      title: "WHM Control",
+      desc: "Create and modify your clients’ hosting accounts with Web Host.",
+      link: "/wordpress-hosting",
+    },
+    {
+      icon: "/images/hosting/09.svg",
+      title: "Account Management Tools",
+      desc: "Whether you want to set up client invoices or brand the existing.",
+      link: "/cloud-hosting",
+    },
+    {
+      icon: "/images/hosting/10.svg",
+      title: "State-of-Art Technology",
+      desc: "Deliver fast, reliable, and secure hosting to your clients, thanks.",
+      link: "/reseller-hosting",
+    },
+  ];
 
   return (
-  <>
-     <div className="rts-breadcrumb-area body-bg-2">
-      <div className="container">
-        <div className="breadcrumb-inner">
-          <div className="row align-items-center">
-            <div className="col-lg-6 order-change">
-              <div className="breadcrumb-content">
-                <h1 className="heading-title">
-                  Reseller Hosting
-                </h1>
-                <p className="desc">The quality you need with all the potential to earn</p>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="breadcrumb-image-area"
-                  style={{display:"flex", justifyContent:"center"}}
-              
+    <>
+      {/* Hero section */}
+      <section className="relative bg-[#FFF8F4] py-20 overflow-hidden">
+        <div className="container mx-auto px-4 grid md:grid-cols-2 items-center gap-12 relative z-10">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-[#FD5D07] via-[#FFB703] to-[#FD5D07] bg-clip-text text-transparent animate-gradient-x">
+              Reseller Hosting
+            </h1>
+            <p className="text-lg md:text-xl text-[#313149] max-w-xl mb-8">
+              The quality you need with all the potential to earn
+            </p>
+            <Link
+              href="#"
+              className="inline-block px-8 py-3 bg-[#FD5D07] text-white rounded-full font-semibold shadow-md hover:bg-[#e04d00] transition-all"
+            >
+              Start Selling
+            </Link>
+          </div>
+          <div className="flex justify-center">
+            <Image
+              src="/images/banner/reseller.png"
+              alt="Reseller Hosting"
+              width={350}
+              height={500}
+              className="rounded-xl w-full transition-transform hover:scale-105"
+            />
+          </div>
+        </div>
+
+        <div className="absolute -top-24 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+        <div className="absolute -bottom-24 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
+      </section>
+
+      {/* Plans section */}
+      <Plans />
+
+      {/* Features section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#001233] mb-12">
+            Reseller Hosting Features
+          </h2>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {hostingFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className="bg-[#fff] rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 text-center border border-transparent hover:border-[#FD5D07] hover:-translate-y-2"
               >
-                <Image
-                  src="/images/banner/breadcrumb-03.webp"
-                  width={332}
-                  height={590}
-                  alt="Reseller Hosting"
-                  layout="intrinsic"
-                />
+                <div className="flex justify-center mb-4">
+                  <Image
+                    src={feature.icon}
+                    alt={feature.title}
+                    width={60}
+                    height={60}
+                    className="transition-transform group-hover:scale-110"
+                  />
+                </div>
+                <Link href={feature.link} className="block font-bold text-lg text-[#001233] mb-2 hover:text-[#FD5D07] transition-colors">
+                  {feature.title}
+                </Link>
+                <p className="text-sm text-[#4C5671] mb-4">{feature.desc}</p>
+                <Link
+                  href={feature.link}
+                  className="inline-block px-5 py-2 border border-[#FD5D07] text-[#FD5D07] rounded-full font-medium hover:bg-[#FD5D07] hover:text-white transition-all"
+                >
+                  View Details
+                </Link>
               </div>
-            </div>
+            ))}
           </div>
         </div>
-      </div>
-      <div className="breadcrumb-shape-area">
-        <Image
-          src="/images/banner/breadcrumb-shape.svg"
-          width={500}
-          height={500}
-          alt="Breadcrumb Shape"
-        />
-      </div>
-    </div>
+      </section>
 
-   <Plans/>
-
-    <div className="rts-hosting-type pb--120">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className="row justify-content-center">
-              <div className="section-title-area text-center">
-                <h2 className="section-title">Reseller Hosting Feature</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="row mt--60">
-          <div className="col-lg-12">
-            <div className="rts-hosting-inner">
-              <div className="row g-5">
-                {hostingFeatures.map((feature, index) => (
-                  <div className="col-lg-3 col-md-6" key={index}>
-                    <div className="rts-hosting-type__single area-2">
-                      <div className="hosting-icon">
-                        <Image
-                          src={feature.icon}
-                          alt={feature.title}
-                          width={60}
-                          height={60}
-                        />
-                      </div>
-                      <Link href={feature.link} className="title">
-                        {feature.title}
-                      </Link>
-                      <p className="excerpt">{feature.desc}</p>
-                      <Link href={feature.link} className="primary__btn border__btn">
-                        View Details <i className="fa-regular fa-long-arrow-right"></i>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-
-<AdditionalServices />
-  </>
+      {/* Additional Services */}
+      <AdditionalServices />
+    </>
   );
 };
 
