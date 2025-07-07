@@ -1,6 +1,18 @@
+import AdditionalServices from '@/components/AdditionalServices';
 import Plans from '@/components/Plans'
 import React from 'react'
-
+import "@/app/styles/style.css";
+import "@/app/styles/plug.css";
+import "@/app/styles/bootstrap.css";
+import "@/app/styles/animation.css";
+import "@/app/styles/header.css";
+import "@/app/styles/nav.css";
+import "@/app/styles/forms.css";
+// import "@/app/styles/styles2.css";
+import "@/app/styles/mobile.css";
+import "@/app/styles/site-elements.css";
+import "@/app/styles/reset.css";
+import "@/app/styles/typography.css";
 function Page() {
 
     const features = [
@@ -69,14 +81,14 @@ function Page() {
                         <div className="row align-items-center">
                             <div className="col-lg-6 order-change">
                                 <div className="breadcrumb-content">
-                                    <h1 className="heading-title" style={{ maxWidth: "494px" }}>
-                                        Dedicated Server
+                                    <h1 className="heading-title" >
+                                        Dedicated Hosting
                                     </h1>
                                     <p className="desc">Control and flexibility when your business needs it</p>
                                 </div>
                             </div>
                             <div className="col-lg-6">
-                                <div className="breadcrumb-image-area">
+                                <div className="breadcrumb-image-area" style={{display:'flex', justifyContent:"center"}}>
                                     <img src="/images/banner/breadcrumb-04.webp" width="310" alt="" />
                                 </div>
                             </div>
@@ -115,35 +127,7 @@ function Page() {
                 </div>
             </section>
 
-            <section className=" bg-light" style={{"paddingTop":"110px" , "paddingBottom":"110px"}}>
-                <div className="container">
-                    <h2 className="text-center mb-5 text-black fw-bold">Additional Dedicated Hosting Services</h2>
-                    <div className="row g-4">
-                        {serviceSections.map((section, idx) => (
-                            <div className="col-md-3" key={idx}>
-                                <div className="bg-white  border-4 rounded-3 shadow-md p-4 h-100" style={{"borderLeft":"2px solid #fd5d07"}}>
-                                    <h5 className="fw-bold mb-4 fs-4  text-uppercase ">{section.title}</h5>
-                                    {section.items.map((item) => (
-                                        <div className="form-check mb-2" key={item.id}>
-                                            <input
-                                                className="form-check-input border border-dark bg-transparent shadow-none"
-                                                type="checkbox"
-                                                id={item.id}
-                                            />
-                                            <label className="form-check-label " htmlFor={item.id}>
-                                               <p className='fs-5'> {item.label}</p>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                  <div className="d-flex justify-content-center mt-5 ">
-                              <a href="#" className='get-started-btn px-4'>Buy Now</a>
-                            </div>
-            </section>
+           <AdditionalServices />
 
 
         </>

@@ -56,7 +56,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-elite-body-bg-2 text-elite-text-light py-section-p-y-lg md:py-section-p-y">
+    <footer className=" rts-footer site-footer-one section__padding body-bg-2">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Widget 1: Logo & Contact */}
@@ -202,7 +202,7 @@ export default function Footer() {
       </div>
 
       {/* Copyright Section */}
-      <div className="w-full h-px bg-elite-default-border my-12"></div>
+      {/* <div className="w-full h-px bg-elite-default-border my-12"></div>
       <div className="rts__footer__copyright is__common">
         <div className="container mx-auto px-4">
           <div className="text-center">
@@ -211,7 +211,7 @@ export default function Footer() {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
     </footer>
   )
 }

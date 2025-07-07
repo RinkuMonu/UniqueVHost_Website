@@ -33,13 +33,52 @@
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0))
 }
 
+*,
+::after,
+::before {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
 
 @media(prefers-reduced-motion:no-preference) {
     :root {
         scroll-behavior: smooth
     }
 }
-
+a{
+    font-size: 16px;
+  }
+  .elitehost-menu .elitehost-desktop-menu .elitehost-submenu .nav-item:hover a.nav-link {
+    padding-left: 35px;
+}
+.elitehost-menu .elitehost-desktop-menu .elitehost-submenu .nav-item a.nav-link {
+  display: block;
+  text-transform: capitalize;
+  color: var(--btc);
+  text-decoration: none;
+  padding: 10px 20px;
+  padding-right: 15px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  font-weight: 400;
+  font-size: 15px;
+}
+.elitehost-menu .elitehost-desktop-menu .elitehost-submenu .nav-item {
+  margin: 0;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+.elitehost-menu .elitehost-desktop-menu .menu-item {
+    margin: 0;
+    color: var(--color-white);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 26px;
+    text-transform: capitalize;
+    padding: 0 30px;
+    cursor: pointer;
+}
 body {
     margin: 0;
     font-family: var(--bs-font-sans-serif);
@@ -64,23 +103,6 @@ hr:not([size]) {
     height: 1px
 }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin-top: 0;
-    margin-bottom: .5rem;
-    font-weight: 500;
-    line-height: 1.2
-}
 
 .h1,
 h1 {
@@ -95,9 +117,8 @@ h1 {
     }
 }
 
-.h2,
-h2 {
-    font-size: calc(1.325rem + .9vw)
+.rts-hosting-type__single.area-2 .title{
+    font-size: 18px !important;
 }
 
 @media(min-width:1200px) {
@@ -163,11 +184,6 @@ address {
     margin-bottom: 1rem;
     font-style: normal;
     line-height: inherit
-}
-
-ol,
-ul {
-    padding-left: 2rem
 }
 
 dl,
@@ -333,24 +349,12 @@ label {
     display: inline-block
 }
 
-button {
-    border-radius: 0
-}
 
 button:focus:not(:focus-visible) {
     outline: 0
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit
-}
+
 
 button,
 select {

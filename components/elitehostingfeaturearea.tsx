@@ -1,5 +1,15 @@
 import Image from 'next/image';
-
+import "@/app/styles/style.css";
+import "@/app/styles/plug.css";
+import "@/app/styles/bootstrap.css";
+import "@/app/styles/animation.css";
+import "@/app/styles/header.css";
+import "@/app/styles/nav.css";
+import "@/app/styles/forms.css";
+import "@/app/styles/mobile.css"; 
+import '@/app/styles/site-elements.css'
+import "@/app/styles/reset.css";
+import "@/app/styles/typography.css"
 export default function EliteHostFeatureArea() {
   return (
     <section className="rts-service area-2 body-bg-2 section__padding">
