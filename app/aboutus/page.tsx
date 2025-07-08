@@ -61,7 +61,7 @@ export default function Page() {
               </div>
               <div className="col-span-12 md:col-span-5">
                 <div className="about-content-area">
-                  <h2 className="section-title text-4xl font-bold pb-3">About Elitehost</h2>
+                  <h2 className="text-4xl font-extrabold text-gray-900 mb-4 inline-block border-b-4 border-amber-500 pb-1">About Elitehost</h2>
                   <p className="desc pb-5">Since our founding in 2011, Elitehost has offered web hosting solutions that continually innovate new ways to deliver on our mission: empowering people to harness their brands online.</p>
                   <div className="about-feature-area">
                     <ul>
@@ -95,7 +95,7 @@ export default function Page() {
       <section className="rts-journey-area section-padding pt-34">
         <div className="container">
           <div className="section-title-area">
-            <h2 className="section-title text-center text-4xl font-bold">We empower entrepreneurs by providing the ideal support and resources
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-4 inline-block border-b-4 border-amber-500 pb-1">We empower entrepreneurs by providing the ideal support and resources
               for their journey.</h2>
             <p className="desc text-center pt-5">This is where people bring their ideas to life, develop a captivating brand and an impressive website, attract customers through digital and social marketing, and efficiently manage their work. When a tool alone isn't enough, we offer direct one-on-one guidance with a personal touch.</p>
           </div>
@@ -107,13 +107,13 @@ export default function Page() {
             </div>
           </div>
           <div className="bottom-counter-area py-24">
-            <div className="grid grid-cols-12 gap-4 ">
-              <div className="col-span-12 md:col-span-4">
-                <div className="counter-wrapper">
-                  <div className="icon"><img src="/images/about/05.svg" width="100" alt="" /></div>
+            <div className="grid grid-cols-12 gap-4">
+              <div className="col-span-12 md:col-span-4 ">
+                <div className="counter-wrapper ">
+                  <div className="icon flex justify-center md:block"><img src="/images/about/05.svg" width="100" alt="" /></div>
                   <div className="content">
-                    <h2 className="title-main text-5xl font-bold"><span className="counter">2</span> <span>k</span></h2>
-                    <p className="disc">
+                    <h2 className="title-main text-5xl font-bold flex justify-center md:justify-start"><span className="counter">2</span> <span>k</span></h2>
+                    <p className="disc text-center md:text-left">
                       More than 2 thousand <br /> employees.
                     </p>
                   </div>
@@ -121,10 +121,10 @@ export default function Page() {
               </div>
               <div className="col-span-12 md:col-span-4">
                 <div className="counter-wrapper">
-                  <div className="icon"><img src="/images/about/06.svg" width="100" alt="" /></div>
-                  <div className="content">
-                    <h2 className="title-main  text-5xl font-bold"><span className="counter">21</span> <span>m</span></h2>
-                    <p className="disc">
+                  <div className="icon flex justify-center md:block"><img src="/images/about/06.svg" width="100" alt="" /></div>
+                  <div className="content ">
+                    <h2 className="title-main  text-5xl font-bold flex justify-center md:justify-start"><span className="counter">21</span> <span>m</span></h2>
+                    <p className="disc text-center md:text-left">
                       We empower 21 million <br /> entrepreneurs.
                     </p>
                   </div>
@@ -132,10 +132,10 @@ export default function Page() {
               </div>
               <div className="col-span-12 md:col-span-4">
                 <div className="counter-wrapper">
-                  <div className="icon"><img src="/images/about/05.svg" width="100" alt="" /></div>
+                  <div className="icon flex justify-center md:block"><img src="/images/about/05.svg" width="100" alt="" /></div>
                   <div className="content">
-                    <h2 className="title-main  text-5xl font-bold"><span className="counter">85</span> <span>m</span></h2>
-                    <p className="disc">
+                    <h2 className="title-main  text-5xl font-bold flex justify-center md:justify-start"><span className="counter">85</span> <span>m</span></h2>
+                    <p className="disc text-center md:text-left">
                       Our customers trust us with <br /> their 85 million domain names.
                     </p>
                   </div>
@@ -149,7 +149,7 @@ export default function Page() {
       <section className="rts-team-area py-24 body-bg-2">
         <div className="container">
           <div className="rts-section-title-area">
-            <h2 className="section-title text-5xl font-bold">Part of our team</h2>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-4 pb-1 text-center">Part of our team</h2>
             <p className="desc w-450 pt-5">Over the last 19 years, Site Ground has grown to more than
               A considerable number of our people started working</p>
           </div>
