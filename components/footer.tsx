@@ -69,7 +69,7 @@ export default function Footer() {
       <div className="absolute -bottom-10 -right-20 w-80 h-80 bg-orange-200 rounded-full  opacity-30 "></div>
       {/* <div className="absolute -top-20 right-1/3 w-96 h-96 bg-gradient-to-r from-orange-100 to-orange-200 rounded-full  opacity-20 "></div> */}
 
-      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
+      <div className="container mx-auto  sm:p-10 px-6 grid sm:grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
         {/* Logo & Contact */}
         <div>
           <Link href="/" className="inline-block mb-6">

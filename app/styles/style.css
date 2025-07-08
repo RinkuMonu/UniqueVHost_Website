@@ -10442,12 +10442,7 @@
       display: block;
     }
   }
-  
-  @media (max-width: 991px) {
-    .rts-header__menu {
-      display: none;
-    }
-  }
+
   
   .rts-header.style-three {
     top: 0;
