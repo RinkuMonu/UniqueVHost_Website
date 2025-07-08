@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import  Layout  from "@/app/layout"
+// import  Layout  from "@/app/layout"
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -46,7 +46,7 @@ export default function LoginPage() {
       title: "Lightning Fast",
       subtitle: "Web Hosting",
       description:
-        "Experience blazing-fast performance with our premium SSD hosting. 99.9% uptime guarantee, free SSL certificates, and lightning-speed servers that keep your websites running at peak performance!",
+        "Experience blazing-fast performance with our premium SSD hosting.",
       buttonText: "Start Hosting",
       bgGradient: "from-[#FD5D07] via-[#FF8C44] to-orange-600",
       accentColor: "from-yellow-400 to-orange-500",
@@ -97,7 +97,7 @@ export default function LoginPage() {
       title: "Scalable Cloud",
       subtitle: "Infrastructure",
       description:
-        "Scale effortlessly with our advanced cloud platform. Auto-scaling, global CDN, load balancing, and enterprise-grade security. Your websites will handle any traffic spike with ease!",
+        "Scale effortlessly with our advanced cloud platform. ",
       buttonText: "Go Cloud",
       bgGradient: "from-[#FD5D07] via-[#FF6B35] to-red-500",
       accentColor: "from-blue-400 to-purple-500",
@@ -164,7 +164,7 @@ export default function LoginPage() {
       title: "Secure Domain",
       subtitle: "Management",
       description:
-        "Manage all your domains with enterprise-grade security. Free privacy protection, advanced DNS management, SSL certificates, and automated renewals. Your digital identity, protected!",
+        "Manage all your domains with enterprise-grade security. ",
       buttonText: "Secure Now",
       bgGradient: "from-[#FD5D07] via-orange-500 to-red-600",
       accentColor: "from-green-400 to-emerald-500",
@@ -249,16 +249,15 @@ export default function LoginPage() {
   }
 
   return (
-    <Layout >
     <div
       className={`min-h-screen flex  transition-all duration-1000`}
     >
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Particles */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/5 rounded-full blur-xl animate-float"></div>
-        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-white/10 rounded-full blur-lg animate-float delay-1000"></div>
-        <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-white/15 rounded-full blur-md animate-float delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/5 rounded-full  animate-float"></div>
+        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-white/10 rounded-full  animate-float delay-1000"></div>
+        <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-white/15 rounded-full  animate-float delay-500"></div>
 
         {/* Dynamic Grid */}
         <div className="absolute inset-0 opacity-10">
@@ -302,11 +301,11 @@ export default function LoginPage() {
         </div>
 
         {/* Enhanced Slide Content */}
-        <div className="relative z-10 p-16 flex flex-col justify-center h-full">
+        <div className="relative z-10 p-8 pt-3 flex flex-col justify-center h-full">
           <div
             className={`mb-16 transition-all duration-500 ${isTransitioning ? "opacity-0 transform translate-y-8" : "opacity-100 transform translate-y-0"}`}
           >
-            <div className="mb-8">
+            <div className="mb-4">
               <div
                 className={`inline-flex items-center gap-3 bg-gradient-to-r ${slides[currentSlide].accentColor} px-4 py-2 rounded-full mb-6 shadow-lg`}
               >
@@ -339,11 +338,11 @@ export default function LoginPage() {
                 key={index}
                 onClick={() => changeSlide(index)}
                 className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${
-                  index === currentSlide ? "w-12 bg-white shadow-lg" : "w-6 bg-white/40 hover:bg-white/60"
+                  index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
                 }`}
               >
                 {index === currentSlide && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/80 to-white animate-pulse"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black animate-pulse"></div>
                 )}
               </button>
             ))}
@@ -403,7 +402,7 @@ export default function LoginPage() {
           </div>
 
           {/* Enhanced Login Card */}
-          <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-xl overflow-hidden relative">
+          <Card className=" border-0 bg-white/95 backdrop-blur-xl overflow-hidden relative">
             {/* Gradient Border Effect */}
             <div
               className={`absolute inset-0 bg-gradient-to-r ${slides[currentSlide].accentColor} opacity-20 blur-xl`}
@@ -412,25 +411,18 @@ export default function LoginPage() {
               className={`h-1 bg-gradient-to-r ${slides[currentSlide].accentColor} transition-all duration-1000`}
             ></div>
 
-            <CardContent className="p-12 relative">
+            <CardContent className="p-12 pb-6 relative">
               {/* Enhanced Greeting */}
-              <div className="mb-10 text-center">
-                <div className="flex items-center justify-center gap-3 mb-6">
-                  <div
-                    className={`p-3 bg-gradient-to-r ${slides[currentSlide].accentColor} rounded-2xl shadow-lg animate-pulse`}
-                  >
-                    <Sparkles className="h-8 w-8 text-white" />
-                  </div>
-                </div>
+              <div className="mb-10 text-left">
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
-                  Hello!
+                  Welcome Back!
                 </h2>
                 <p className="text-xl text-gray-600 font-medium">Login your account</p>
               </div>
 
               {/* Enhanced Form */}
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-2">
+                <div className="space-y-2">
                   <Label htmlFor="username" className="text-gray-700 font-semibold text-lg">
                     Username
                   </Label>
@@ -484,7 +476,7 @@ export default function LoginPage() {
 
                 <Button
                   type="submit"
-                  className={`w-full h-16 bg-gradient-to-r ${slides[currentSlide].bgGradient} hover:shadow-2xl hover:scale-105 text-white font-bold text-xl transition-all duration-300 group relative overflow-hidden rounded-xl`}
+                  className={`w-full h-10 text-[14px] bg-gradient-to-r ${slides[currentSlide].bgGradient} hover:shadow-2xl hover:scale-105 text-white font-bold text-xl transition-all duration-300 group relative overflow-hidden rounded-md`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   Login to Dashboard
@@ -522,6 +514,5 @@ export default function LoginPage() {
         }
       `}</style>
     </div>
-    </Layout>
   )
 }

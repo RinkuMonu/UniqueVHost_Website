@@ -3224,12 +3224,6 @@ position: relative;
     }
 }
 
-@media (max-width: 991px) {
-    .rts-header__menu {
-        display: none;
-    }
-}
-
 .rts-header__right {
     text-align: right;
     display: flex;
