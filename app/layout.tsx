@@ -24,7 +24,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // List of routes where header and footer should be hidden
-  const hideLayoutRoutes = ["/login"];
+  const hideLayoutRoutes = ["/login" ,"/register"];
 
   const shouldHideLayout = hideLayoutRoutes.includes(pathname);
 

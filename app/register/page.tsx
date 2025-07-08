@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import "./style.css"
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -69,7 +69,7 @@ export default function StunningRegisterForm() {
       title: "Lightning Fast",
       subtitle: "Web Hosting",
       description:
-        "Experience blazing-fast performance with our premium SSD hosting. 99.9% uptime guarantee, free SSL certificates, and lightning-speed servers that keep your websites running at peak performance!",
+          "Experience blazing-fast performance with our premium SSD hosting.",
       buttonText: "Start Hosting",
       bgGradient: "from-[#FD5D07] via-[#FF8C44] to-orange-600",
       accentColor: "from-yellow-400 to-orange-500",
@@ -78,7 +78,7 @@ export default function StunningRegisterForm() {
           {/* Animated Server Farm */}
           <div className="relative">
             {/* Main Server */}
-            <div className="w-56 h-40 bg-gradient-to-br from-white/25 to-white/10 rounded-2xl backdrop-blur-xl border border-white/30 relative overflow-hidden shadow-2xl">
+            <div className="w-56 h-40 bg-gradient-to-br from-white/25 to-white/10 rounded-2xl backdrop-blur-xl border border-white/30 relative overflow-hidden ">
               {/* Server Glow Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 animate-pulse"></div>
 
@@ -120,7 +120,7 @@ export default function StunningRegisterForm() {
       title: "Scalable Cloud",
       subtitle: "Infrastructure",
       description:
-        "Scale effortlessly with our advanced cloud platform. Auto-scaling, global CDN, load balancing, and enterprise-grade security. Your websites will handle any traffic spike with ease!",
+        "Scale effortlessly with our advanced cloud platform. ",
       buttonText: "Go Cloud",
       bgGradient: "from-[#FD5D07] via-[#FF6B35] to-red-500",
       accentColor: "from-blue-400 to-purple-500",
@@ -187,7 +187,7 @@ export default function StunningRegisterForm() {
       title: "Secure Domain",
       subtitle: "Management",
       description:
-        "Manage all your domains with enterprise-grade security. Free privacy protection, advanced DNS management, SSL certificates, and automated renewals. Your digital identity, protected!",
+    "Manage all your domains with enterprise-grade security. ",
       buttonText: "Secure Now",
       bgGradient: "from-[#FD5D07] via-orange-500 to-red-600",
       accentColor: "from-green-400 to-emerald-500",
@@ -196,7 +196,7 @@ export default function StunningRegisterForm() {
           {/* Domain Security Hub */}
           <div className="relative">
             {/* Main Security Shield */}
-            <div className="w-48 h-48 bg-gradient-to-br from-white/25 to-white/10 rounded-3xl backdrop-blur-xl border border-white/30 relative overflow-hidden shadow-2xl">
+            <div className="w-48 h-48 bg-gradient-to-br from-white/25 to-white/10 rounded-3xl backdrop-blur-xl border border-white/30 relative overflow-hidden ">
               {/* Security Glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-500/20 animate-pulse"></div>
 
@@ -303,7 +303,7 @@ export default function StunningRegisterForm() {
       </div>
 
       {/* Left Side - Enhanced Dynamic Content Slider */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-3/7 relative overflow-hidden">
         {/* Enhanced Curved Lines */}
         <div className="absolute top-0 left-0 w-full h-40">
           <svg viewBox="0 0 400 160" className="w-full h-full opacity-30">
@@ -332,7 +332,7 @@ export default function StunningRegisterForm() {
         </div>
 
         {/* Enhanced Slide Content */}
-        <div className="relative z-10 p-16 flex flex-col justify-center  h-full">
+        <div className="relative z-10 px-6 flex flex-col justify-center  h-full">
           <div
             className={`mb-16 transition-all duration-500 ${isTransitioning ? "opacity-0 transform translate-y-8" : "opacity-100 transform translate-y-0"}`}
           >
@@ -405,11 +405,11 @@ export default function StunningRegisterForm() {
       </div>
 
       {/* Right Side - Enhanced Registration Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative">
+      <div className="w-full lg:w-4/7 flex items-center justify-center relative">
         {/* Form Background Glow */}
         <div className="absolute inset-0 bg-gradient-to-l from-white/5 to-transparent"></div>
 
-        <div className="w-full max-w-lg relative z-10">
+        <div className="w-full  relative z-10 h-screen">
           {/* Enhanced Mobile Slider */}
           <div className="lg:hidden mb-10">
             <div className="bg-white/10 backdrop-blur-xl p-8 rounded-3xl mb-8 border border-white/20 text-white text-center shadow-2xl">
@@ -433,7 +433,7 @@ export default function StunningRegisterForm() {
           </div>
 
           {/* Enhanced Registration Card */}
-          <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-xl overflow-hidden relative">
+          <Card className=" border-0 bg-white/95 backdrop-blur-xl overflow-hidden relative">
             {/* Gradient Border Effect */}
             <div
               className={`absolute inset-0 bg-gradient-to-r ${slides[currentSlide].accentColor} opacity-20 blur-xl`}
@@ -442,16 +442,10 @@ export default function StunningRegisterForm() {
               className={`h-1 bg-gradient-to-r ${slides[currentSlide].accentColor} transition-all duration-1000`}
             ></div>
 
-            <CardContent className="p-10 relative">
+            <CardContent className="px-10 relative">
               {/* Enhanced Greeting */}
-              <div className="mb-8 text-center">
-                <div className="flex items-center justify-center gap-3 mb-6">
-                  <div
-                    className={`p-3 bg-gradient-to-r ${slides[currentSlide].accentColor} rounded-2xl shadow-lg animate-pulse`}
-                  >
-                    <UserCheck className="h-8 w-8 text-white" />
-                  </div>
-                </div>
+              <div className="mb-6 ">
+                
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
                   Join Us!
                 </h2>
@@ -460,7 +454,8 @@ export default function StunningRegisterForm() {
 
               {/* Enhanced Registration Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name Field */}
+           <div className="grid grid-cols-2 gap-4">
+                 {/* Name Field */}
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-gray-700 font-semibold text-lg">
                     Full Name
@@ -580,15 +575,16 @@ export default function StunningRegisterForm() {
                     />
                   </div>
                 </div>
-
-                {/* Role Field */}
+                     {/* Role Field */}
+           
+           </div>
                 <div className="space-y-2">
-                  <Label htmlFor="role" className="text-gray-700 font-semibold text-lg">
+                  <Label htmlFor="role" className="text-gray-700 font-semibold text-lg ">
                     Role
                   </Label>
                   <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
                     <SelectTrigger className="h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl">
-                      <SelectValue placeholder="Select your role" />
+                      <SelectValue placeholder="Select your role " className="w-full" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="customer">Customer</SelectItem>
@@ -599,16 +595,18 @@ export default function StunningRegisterForm() {
                   </Select>
                 </div>
 
+           
+
                 <Button
                   type="submit"
-                  className={`w-full h-16 bg-gradient-to-r ${slides[currentSlide].bgGradient} hover:shadow-2xl hover:scale-105 text-white font-bold text-xl transition-all duration-300 group relative overflow-hidden rounded-xl mt-8`}
+                  className={`w-full h-10 text-[14px]  bg-gradient-to-r ${slides[currentSlide].bgGradient} hover:shadow-2xl hover:scale-105 text-white font-bold text-xl transition-all duration-300 group relative overflow-hidden rounded-xl mt-3`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   Create Account
                   <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
-                <div className="text-center pt-6">
+                <div className="text-center">
                   <a
                     href="#"
                     className="text-gray-600 hover:text-orange-500 font-semibold hover:underline transition-colors text-lg"
