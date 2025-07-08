@@ -17928,10 +17928,19 @@
       flex-wrap: wrap;
     }
   }
-  .rts-journey-area .bottom-counter-area .counter-wrapper {
+    @media (min-width: 425px) {
+    .rts-journey-area .bottom-counter-area .counter-wrapper {
     display: flex;
     gap: 32px;
-  }
+  }}
+ @media (max-width: 425px) {
+  
+  .rts-journey-area .bottom-counter-area .counter-wrapper {
+    display: grid;
+    /* gap: 32px; */
+  
+  }}
+
   .rts-journey-area .bottom-counter-area .counter-wrapper .content .title-main {
     display: flex;
     color: var(--color-primary);

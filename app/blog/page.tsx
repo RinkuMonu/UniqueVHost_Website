@@ -58,7 +58,7 @@ function Page() {
                     {/* Right image */}
                     <div className="flex justify-center">
                         <img
-                            src="/images/banner/breadcrumb-05.webp"
+                            src="/images/banner/breadcrumb-01.webp"
                             alt="Dedicated Server Illustration"
                             className="w-full max-w-md rounded-xl transition-transform hover:scale-105"
                         />
