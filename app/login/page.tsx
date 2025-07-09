@@ -26,6 +26,7 @@ import {
   Cloud,
   Database,
 } from "lucide-react"
+import ForgotPasswordModal from "@/components/Forgotpassword"
 
 interface SlideData {
   title: string
@@ -38,6 +39,7 @@ interface SlideData {
 }
 
 export default function LoginPage() {
+    const [showModal, setShowModal] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -512,6 +514,7 @@ export default function LoginPage() {
                     Forgot password?
                   </button>
                 </div>
+      
 
                 <Button
                   type="submit"
@@ -553,6 +556,12 @@ export default function LoginPage() {
           animation: spin-slow 8s linear infinite;
         }
       `}</style>
+
+
+                 <ForgotPasswordModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   )
 }
