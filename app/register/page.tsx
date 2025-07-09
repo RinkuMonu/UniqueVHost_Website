@@ -50,7 +50,7 @@ interface FormData {
   role: string
 }
 
-export default function StunningRegisterForm() {
+export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
