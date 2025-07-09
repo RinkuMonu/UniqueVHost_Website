@@ -472,7 +472,7 @@ export default function LoginPage() {
                     onClick={() => setShowModal(true)}
                     className="text-orange-500 hover:text-orange-600 font-semibold hover:underline transition-colors text-lg"
                   >
-                    Forgot password?
+                  Forgot password?
                   </button>
                   
 
