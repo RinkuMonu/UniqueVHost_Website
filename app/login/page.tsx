@@ -7,6 +7,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Swal from "sweetalert2";
+import { useRouter, useSearchParams } from "next/navigation";
+import axiosInstance from "@/app/AxiosInstance/axiosInstance";
 import {
   Eye,
   EyeOff,
@@ -40,7 +43,44 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirect") || "/";
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
+    try {
+      const response = await axiosInstance.post("/users/login", {
+        email: username,
+        password: password,
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: "Welcome back!",
+        confirmButtonColor: "#FD5D07",
+        timer: 2000,
+        timerProgressBar: true,
+        willClose: () => {
+          router.push(redirectPath); // ✅ Redirect to original page or home
+        },
+      });
+
+      console.log("Login successful", response.data);
+    } catch (error: any) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text:
+          error.response?.data?.message ||
+          "Something went wrong. Please try again later.",
+        confirmButtonColor: "#FD5D07",
+      });
+
+      console.error("Login error", error);
+    }
+  };
   const slides: SlideData[] = [
     {
       title: "Lightning Fast",
@@ -225,10 +265,10 @@ export default function LoginPage() {
     return () => clearInterval(timer)
   }, [slides.length])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Login attempt:", { username, password })
-  }
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   console.log("Login attempt:", { username, password })
+  // }
 
   const changeSlide = (index: number) => {
     if (index !== currentSlide) {
@@ -337,9 +377,8 @@ export default function LoginPage() {
               <button
                 key={index}
                 onClick={() => changeSlide(index)}
-                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${
-                  index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
-                }`}
+                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
+                  }`}
               >
                 {index === currentSlide && (
                   <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black animate-pulse"></div>
@@ -392,9 +431,8 @@ export default function LoginPage() {
                   <button
                     key={index}
                     onClick={() => changeSlide(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/40"
-                    }`}
+                    className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/40"
+                      }`}
                   />
                 ))}
               </div>
@@ -466,12 +504,13 @@ export default function LoginPage() {
                 </div>
 
                 <div className="text-right pt-2">
-                  <a
-                    href="#"
+                  <button
+                    type="button"
+                    onClick={() => router.push("/forgot-password")}
                     className="text-orange-500 hover:text-orange-600 font-semibold hover:underline transition-colors text-lg"
                   >
                     Forgot password?
-                  </a>
+                  </button>
                 </div>
 
                 <Button
@@ -484,12 +523,13 @@ export default function LoginPage() {
                 </Button>
 
                 <div className="text-center pt-6">
-                  <a
-                    href="#"
+                  <button
+                    type="button"
+                    onClick={() => router.push("/register")}
                     className="text-gray-600 hover:text-orange-500 font-semibold hover:underline transition-colors text-lg"
                   >
                     Create New Account
-                  </a>
+                  </button>
                 </div>
               </form>
             </CardContent>
