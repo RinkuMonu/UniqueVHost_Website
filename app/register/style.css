@@ -1,0 +1,8 @@
+[role="combobox"]{
+    width: -webkit-fill-available;
+}
+.text-card-foreground{
+        height: 100vh;
+    border-radius: 0px;
+    box-shadow:  none !important;
+}

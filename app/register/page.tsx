@@ -1,12 +1,13 @@
 "use client"
 
 import type React from "react"
-// import  Layout  from "@/app/layout"
+import "./style.css"
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Eye,
   EyeOff,
@@ -22,6 +23,11 @@ import {
   Server,
   Cloud,
   Database,
+  Mail,
+  Phone,
+  Building,
+  MapPin,
+  UserCheck,
 } from "lucide-react"
 
 interface SlideData {
@@ -34,19 +40,36 @@ interface SlideData {
   accentColor: string
 }
 
-export default function LoginPage() {
+interface FormData {
+  name: string
+  email: string
+  password: string
+  phone: string
+  company_name: string
+  address: string
+  role: string
+}
+
+export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    company_name: "",
+    address: "",
+    role: "",
+  })
 
   const slides: SlideData[] = [
     {
       title: "Lightning Fast",
       subtitle: "Web Hosting",
       description:
-        "Experience blazing-fast performance with our premium SSD hosting.",
+          "Experience blazing-fast performance with our premium SSD hosting.",
       buttonText: "Start Hosting",
       bgGradient: "from-[#FD5D07] via-[#FF8C44] to-orange-600",
       accentColor: "from-yellow-400 to-orange-500",
@@ -55,7 +78,7 @@ export default function LoginPage() {
           {/* Animated Server Farm */}
           <div className="relative">
             {/* Main Server */}
-            <div className="w-56 h-40 bg-gradient-to-br from-white/25 to-white/10 rounded-2xl backdrop-blur-xl border border-white/30 relative overflow-hidden shadow-2xl">
+            <div className="w-56 h-40 bg-gradient-to-br from-white/25 to-white/10 rounded-2xl backdrop-blur-xl border border-white/30 relative overflow-hidden ">
               {/* Server Glow Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 animate-pulse"></div>
 
@@ -131,12 +154,12 @@ export default function LoginPage() {
                 />
                 <path
                   d="M180 100C170 100 160 90 160 80C160 70 170 60 180 60C185 50 195 45 205 45C215 45 225 50 230 60C240 60 250 70 250 80C250 90 240 100 230 100H180Z"
-                  fill="rgba(255,255,255,0.3)"
+                     fill="rgba(220, 220, 220, 1)"
                   className="animate-pulse delay-500"
                 />
                 <path
                   d="M20 120C10 120 5 110 5 100C5 90 10 80 20 80C25 70 35 65 45 65C55 65 65 70 70 80C80 80 90 90 90 100C90 110 80 120 70 120H20Z"
-                  fill="rgba(255,255,255,0.25)"
+                  fill="rgba(220, 220, 220, 1)"
                   className="animate-pulse delay-1000"
                 />
               </svg>
@@ -149,7 +172,7 @@ export default function LoginPage() {
 
             {/* Floating Cloud Icon */}
             <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-400 to-purple-500 p-4 rounded-full animate-float shadow-2xl">
-              <Cloud className="h-8 w-8 text-white" />
+              <Cloud className="h-8 w-8 text-grey" />
             </div>
 
             {/* Global Network Indicators */}
@@ -164,7 +187,7 @@ export default function LoginPage() {
       title: "Secure Domain",
       subtitle: "Management",
       description:
-        "Manage all your domains with enterprise-grade security. ",
+    "Manage all your domains with enterprise-grade security. ",
       buttonText: "Secure Now",
       bgGradient: "from-[#FD5D07] via-orange-500 to-red-600",
       accentColor: "from-green-400 to-emerald-500",
@@ -173,7 +196,7 @@ export default function LoginPage() {
           {/* Domain Security Hub */}
           <div className="relative">
             {/* Main Security Shield */}
-            <div className="w-48 h-48 bg-gradient-to-br from-white/25 to-white/10 rounded-3xl backdrop-blur-xl border border-white/30 relative overflow-hidden shadow-2xl">
+            <div className="w-48 h-48 bg-gradient-to-br from-white/25 to-white/10 rounded-3xl backdrop-blur-xl border border-white/30 relative overflow-hidden ">
               {/* Security Glow */}
               <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-500/20 animate-pulse"></div>
 
@@ -227,7 +250,15 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Login attempt:", { username, password })
+    console.log("Registration attempt:", formData)
+    // Here you would typically send the data to your backend
+  }
+
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
   }
 
   const changeSlide = (index: number) => {
@@ -250,14 +281,14 @@ export default function LoginPage() {
 
   return (
     <div
-      className={`min-h-screen flex  transition-all duration-1000`}
+      className={`min-h-screen flex transition-all duration-1000`}
     >
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Particles */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/5 rounded-full  animate-float"></div>
-        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-white/10 rounded-full  animate-float delay-1000"></div>
-        <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-white/15 rounded-full  animate-float delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/5 rounded-full blur-xl animate-float"></div>
+        <div className="absolute top-3/4 right-1/4 w-24 h-24 bg-white/10 rounded-full blur-lg animate-float delay-1000"></div>
+        <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-white/15 rounded-full blur-md animate-float delay-500"></div>
 
         {/* Dynamic Grid */}
         <div className="absolute inset-0 opacity-10">
@@ -272,7 +303,7 @@ export default function LoginPage() {
       </div>
 
       {/* Left Side - Enhanced Dynamic Content Slider */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-3/7 relative overflow-hidden">
         {/* Enhanced Curved Lines */}
         <div className="absolute top-0 left-0 w-full h-40">
           <svg viewBox="0 0 400 160" className="w-full h-full opacity-30">
@@ -301,31 +332,31 @@ export default function LoginPage() {
         </div>
 
         {/* Enhanced Slide Content */}
-        <div className="relative z-10 p-8 pt-3 flex flex-col justify-center h-full">
+        <div className="relative z-10 px-6 flex flex-col justify-center  h-full">
           <div
             className={`mb-16 transition-all duration-500 ${isTransitioning ? "opacity-0 transform translate-y-8" : "opacity-100 transform translate-y-0"}`}
           >
-            <div className="mb-4">
+            <div className="mb-8">
               <div
                 className={`inline-flex items-center gap-3 bg-gradient-to-r ${slides[currentSlide].accentColor} px-4 py-2 rounded-full mb-6 shadow-lg`}
               >
                 <Sparkles className="h-5 w-5  animate-spin-slow" />
-                <span className="= font-semibold text-sm uppercase tracking-wider">Premium</span>
+                <span className=" font-semibold text-sm uppercase tracking-wider">Premium</span>
               </div>
-              <h1 className="text-6xl font-bold leading-tight mb-4 ">
+              <h1 className="text-6xl font-bold leading-tight mb-4">
                 {slides[currentSlide].title}
               </h1>
-              <h2 className="text-4xl font-semiboldmb-8">{slides[currentSlide].subtitle}</h2>
+              <h2 className="text-4xl font-semibold  mb-8">{slides[currentSlide].subtitle}</h2>
             </div>
 
-            <p className="text-xl leading-relaxed max-w-lg mb-10 font-light">
+            <p className="text-xl  leading-relaxed max-w-lg mb-10 font-light">
               {slides[currentSlide].description}
             </p>
 
             <Button
-              className={`bg-gradient-to-r ${slides[currentSlide].accentColor} hover:shadow-2xl hover:scale-105 transition-all duration-300  font-semibold px-8 py-4 text-lg group relative overflow-hidden`}
+              className={`bg-gradient-to-r ${slides[currentSlide].accentColor} hover:shadow-2xl hover:scale-105 transition-all duration-300 font-semibold px-8 py-4 text-lg group relative overflow-hidden`}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              <div className="absolute inset-0  translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
               {slides[currentSlide].buttonText}
               <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -373,19 +404,19 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Side - Enhanced Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative">
+      {/* Right Side - Enhanced Registration Form */}
+      <div className="w-full lg:w-4/7 flex items-center justify-center relative">
         {/* Form Background Glow */}
         <div className="absolute inset-0 bg-gradient-to-l from-white/5 to-transparent"></div>
 
-        <div className="w-full max-w-lg relative z-10">
+        <div className="w-full  relative z-10 h-screen">
           {/* Enhanced Mobile Slider */}
           <div className="lg:hidden mb-10">
-            <div className="bg-white/10 backdrop-blur-xl p-8 rounded-3xl mb-8 border border-white/20  text-center shadow-2xl">
+            <div className="bg-white/10 backdrop-blur-xl p-8 rounded-3xl mb-8 border border-white/20 text-white text-center shadow-2xl">
               <div className={`transition-all duration-500 ${isTransitioning ? "opacity-0" : "opacity-100"}`}>
                 <h2 className="text-2xl font-bold mb-4">{slides[currentSlide].title}</h2>
                 <h3 className="text-xl font-semibold mb-4">{slides[currentSlide].subtitle}</h3>
-                <p className=" text-sm mb-6 leading-relaxed">{slides[currentSlide].description}</p>
+                <p className="text-white/90 text-sm mb-6 leading-relaxed">{slides[currentSlide].description}</p>
               </div>
               <div className="flex justify-center gap-3">
                 {slides.map((_, index) => (
@@ -401,7 +432,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Enhanced Login Card */}
+          {/* Enhanced Registration Card */}
           <Card className=" border-0 bg-white/95 backdrop-blur-xl overflow-hidden relative">
             {/* Gradient Border Effect */}
             <div
@@ -411,48 +442,71 @@ export default function LoginPage() {
               className={`h-1 bg-gradient-to-r ${slides[currentSlide].accentColor} transition-all duration-1000`}
             ></div>
 
-            <CardContent className="p-12 pb-6 relative">
+            <CardContent className="px-10 relative">
               {/* Enhanced Greeting */}
-              <div className="mb-10 text-left">
+              <div className="mb-6 ">
+                
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
-                  Welcome Back!
+                  Join Us!
                 </h2>
-                <p className="text-xl text-gray-600 font-medium">Login your account</p>
+                <p className="text-xl text-gray-600 font-medium">Create your hosting account</p>
               </div>
 
-              {/* Enhanced Form */}
-              <form onSubmit={handleSubmit} className="space-y-2">
+              {/* Enhanced Registration Form */}
+              <form onSubmit={handleSubmit} className="space-y-6">
+           <div className="grid grid-cols-2 gap-4">
+                 {/* Name Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-gray-700 font-semibold text-lg">
-                    Username
+                  <Label htmlFor="name" className="text-gray-700 font-semibold text-lg">
+                    Full Name
                   </Label>
                   <div className="relative group">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                     <Input
-                      id="username"
+                      id="name"
                       type="text"
-                      placeholder="Enter your username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      className="pl-14 h-16 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                      placeholder="Enter your full name"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                {/* Email Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-gray-700 font-semibold text-lg">
+                    Email Address
+                  </Label>
+                  <div className="relative group">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Password Field */}
+                <div className="space-y-2">
                   <Label htmlFor="password" className="text-gray-700 font-semibold text-lg">
                     Password
                   </Label>
                   <div className="relative group">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="pl-14 pr-16 h-16 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                      placeholder="Create a strong password"
+                      value={formData.password}
+                      onChange={(e) => handleInputChange("password", e.target.value)}
+                      className="pl-12 pr-14 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                       required
                     />
                     <button
@@ -460,35 +514,104 @@ export default function LoginPage() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors p-2"
                     >
-                      {showPassword ? <EyeOff className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
                 </div>
 
-                <div className="text-right pt-2">
-                  <a
-                    href="#"
-                    className="text-orange-500 hover:text-orange-600 font-semibold hover:underline transition-colors text-lg"
-                  >
-                    Forgot password?
-                  </a>
+                {/* Phone Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-gray-700 font-semibold text-lg">
+                    Phone Number
+                  </Label>
+                  <div className="relative group">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="Enter your phone number"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                      required
+                    />
+                  </div>
                 </div>
+
+                {/* Company Name Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="company_name" className="text-gray-700 font-semibold text-lg">
+                    Company Name
+                  </Label>
+                  <div className="relative group">
+                    <Building className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    <Input
+                      id="company_name"
+                      type="text"
+                      placeholder="Enter your company name"
+                      value={formData.company_name}
+                      onChange={(e) => handleInputChange("company_name", e.target.value)}
+                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Address Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="address" className="text-gray-700 font-semibold text-lg">
+                    Address
+                  </Label>
+                  <div className="relative group">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    <Input
+                      id="address"
+                      type="text"
+                      placeholder="Enter your address"
+                      value={formData.address}
+                      onChange={(e) => handleInputChange("address", e.target.value)}
+                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                      required
+                    />
+                  </div>
+                </div>
+                     {/* Role Field */}
+           
+           </div>
+                <div className="space-y-2">
+                  <Label htmlFor="role" className="text-gray-700 font-semibold text-lg ">
+                    Role
+                  </Label>
+                  <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
+                    <SelectTrigger className="h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl">
+                      <SelectValue placeholder="Select your role " className="w-full" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="customer">Customer</SelectItem>
+                      <SelectItem value="reseller">Reseller</SelectItem>
+                      <SelectItem value="partner">Partner</SelectItem>
+                      <SelectItem value="enterprise">Enterprise</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+           
 
                 <Button
                   type="submit"
-                  className={`w-full h-10 text-[14px] bg-gradient-to-r ${slides[currentSlide].bgGradient} hover:shadow-2xl hover:scale-105 text-white font-bold text-xl transition-all duration-300 group relative overflow-hidden rounded-md`}
+                  className={`w-full h-10 text-[14px]  bg-gradient-to-r ${slides[currentSlide].bgGradient} hover:shadow-2xl hover:scale-105 text-white font-bold text-xl transition-all duration-300 group relative overflow-hidden rounded-xl mt-3`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                  Login to Dashboard
+                  Create Account
                   <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                 </Button>
 
-                <div className="text-center pt-6">
+                <div className="text-center">
                   <a
                     href="#"
                     className="text-gray-600 hover:text-orange-500 font-semibold hover:underline transition-colors text-lg"
                   >
-                    Create New Account
+                    Already have an account? Sign In
                   </a>
                 </div>
               </form>
