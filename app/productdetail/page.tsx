@@ -462,7 +462,7 @@ export default function ProductDetailV3Page() {
               ${finalTotalPrice.toFixed(2)}
               <span className="text-2xl font-medium text-white/90">/{isYearlyBilling ? "yr" : "mo"}</span>
             </span>
-            <Link href="/checkout"  className="bg-white text-[#FD5D07] hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105">
+            <Link href="/checkout"  className="bg-gray-100/20  hover:bg-gray-100/40 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105">
               Proceed to Checkout
             </Link>
           </div>
