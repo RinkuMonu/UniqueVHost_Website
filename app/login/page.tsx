@@ -464,7 +464,7 @@ export default function LoginPage() {
               <form onSubmit={handleSubmit} className="space-y-2">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-gray-700 font-semibold text-lg">
-                    Username
+                    Email
                   </Label>
                   <div className="relative group">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
@@ -508,10 +508,10 @@ export default function LoginPage() {
                 <div className="text-right pt-2">
                   <button
                     type="button"
-                    onClick={() => router.push("/forgot-password")}
+                    onClick={() => setShowModal(true)}
                     className="text-orange-500 hover:text-orange-600 font-semibold hover:underline transition-colors text-lg"
                   >
-                    Forgot password?
+                  Forgot password?
                   </button>
                 </div>
       
