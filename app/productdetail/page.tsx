@@ -1,15 +1,26 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
-import { HardDriveIcon, CpuIcon, GlobeIcon, ShieldIcon, ServerIcon, CloudIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
+import {
+  HardDriveIcon,
+  CpuIcon,
+  GlobeIcon,
+  ShieldIcon,
+  ServerIcon,
+  CloudIcon,
+  StarIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
+import axios from "axios"
+import axiosInstance from "../AxiosInstance/axiosInstance"
 
 type Plan = {
   id: string
@@ -38,122 +49,54 @@ type Testimonial = {
   avatar: string
 }
 
-const plans: Plan[] = [
-  {
-    id: "starter",
-    name: "Starter",
-    tagline: "Perfect for personal websites & small projects.",
-    monthlyPrice: 14.99,
-    yearlyPrice: 149.99, // ~17% discount
-    features: [
-      { icon: HardDriveIcon, text: "50 GB SSD Storage" },
-      { icon: CpuIcon, text: "2 vCPU Cores" },
-      { icon: GlobeIcon, text: "1 Website" },
-      { icon: ServerIcon, text: "Basic Support" },
-    ],
-  },
-  {
-    id: "growth",
-    name: "Growth",
-    tagline: "Scale your business with powerful resources.",
-    monthlyPrice: 39.99,
-    yearlyPrice: 399.99, // ~17% discount
-    features: [
-      { icon: HardDriveIcon, text: "200 GB NVMe SSD" },
-      { icon: CpuIcon, text: "8 vCPU Cores" },
-      { icon: GlobeIcon, text: "Unlimited Websites" },
-      { icon: ServerIcon, text: "Priority Support" },
-    ],
-    popular: true
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    tagline: "Dedicated power for mission-critical applications.",
-    monthlyPrice: 99.99,
-    yearlyPrice: 999.99, // ~17% discount
-    features: [
-      { icon: HardDriveIcon, text: "1 TB NVMe SSD" },
-      { icon: CpuIcon, text: "16 vCPU Cores" },
-      { icon: GlobeIcon, text: "Unlimited Websites" },
-      { icon: ServerIcon, text: "Dedicated Account Manager" },
-    ],
-  },
-]
-
-const addons: Addon[] = [
-  {
-    id: "ssl",
-    name: "SSL Certificate",
-    description: "Secure your website with HTTPS encryption.",
-    price: 5.0,
-    icon: ShieldIcon,
-  },
-  {
-    id: "backups",
-    name: "Daily Backups",
-    description: "Automated daily backups for data recovery.",
-    price: 10.0,
-    icon: CloudIcon,
-  },
-  {
-    id: "dedicatedIp",
-    name: "Dedicated IP",
-    description: "A unique IP address for enhanced SEO and security.",
-    price: 15.0,
-    icon: GlobeIcon,
-  },
-  {
-    id: "monitoring",
-    name: "Advanced Monitoring",
-    description: "24/7 proactive server health monitoring.",
-    price: 20.0,
-    icon: ServerIcon,
-  },
-]
-
 const testimonials: Testimonial[] = [
   {
     id: "1",
     name: "Sarah Johnson",
     role: "Founder, Bloom & Grow",
-    content: "Switching to this hosting service was the best decision for our e-commerce site. The performance improvement was noticeable immediately, and their support team is fantastic.",
+    content:
+      "Switching to this hosting service was the best decision for our e-commerce site. The performance improvement was noticeable immediately, and their support team is fantastic.",
     rating: 5,
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
   },
   {
     id: "2",
     name: "Michael Chen",
     role: "CTO, TechStart Inc.",
-    content: "The enterprise plan with add-ons gives us everything we need to run our SaaS platform reliably. Uptime has been 99.99% since we migrated.",
+    content:
+      "The enterprise plan with add-ons gives us everything we need to run our SaaS platform reliably. Uptime has been 99.99% since we migrated.",
     rating: 5,
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg"
+    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
   },
   {
     id: "3",
     name: "Emma Rodriguez",
     role: "Blogger, TravelWithEmma",
-    content: "As a blogger, I need my site to be fast and always available. The starter plan is perfect for my needs and the price is very reasonable.",
+    content:
+      "As a blogger, I need my site to be fast and always available. The starter plan is perfect for my needs and the price is very reasonable.",
     rating: 4,
-    avatar: "https://randomuser.me/api/portraits/women/63.jpg"
+    avatar: "https://randomuser.me/api/portraits/women/63.jpg",
   },
   {
     id: "4",
     name: "David Wilson",
     role: "Freelance Developer",
-    content: "I host all my clients' sites here. The flexibility to choose add-ons per project makes it cost-effective while still providing premium features.",
+    content:
+      "I host all my clients' sites here. The flexibility to choose add-ons per project makes it cost-effective while still providing premium features.",
     rating: 5,
-    avatar: "https://randomuser.me/api/portraits/men/75.jpg"
-  }
+    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+  },
 ]
 
 export default function ProductDetailV3Page() {
-  const [selectedPlanId, setSelectedPlanId] = useState<string>("growth")
+  const [selectedPlanId, setSelectedPlanId] = useState<string>("")
   const [isYearlyBilling, setIsYearlyBilling] = useState<boolean>(false)
   const [selectedAddons, setSelectedAddons] = useState<Set<string>>(new Set())
   const [currentTestimonial, setCurrentTestimonial] = useState<number>(0)
+  const [plans, setPlans] = useState<Plan[]>([])
+  const [addons, setAddons] = useState<Addon[]>([])
 
-  const selectedPlan = useMemo(() => plans.find((p) => p.id === selectedPlanId), [selectedPlanId])
+  const selectedPlan = useMemo(() => plans.find((p) => p.id === selectedPlanId), [selectedPlanId, plans])
 
   const currentBasePrice = useMemo(() => {
     if (!selectedPlan) return 0
@@ -169,11 +112,57 @@ export default function ProductDetailV3Page() {
       }
     })
     return total
-  }, [selectedAddons])
+  }, [selectedAddons, addons])
 
   const finalTotalPrice = useMemo(() => currentBasePrice + currentAddonsTotal, [currentBasePrice, currentAddonsTotal])
 
-  const handleAddonToggle = (addonId: string, checked: boolean) => {
+  useEffect(() => {
+    const fetchPlansAndAddons = async () => {
+      try {
+        const plansRes = await axiosInstance.get("/plans")
+        const rawPlans = plansRes.data.plans || plansRes.data
+
+        const transformedPlans = rawPlans.map((plan: any) => ({
+          id: plan._id,
+          name: plan.name,
+          tagline: plan.slug.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()),
+          monthlyPrice: plan.price,
+          yearlyPrice: Math.round(plan.price * 12 * 0.83),
+          features: plan.features.map((text: string) => ({
+            icon: CpuIcon,
+            text,
+          })),
+          popular: false,
+        }))
+        setPlans(transformedPlans)
+
+        const addonsRes = await axiosInstance.get("/addons/all")
+        const rawAddons = addonsRes.data.addons || addonsRes.data
+
+        // Transform addons
+        const transformedAddons = rawAddons.map((addon: any) => ({
+          id: addon._id,
+          name: addon.name,
+          description: addon.description || "Enhance your hosting with extra features.",
+          price: addon.price,
+          icon: ServerIcon, // default icon or use logic
+        }))
+        setAddons(transformedAddons)
+      } catch (error) {
+        console.error("Error fetching plans or addons:", error)
+      }
+    }
+
+    fetchPlansAndAddons()
+  }, [])
+
+  useEffect(() => {
+    if (plans.length > 0 && !selectedPlanId) {
+      setSelectedPlanId(plans[0].id)
+    }
+  }, [plans])
+
+  const handleAddonToggle = async (addonId: string, checked: boolean) => {
     setSelectedAddons((prev) => {
       const newSet = new Set(prev)
       if (checked) {
@@ -183,7 +172,34 @@ export default function ProductDetailV3Page() {
       }
       return newSet
     })
+
+    if (checked) {
+      const addon = addons.find((a) => a.id === addonId)
+      if (!addon) return
+
+      try {
+        await axios.post(
+          "http://localhost:5000/api/addons/add",
+          {
+            order_id: 'orderId', // dynamic ID if needed
+            name: addon.name,
+            description: addon.description || "Addon service",
+            price: addon.price,
+            quantity: 1,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+      } catch (error) {
+        console.error("Failed to add addon to backend:", error)
+      }
+    }
   }
+
 
   const nextTestimonial = () => {
     setCurrentTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
@@ -195,10 +211,11 @@ export default function ProductDetailV3Page() {
 
   if (!selectedPlan) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFF5EF] to-[#FFE8D9] text-[#001233]">Loading plans...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFF5EF] to-[#FFE8D9] text-[#001233]">
+        Loading plans...
+      </div>
     )
   }
-
   return (
 
     <div className="min-h-screen bg-gradient-to-br  text-[#4C5671]">
@@ -290,115 +307,115 @@ export default function ProductDetailV3Page() {
 
         {/* Plan Selection Grid */}
         <div className="mx-auto  px-4 py-12 bg-[#FFF8F4]">
-         <div className="max-w-5xl mx-auto ">
-           {/* Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-bold text-gray-900 mb-2">Simple, Transparent Pricing</h2>
-            <p className="text-lg text-gray-600">Choose the perfect plan for your needs</p>
-          </div>
-
-          {/* Billing toggle */}
-          <div className="flex justify-center mb-12 ">
-            <div className="flex items-center bg-gray-100 rounded-full p-1">
-              <button
-                onClick={() => setIsYearlyBilling(false)}
-                className={`px-6 py-2 rounded-full ${!isYearlyBilling ? 'bg-white shadow' : ''}`}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setIsYearlyBilling(true)}
-                className={`px-6 py-2 rounded-full ${isYearlyBilling ? 'bg-white shadow' : ''}`}
-              >
-                Yearly <span className="text-orange-500 ml-1">(Save 17%)</span>
-              </button>
+          <div className="max-w-5xl mx-auto ">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-5xl font-bold text-gray-900 mb-2">Simple, Transparent Pricing</h2>
+              <p className="text-lg text-gray-600">Choose the perfect plan for your needs</p>
             </div>
-          </div>
 
-          {/* Pricing cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {plans.map((plan) => (
-              <div
-                key={plan.id}
-                className={cn(
-                  "border rounded-xl p-6 transition-all",
-                  selectedPlanId === plan.id ? "border-orange-500 ring-2 ring-orange-500/20" : "border-gray-200",
-                  plan.popular ? "relative" : ""
-                )}
-                onClick={() => setSelectedPlanId(plan.id)}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    POPULAR
-                  </div>
-                )}
-
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-                  <p className="text-gray-500">{plan.tagline}</p>
-                </div>
-
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-orange-500">
-                    ${isYearlyBilling ? plan.yearlyPrice : plan.monthlyPrice}
-                  </span>
-                  <span className="text-gray-500">/{isYearlyBilling ? "yr" : "mo"}</span>
-                </div>
-
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, index) => {
-                    const Icon = feature.icon;
-                    return (
-                      <li key={index} className="flex items-start gap-3">
-                        <Icon className="h-5 w-5 text-orange-500 mt-0.5" />
-                        <span className="text-gray-700">{feature.text}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-
+            {/* Billing toggle */}
+            <div className="flex justify-center mb-12 ">
+              <div className="flex items-center bg-gray-100 rounded-full p-1">
                 <button
-                  className={cn(
-                    "w-full py-3 rounded-lg font-medium transition-colors",
-                    selectedPlanId === plan.id
-                      ? "bg-orange-500 text-white hover:bg-orange-600"
-                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                  )}
+                  onClick={() => setIsYearlyBilling(false)}
+                  className={`px-6 py-2 rounded-full ${!isYearlyBilling ? 'bg-white shadow' : ''}`}
                 >
-                  {selectedPlanId === plan.id ? "Current Plan" : "Select Plan"}
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setIsYearlyBilling(true)}
+                  className={`px-6 py-2 rounded-full ${isYearlyBilling ? 'bg-white shadow' : ''}`}
+                >
+                  Yearly <span className="text-orange-500 ml-1">(Save 17%)</span>
                 </button>
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Included features */}
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center bg-orange-100 text-orange-800 px-4 py-2 rounded-full mb-4">
-              <ShieldIcon className="h-5 w-5 mr-2" />
-              <span>All plans include</span>
+            {/* Pricing cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {plans.map((plan, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "border rounded-xl p-6 transition-all",
+                    selectedPlanId === plan.id ? "border-orange-500 ring-2 ring-orange-500/20" : "border-gray-200",
+                    plan.popular ? "relative" : ""
+                  )}
+                  onClick={() => setSelectedPlanId(plan.id)}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      POPULAR
+                    </div>
+                  )}
+
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
+                    <p className="text-gray-500">{plan.tagline}</p>
+                  </div>
+
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold text-orange-500">
+                      ${isYearlyBilling ? plan.yearlyPrice : plan.monthlyPrice}
+                    </span>
+                    <span className="text-gray-500">/{isYearlyBilling ? "yr" : "mo"}</span>
+                  </div>
+
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, index) => {
+                      const Icon = feature.icon;
+                      return (
+                        <li key={index} className="flex items-start gap-3">
+                          <Icon className="h-5 w-5 text-orange-500 mt-0.5" />
+                          <span className="text-gray-700">{feature.text}</span>
+                        </li>
+                      )
+                    })}
+                  </ul>
+
+                  <button
+                    className={cn(
+                      "w-full py-3 rounded-lg font-medium transition-colors",
+                      selectedPlanId === plan.id
+                        ? "bg-orange-500 text-white hover:bg-orange-600"
+                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                    )}
+                  >
+                    {selectedPlanId === plan.id ? "Current Plan" : "Select Plan"}
+                  </button>
+                </div>
+              ))}
             </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              <div className="flex items-center">
-                <svg className="h-5 w-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>99.9% Uptime</span>
+
+            {/* Included features */}
+            <div className="mt-12 text-center">
+              <div className="inline-flex items-center bg-orange-100 text-orange-800 px-4 py-2 rounded-full mb-4">
+                <ShieldIcon className="h-5 w-5 mr-2" />
+                <span>All plans include</span>
               </div>
-              <div className="flex items-center">
-                <svg className="h-5 w-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>Free SSL</span>
-              </div>
-              <div className="flex items-center">
-                <svg className="h-5 w-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span>24/7 Support</span>
+              <div className="flex flex-wrap justify-center gap-4">
+                <div className="flex items-center">
+                  <svg className="h-5 w-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>99.9% Uptime</span>
+                </div>
+                <div className="flex items-center">
+                  <svg className="h-5 w-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Free SSL</span>
+                </div>
+                <div className="flex items-center">
+                  <svg className="h-5 w-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>24/7 Support</span>
+                </div>
               </div>
             </div>
           </div>
-         </div>
         </div>
 
         {/* Add-ons Section */}
@@ -462,7 +479,7 @@ export default function ProductDetailV3Page() {
               ${finalTotalPrice.toFixed(2)}
               <span className="text-2xl font-medium text-white/90">/{isYearlyBilling ? "yr" : "mo"}</span>
             </span>
-            <Link href="/checkout"  className="bg-white text-[#FD5D07] hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105">
+            <Link href="/checkout" className="bg-white text-[#FD5D07] hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105">
               Proceed to Checkout
             </Link>
           </div>
