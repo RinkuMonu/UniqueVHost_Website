@@ -56,7 +56,6 @@ export default function LoginPage() {
         email: username,
         password: password,
       });
-
       Swal.fire({
         icon: "success",
         title: "Login Successful",
