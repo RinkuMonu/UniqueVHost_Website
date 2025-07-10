@@ -59,6 +59,7 @@ export default function LoginPage() {
       Swal.fire({
         icon: "success",
         title: "Login Successful",
+        
         text: "Welcome back!",
         confirmButtonColor: "#FD5D07",
         timer: 2000,
