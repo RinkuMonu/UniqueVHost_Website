@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Mail, Tag, MessageSquare, User, ChevronDown } from "lucide-react"
+import { Mail, Tag, MessageSquare, User, ChevronDown, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import '@/app/styles/style.css'
 import '@/app/styles/header.css'
-
+import { useRouter } from "next/navigation"
+import Swal from "sweetalert2";
 const navLinks = [
   {
     name: "Home",
@@ -76,12 +77,37 @@ const navLinks = [
       { title: "Contact", href: "/contactus" },
     ],
   },
- 
+
 ]
 
 
 const HeaderTop = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    setIsLoggedIn(!!token)
+  }, [])
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+
+    Swal.fire({
+      icon: "success",
+      title: "Logged Out",
+      text: "You have been logged out successfully.",
+      confirmButtonColor: "#FD5D07",
+      timer: 2000,
+      timerProgressBar: true,
+    }).then(() => {
+      router.push("/");
+    });
+  };
 
   return (
     <div className="bg-elite-top-bg text-white py-2 text-sm hidden md:block backdrop-blur-2xl" style={{ background: "#fd5d07" }}>
@@ -103,22 +129,45 @@ const HeaderTop = () => {
               <MessageSquare className="w-4 h-4 mr-1" />
               <span>Live Chat</span>
             </a>
-            <div className="relative group menu-item elitehost-has-dropdown">
-              <button onClick={() => setIsLoginOpen(!isLoginOpen)} className="flex items-center hover:text-white transition-colors focus:outline-none">
-                <User className="w-4 h-4 mr-1" />
-                <span>Login</span>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="flex items-center hover:text-white transition-colors"
+              >
+                <LogOut className="w-4 h-4 mr-1" />
+                <span>Logout</span>
               </button>
-              {isLoginOpen && (
-                <div className="elitehost-submenu absolute right-0 mt-2 w-64 bg-white text-elite-secondary p-4 rounded-md shadow-md-custom z-50">
-                  <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
-                    <Input type="email" placeholder="Your email" required className="w-full" />
-                    <Input type="password" placeholder="Password" required className="w-full" />
-                    <Button type="submit" className="w-full bg-black hover:bg-blue-700 text-white">Log In</Button>
-                    <a href="#" className="text-black hover:underline block text-center">Forgot your password?</a>
-                  </form>
-                </div>
-              )}
-            </div>
+            ) : (
+              <div className="relative group menu-item elitehost-has-dropdown">
+                <button
+                  onClick={() => router.push("/login")}
+                  className="flex items-center hover:text-white transition-colors focus:outline-none"
+                >
+                  <User className="w-4 h-4 mr-1" />
+                  <span>Login</span>
+                </button>
+                {isLoginOpen && (
+                  <div className="elitehost-submenu absolute right-0 mt-2 w-64 bg-white text-elite-secondary p-4 rounded-md shadow-md-custom z-50">
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault()
+                        router.push("/login")
+                      }}
+                      className="space-y-3"
+                    >
+                      <Input type="email" placeholder="Your email" required className="w-full" />
+                      <Input type="password" placeholder="Password" required className="w-full" />
+                      <Button type="submit" className="w-full bg-black hover:bg-blue-700 text-white">
+                        Log In
+                      </Button>
+                      <a href="#" className="text-black hover:underline block text-center">
+                        Forgot your password?
+                      </a>
+                    </form>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -183,7 +232,7 @@ const HeaderMain = ({ isSticky }) => {
               </li>
             ))}
           </ul>
-          
+
         </nav>
       </div>
     </div>

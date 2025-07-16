@@ -73,7 +73,7 @@ function Page() {
       </section>
 
       {/* Plans Section */}
-      <Plans />
+        <Plans sharedHosting={"wordpressHosting"} />
 
       {/* Why EliteHost Section */}
       <section className="py-20 bg-white">

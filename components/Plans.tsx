@@ -1,147 +1,224 @@
-"use client";
+"use client"
+import { useRef } from "react";
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
+import { X } from "lucide-react"
+import axiosInstance from "@/app/AxiosInstance/axiosInstance"
+import AdditionalServices from "@/components/AdditionalServices";
+import Swal from "sweetalert2";
 
-import Image from "next/image";
-import React, { useState } from "react";
+export default function Plans({ sharedHosting }: { sharedHosting: string }) {
+  const { slug } = useParams()
+  const [activeTab, setActiveTab] = useState("monthly")
+  const [plans, setPlans] = useState<any[]>([])
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null)
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
-export default function Plans() {
-  const [activeTab, setActiveTab] = useState("monthly");
-  const [openFeature, setOpenFeature] = useState("plan-features"); // default open
+  // Update both state and ref from child
+  const handleSelectedServices = (services: string[]) => {
+    console.log("Selected services:", services);
+    setSelectedServices(services); // ✅ only update state
+  };
 
-  const pricingPlans = [
-    {
-      id: "monthly",
-      label: "Monthly",
-      plans: [
-        { type: "Basic Plan", price: "$7.20", sub: "/ mo", renews: "Renews at $5.32/month" },
-        { type: "Business Plan", price: "$7.20", sub: "/ mo", renews: "Renews at $5.32/month" },
-        { type: "Pro Plan", price: "$7.20", sub: "/ mo", renews: "Renews at $5.32/month" }
-      ]
-    },
-    {
-      id: "yearly",
-      label: "Yearly",
-      plans: [
-        { type: "Basic Plan", price: "$17.20", sub: "/ yr", renews: "Renews at $15.32/yearly" },
-        { type: "Business Plan", price: "$17.20", sub: "/ yr", renews: "Renews at $15.32/yearly" },
-        { type: "Pro Plan", price: "$17.20", sub: "/ yr", renews: "Renews at $15.32/yearly" }
-      ]
-    },
-    {
-      id: "3year",
-      label: "3 Year",
-      plans: [
-        { type: "Basic Plan", price: "$37.20", sub: "/ 3yr", renews: "Renews at $35.32/3yr" },
-        { type: "Business Plan", price: "$37.20", sub: "/ 3yr", renews: "Renews at $35.32/3yr" },
-        { type: "Pro Plan", price: "$37.20", sub: "/ 3yr", renews: "Renews at $35.32/3yr" }
-      ]
+
+  useEffect(() => {
+    async function fetchPlans() {
+      try {
+        const res = await axiosInstance.get(`/plans/slug/${sharedHosting}`)
+        setPlans(res.data || [])
+      } catch (err) {
+        console.error("Error fetching plans:", err)
+      }
     }
-  ];
+    fetchPlans()
+  }, [sharedHosting])
 
-  const features = [
-    {
-      id: "plan-features",
-      title: "Plan Features",
-      rows: [
-        { name: "Disk Space", basic: "20 GB SSD", business: "20 GB SSD", pro: "50 GB SSD" },
-        { name: "File (Inode) Limit", basic: "300,000", business: "300,000", pro: "600,000" },
-        { name: "Bandwidth", basic: "Unmetered", business: "Unmetered", pro: "Unmetered" },
-        { name: "Hosted Domains", basic: "4", business: "Unlimited", pro: "Unlimited" },
-        { name: "Parked Domains", basic: "Unlimited", business: "Unlimited", pro: "Unlimited" },
-        { name: "Subdomains", basic: "32", business: "Unlimited", pro: "Unlimited" },
-        { name: "Backups", basic: "Twice a Week", business: "Twice a Week + Autobackup", pro: "Twice a Week + Autobackup" }
-      ]
-    },
-    {
-      id: "email-features",
-      title: "Email Features",
-      rows: [
-        { name: "Email Accounts", basic: "100", business: "Unlimited", pro: "Unlimited" },
-        { name: "Email Storage", basic: "1 GB", business: "5 GB", pro: "10 GB" },
-        { name: "Email Forwarders", basic: "Unlimited", business: "Unlimited", pro: "Unlimited" },
-        { name: "Auto-Responders", basic: "Yes", business: "Yes", pro: "Yes" },
-        { name: "Mailing Lists", basic: "No", business: "Yes", pro: "Yes" },
-        { name: "Spam Protection", basic: "Basic", business: "Advanced", pro: "Advanced" }
-      ]
+  const planDurations = ["monthly", "yearly", "3year"]
+  const durationLabels: Record<string, string> = {
+    monthly: "Monthly",
+    yearly: "Yearly",
+    "3year": "3 Year",
+  }
+
+  const getDurationMultiplier = (duration: string) => (duration === "monthly" ? 1 : duration === "yearly" ? 12 : 36)
+
+  const filteredPlans = plans.filter((p) => p.duration === "monthly") // we'll calculate manually
+
+  const getTierKey = (planName: string) => {
+    const n = planName.toLowerCase()
+    if (n.includes("basic")) return "basic"
+    if (n.includes("business") || n.includes("standard")) return "standard"
+    if (n.includes("pro") || n.includes("premium")) return "premium"
+    return "basic"
+  }
+
+  const priceDisplay = (price: number) => `₹${price.toFixed(2)}`
+
+  const renewLine = (price: number, dur: string) =>
+    `Renews at ${priceDisplay(price)}/${dur === "monthly" ? "mo" : dur === "yearly" ? "yr" : "3yr"}`
+
+  const selectedPlan = filteredPlans.find((plan) => plan._id === selectedPlanId)
+
+  const handlePlanClick = (planId: string) => {
+    setSelectedPlanId(selectedPlanId === planId ? null : planId)
+  }
+  const handleBuyNow = async (planId: string) => {
+    const selectedPlan = plans.find((p) => p._id === planId);
+    if (!selectedPlan) return;
+
+    // Dummy user ID — replace with actual logged-in user id if needed
+    const userId = "6863b0eebfc5b2a8147e563a";
+
+    // Generate current & end dates (e.g., 1 month later)
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + 1);
+
+    try {
+      const res = await axiosInstance.post("/orders/order/createorder", {
+        user_id: userId,
+        plan_id: selectedPlan._id,
+        start_date: startDate.toISOString(),
+        end_date: endDate.toISOString(),
+        server_info: {
+          ip: "192.168.1.100",
+          panel: "cPanel",
+          username: "demo_user"
+        },
+        additional_services: selectedServices
+      });
+
+      // Success alert
+      Swal.fire({
+        icon: "success",
+        title: "Order placed successfully!",
+        text: "Thank you for purchasing.",
+        confirmButtonColor: "#FD5D07",
+      });
+    } catch (error) {
+      console.error("Order failed:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Failed to place order",
+        text: "Please try again later.",
+        confirmButtonColor: "#FD5D07",
+      });
     }
-  ];
-
-  const activePlan = pricingPlans.find((plan) => plan.id === activeTab);
+  };
 
   return (
     <section className="py-20 bg-[#FFF8F4]">
-      <div className="container mx-auto px-4">
-        <h1 className="text-center text-4xl font-extrabold text-[#001233] mb-12">
-          Choose Your Plan
-        </h1>
+      <div className=" mx-auto">
+        <h1 className="text-center text-4xl font-extrabold text-[#001233] mb-12">Choose Your Plan</h1>
 
         {/* Tabs */}
         <div className="flex justify-center gap-4 mb-12">
-          {pricingPlans.map((plan) => (
+          {planDurations.map((duration) => (
             <button
-              key={plan.id}
-              className={`px-5 py-2 rounded-full font-semibold transition-all ${
-                activeTab === plan.id
-                  ? "bg-[#FD5D07] text-white shadow-lg"
+              key={duration}
+              onClick={() => {
+                setActiveTab(duration)
+                setSelectedPlanId(null)
+              }}
+              className={`px-6 py-2 rounded-full font-semibold transition-all
+                 ${activeTab === duration
+                  ? "bg-[#FD5D07] text-white shadow-md"
                   : "bg-white text-[#001233] border border-[#FD5D07] hover:bg-[#FD5D07] hover:text-white"
-              }`}
-              onClick={() => setActiveTab(plan.id)}
+                }`}
             >
-              {plan.label}
+              {durationLabels[duration]}
             </button>
           ))}
         </div>
 
-        {/* Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {activePlan.plans.map((plan, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 text-center border border-transparent hover:-translate-y-2 hover:border-[#FD5D07]"
-            >
-              <h3 className="font-bold text-xl mb-2 text-[#001233]">{plan.type}</h3>
-              <p className="text-sm text-gray-500 mb-4">{plan.renews}</p>
-              <div className="text-4xl font-bold text-[#FD5D07] mb-2">
-                {plan.price}
-                <sub className="text-base text-[#001233]">{plan.sub}</sub>
-              </div>
-              <button className="mt-4 px-5 py-2 bg-[#FD5D07] text-white rounded-full font-semibold hover:bg-[#e04d00] transition-all">
-                Get Started
-              </button>
-            </div>
-          ))}
+        {/* Plan Cards */}
+        <div className="container">
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {filteredPlans.map((plan) => {
+              const multiplier = getDurationMultiplier(activeTab)
+              const adjustedPrice = plan.price * multiplier
+              const isSelected = selectedPlanId === plan._id
+              return (
+                <div
+                  key={plan._id}
+                  onClick={() => handlePlanClick(plan._id)}
+                  className={`bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all p-6 text-center border hover:-translate-y-2 cursor-pointer ${isSelected
+                    ? "border-[#FD5D07] ring-2 ring-[#FD5D07] ring-opacity-20"
+                    : "border-transparent hover:border-[#FD5D07]"
+                    }`}
+                >
+                  <h3 className="font-bold text-xl mb-2 text-[#001233]">{plan.name}</h3>
+                  <p className="text-sm text-gray-500 mb-4">{renewLine(adjustedPrice, activeTab)}</p>
+                  <div className="text-4xl font-bold text-[#FD5D07] mb-2">
+                    {priceDisplay(adjustedPrice)}
+                    <sub className="text-base text-[#001233]">
+                      {activeTab === "monthly" ? "/ mo" : activeTab === "yearly" ? "/ yr" : "/ 3yr"}
+                    </sub>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleBuyNow(plan._id); // 👈 pass the plan ID
+                    }}
+                    className="mt-4 px-5 py-2 bg-[#FD5D07] text-white rounded-full font-semibold hover:bg-[#e04d00] transition-all"
+                  >
+                    Buy Now
+                  </button>
+                  {/* <p className="mt-3 text-sm text-[#FD5D07] font-medium">
+                  {selectedPlanId === plan._id ? "Click to hide features" : "Click to view features"}
+                </p> */}
+                </div>
+              )
+            })}
+          </div>
         </div>
 
-        {/* Accordion */}
-        <div className="space-y-4">
-          {features.map((feature) => (
-            <div key={feature.id} className="bg-white rounded-2xl shadow-md overflow-hidden transition-all">
-              <button
-                onClick={() => setOpenFeature(openFeature === feature.id ? null : feature.id)}
-                className="w-full flex justify-between items-center px-6 py-4 text-lg font-semibold text-[#001233] hover:bg-[#f9f9f9] transition-all"
+
+        {/* Separate Features Table Section */}
+        {selectedPlan && (
+
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-[#FD5D07] animate-in slide-in-from-top-4 duration-500">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-[#001233]">{selectedPlan.name} - Features</h2>
+              {/* <button
+                onClick={() => setSelectedPlanId(null)}
+                className="flex items-center gap-2 px-4 py-2 text-[#FD5D07] hover:text-white hover:bg-[#FD5D07] border border-[#FD5D07] rounded-full transition-all"
               >
-                {feature.title}
-                <span className="text-2xl">{openFeature === feature.id ? "−" : "+"}</span>
-              </button>
-              {openFeature === feature.id && (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full text-sm text-left border-t">
-                    <tbody>
-                      {feature.rows.map((row, idx) => (
-                        <tr key={idx} className="border-b last:border-none">
-                          <td className="px-4 py-3 bg-gray-50 font-medium text-[#001233]">{row.name}</td>
-                          <td className="px-4 py-3 text-center">{row.basic}</td>
-                          <td className="px-4 py-3 text-center">{row.business}</td>
-                          <td className="px-4 py-3 text-center">{row.pro}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                <X size={16} />
+                Hide Features
+              </button> */}
             </div>
-          ))}
-        </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {["Plan Features", "Email Features"].map((grp) => (
+                <div key={grp}>
+                  <h4 className="font-semibold text-lg mb-4 text-[#001233] border-b-2 border-[#FD5D07] pb-2">{grp}</h4>
+                  <div className="overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+                    <table className="w-full text-sm">
+                      <tbody>
+                        {selectedPlan.features
+                          ?.filter((f: any) => f.group === grp)
+                          .map((f: any, index: number) => (
+                            <tr
+                              key={f._id}
+                              className={`border-b last:border-0 hover:bg-gray-50 transition-colors ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                }`}
+                            >
+                              <td className="px-4 py-3 font-medium text-gray-700">{f.title}</td>
+                              <td className="px-4 py-3 text-[#FD5D07] font-semibold text-right">
+                                {f.values?.[getTierKey(selectedPlan.name)] ?? "—"}
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <AdditionalServices onSelectionChange={handleSelectedServices} />
       </div>
     </section>
-  );
+  )
 }

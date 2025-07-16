@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import Swal from "sweetalert2"
 import {
   HardDriveIcon,
   CpuIcon,
@@ -49,44 +50,44 @@ type Testimonial = {
   avatar: string
 }
 
-const testimonials: Testimonial[] = [
-  {
-    id: "1",
-    name: "Sarah Johnson",
-    role: "Founder, Bloom & Grow",
-    content:
-      "Switching to this hosting service was the best decision for our e-commerce site. The performance improvement was noticeable immediately, and their support team is fantastic.",
-    rating: 5,
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    id: "2",
-    name: "Michael Chen",
-    role: "CTO, TechStart Inc.",
-    content:
-      "The enterprise plan with add-ons gives us everything we need to run our SaaS platform reliably. Uptime has been 99.99% since we migrated.",
-    rating: 5,
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    id: "3",
-    name: "Emma Rodriguez",
-    role: "Blogger, TravelWithEmma",
-    content:
-      "As a blogger, I need my site to be fast and always available. The starter plan is perfect for my needs and the price is very reasonable.",
-    rating: 4,
-    avatar: "https://randomuser.me/api/portraits/women/63.jpg",
-  },
-  {
-    id: "4",
-    name: "David Wilson",
-    role: "Freelance Developer",
-    content:
-      "I host all my clients' sites here. The flexibility to choose add-ons per project makes it cost-effective while still providing premium features.",
-    rating: 5,
-    avatar: "https://randomuser.me/api/portraits/men/75.jpg",
-  },
-]
+// const testimonials: Testimonial[] = [
+//   {
+//     id: "1",
+//     name: "Sarah Johnson",
+//     role: "Founder, Bloom & Grow",
+//     content:
+//       "Switching to this hosting service was the best decision for our e-commerce site. The performance improvement was noticeable immediately, and their support team is fantastic.",
+//     rating: 5,
+//     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+//   },
+//   {
+//     id: "2",
+//     name: "Michael Chen",
+//     role: "CTO, TechStart Inc.",
+//     content:
+//       "The enterprise plan with add-ons gives us everything we need to run our SaaS platform reliably. Uptime has been 99.99% since we migrated.",
+//     rating: 5,
+//     avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+//   },
+//   {
+//     id: "3",
+//     name: "Emma Rodriguez",
+//     role: "Blogger, TravelWithEmma",
+//     content:
+//       "As a blogger, I need my site to be fast and always available. The starter plan is perfect for my needs and the price is very reasonable.",
+//     rating: 4,
+//     avatar: "https://randomuser.me/api/portraits/women/63.jpg",
+//   },
+//   {
+//     id: "4",
+//     name: "David Wilson",
+//     role: "Freelance Developer",
+//     content:
+//       "I host all my clients' sites here. The flexibility to choose add-ons per project makes it cost-effective while still providing premium features.",
+//     rating: 5,
+//     avatar: "https://randomuser.me/api/portraits/men/75.jpg",
+//   },
+// ]
 
 export default function ProductDetailV3Page() {
   const [selectedPlanId, setSelectedPlanId] = useState<string>("")
@@ -128,9 +129,9 @@ export default function ProductDetailV3Page() {
           tagline: plan.slug.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()),
           monthlyPrice: plan.price,
           yearlyPrice: Math.round(plan.price * 12 * 0.83),
-          features: plan.features.map((text: string) => ({
+          features: plan.features?.map((feature: any) => ({
             icon: CpuIcon,
-            text,
+            text: feature.title, // ✅ convert object to string here
           })),
           popular: false,
         }))
@@ -138,9 +139,10 @@ export default function ProductDetailV3Page() {
 
         const addonsRes = await axiosInstance.get("/addons/all")
         const rawAddons = addonsRes.data.addons || addonsRes.data
+        console.log(rawAddons);
 
         // Transform addons
-        const transformedAddons = rawAddons.map((addon: any) => ({
+        const transformedAddons = rawAddons?.map((addon: any) => ({
           id: addon._id,
           name: addon.name,
           description: addon.description || "Enhance your hosting with extra features.",
@@ -162,6 +164,12 @@ export default function ProductDetailV3Page() {
     }
   }, [plans])
 
+  // useEffect(() => {
+  //   if (plans.length > 0) {
+  //     setSelectedPlanId(""); // clear any preselection
+  //   }
+  // }, [plans])
+
   const handleAddonToggle = async (addonId: string, checked: boolean) => {
     setSelectedAddons((prev) => {
       const newSet = new Set(prev)
@@ -178,18 +186,26 @@ export default function ProductDetailV3Page() {
       if (!addon) return
 
       try {
-        await axios.post(
-          "http://localhost:5000/api/addons/add",
+        const token = localStorage.getItem("token")
+        const orderId = localStorage.getItem("orderId") // 🟡 You must set this somewhere after order is created
+
+        if (!orderId) {
+          console.error("Order ID not found in localStorage")
+          return
+        }
+
+        await axiosInstance.post(
+          "/addons/add",
           {
-            order_id: 'orderId', // dynamic ID if needed
+            order_id: orderId,
             name: addon.name,
             description: addon.description || "Addon service",
             price: addon.price,
-            quantity: 1,
+            quantity: 1, // You can make this dynamic if needed
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -216,6 +232,57 @@ export default function ProductDetailV3Page() {
       </div>
     )
   }
+
+  const handleOrder = async () => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}") // Assuming you store user data in localStorage
+    const token = localStorage.getItem("token") // If using token-based auth
+
+    if (!user?.id) {
+      Swal.fire("Error", "User not logged in", "error")
+      return
+    }
+
+    if (!selectedPlanId) {
+      Swal.fire("Error", "Please select a plan", "error")
+      return
+    }
+
+    const startDate = new Date().toISOString()
+    const endDate = new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString()
+
+    const payload = {
+      user_id: user.id,
+      plan_id: selectedPlanId,
+      start_date: startDate,
+      end_date: endDate,
+      server_info: {
+        ip: "192.168.1.100",
+        panel: "cPanel",
+        username: user.name || "demo_user"
+      },
+      additional_services: [...selectedAddons]
+    }
+
+    try {
+      const res = await axiosInstance.post("/orders/order/createorder", payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if (res.data?.order?._id) {
+        localStorage.setItem("orderId", res.data.order._id) // store for later usage
+        Swal.fire("Success!", "Your order has been placed successfully!", "success")
+      } else {
+        Swal.fire("Failed", "Order creation failed", "error")
+      }
+    } catch (error) {
+      console.error(error)
+      Swal.fire("Error", "An error occurred while placing order", "error")
+    }
+  }
+
   return (
 
     <div className="min-h-screen bg-gradient-to-br  text-[#4C5671]">
@@ -316,7 +383,7 @@ export default function ProductDetailV3Page() {
 
             {/* Billing toggle */}
             <div className="flex justify-center mb-12 ">
-              <div className="flex items-center bg-gray-100 rounded-full p-1">
+              <div className="flex items-center bg-g  ray-100 rounded-full p-1">
                 <button
                   onClick={() => setIsYearlyBilling(false)}
                   className={`px-6 py-2 rounded-full ${!isYearlyBilling ? 'bg-white shadow' : ''}`}
@@ -375,6 +442,8 @@ export default function ProductDetailV3Page() {
                   </ul>
 
                   <button
+
+                    onClick={() => setSelectedPlanId(plan.id)}
                     className={cn(
                       "w-full py-3 rounded-lg font-medium transition-colors",
                       selectedPlanId === plan.id
@@ -382,10 +451,19 @@ export default function ProductDetailV3Page() {
                         : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                     )}
                   >
-                    {selectedPlanId === plan.id ? "Current Plan" : "Select Plan"}
+                    {selectedPlanId === plan.id ? "Selected" : "Select Plan"}
                   </button>
+
                 </div>
               ))}
+            </div>
+            <div className="mt-10 flex justify-center">
+              <Button
+                onClick={handleOrder}
+                className="bg-orange-500 text-white px-10 py-4 rounded-lg text-xl hover:bg-orange-600 transition-all shadow-lg"
+              >
+                Order Now
+              </Button>
             </div>
 
             {/* Included features */}
@@ -479,9 +557,12 @@ export default function ProductDetailV3Page() {
               ${finalTotalPrice.toFixed(2)}
               <span className="text-2xl font-medium text-white/90">/{isYearlyBilling ? "yr" : "mo"}</span>
             </span>
-            <Link href="/checkout" className="bg-white text-[#FD5D07] hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105">
+            <Button
+              onClick={handleOrder}
+              className="bg-white text-[#FD5D07] hover:bg-gray-100 font-bold py-4 px-10 rounded-lg text-xl transition-all transform hover:scale-105"
+            >
               Proceed to Checkout
-            </Link>
+            </Button>
           </div>
         </div>
       </div>

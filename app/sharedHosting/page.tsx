@@ -18,24 +18,28 @@ import "@/app/styles/reset.css";
 import "@/app/styles/typography.css";
 import AdditionalServices from "@/components/AdditionalServices";
 import axiosInstance from "../AxiosInstance/axiosInstance";
+import Plans from "@/components/Plans";
+
+
 
 const SharedHostingPage = () => {
   const [sharedHostingPlan, setSharedHostingPlan] = useState([]);
 
-  useEffect(() => {
-    const fetchPlan = async () => {
-      try {
-        const response = await axiosInstance.get("/plans/slug/sharedHosting");
-        console.log(response)
-        setSharedHostingPlan(response.data || []);
-        console.log("Shared Hosting Plan:", response.data?.plans);
-      } catch (error) {
-        console.error("Failed to fetch shared hosting plan", error);
-      }
-    };
 
-    fetchPlan();
-  }, []);
+  // useEffect(() => {
+  //   const fetchPlan = async () => {
+  //     try {
+  //       const response = await axiosInstance.get("/plans/slug/sharedHosting");
+  //       console.log(response)
+  //       setSharedHostingPlan(response.data || []);
+  //       console.log("Shared Hosting Plan:", response.data?.plans);
+  //     } catch (error) {
+  //       console.error("Failed to fetch shared hosting plan", error);
+  //     }
+  //   };
+
+  //   fetchPlan();
+  // }, []);
 
   const features = [
     "Data Backup and Recovery",
@@ -113,9 +117,9 @@ const SharedHostingPage = () => {
       <div className="bg-white py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
+            {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
               Our Plans
-            </h2>
+            </h2> */}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -178,13 +182,15 @@ const SharedHostingPage = () => {
         </div>
       </div>
 
+      <Plans sharedHosting={"sharedHosting"} />
+
       {/* Hosting Options Cards */}
-      <div className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
+      <div className="">
+        <div className=" mx-auto">
+          <div className="text-center">
+            {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
               Shared Hosting Feature
-            </h2>
+            </h2> */}
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {sharedHostingPlan.map((item, idx) => (
@@ -218,7 +224,7 @@ const SharedHostingPage = () => {
         </div>
       </div>
 
-      <AdditionalServices />
+      {/* <AdditionalServices /> */}
     </div>
   );
 };

@@ -73,7 +73,7 @@ const Page = () => {
       </section>
 
       {/* Plans Section */}
-      <Plans />
+      <Plans sharedHosting={"cloudHosting"} />
 
       {/* Features Section */}
       <section className="py-20 bg-white">
