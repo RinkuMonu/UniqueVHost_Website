@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import axios from "axios"
 import axiosInstance from "../AxiosInstance/axiosInstance"
+import testimonials from "@/components/testimonials"
 
 type Plan = {
   id: string
@@ -34,6 +35,7 @@ type Plan = {
 }
 
 type Addon = {
+  recommended: React.JSX.Element
   id: string
   name: string
   description: string
@@ -96,7 +98,9 @@ export default function ProductDetailV3Page() {
   const [currentTestimonial, setCurrentTestimonial] = useState<number>(0)
   const [plans, setPlans] = useState<Plan[]>([])
   const [addons, setAddons] = useState<Addon[]>([])
-
+  const [selectedModalPlanId, setSelectedModalPlanId] = useState(null);
+  const [selectedServerPlanId, setSelectedServerPlanId] = useState(null);
+  
   const selectedPlan = useMemo(() => plans.find((p) => p.id === selectedPlanId), [selectedPlanId, plans])
 
   const currentBasePrice = useMemo(() => {
@@ -400,71 +404,80 @@ export default function ProductDetailV3Page() {
             </div>
 
             {/* Pricing cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {plans.map((plan, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "border rounded-xl p-6 transition-all",
-                    selectedPlanId === plan.id ? "border-orange-500 ring-2 ring-orange-500/20" : "border-gray-200",
-                    plan.popular ? "relative" : ""
-                  )}
-                  onClick={() => setSelectedPlanId(plan.id)}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                      POPULAR
-                    </div>
-                  )}
-
-                  <div className="mb-6">
-                    <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-                    <p className="text-gray-500">{plan.tagline}</p>
-                  </div>
-
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold text-orange-500">
-                      ${isYearlyBilling ? plan.yearlyPrice : plan.monthlyPrice}
-                    </span>
-                    <span className="text-gray-500">/{isYearlyBilling ? "yr" : "mo"}</span>
-                  </div>
-
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((feature, index) => {
-                      const Icon = feature.icon;
-                      return (
-                        <li key={index} className="flex items-start gap-3">
-                          <Icon className="h-5 w-5 text-orange-500 mt-0.5" />
-                          <span className="text-gray-700">{feature.text}</span>
-                        </li>
-                      )
-                    })}
-                  </ul>
-
-                  <button
-
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {plans.map((plan, index) => {
+                const isSelected = selectedPlanId === plan.id;
+                return (
+                  <div
+                    key={index}
                     onClick={() => setSelectedPlanId(plan.id)}
                     className={cn(
-                      "w-full py-3 rounded-lg font-medium transition-colors",
-                      selectedPlanId === plan.id
-                        ? "bg-orange-500 text-white hover:bg-orange-600"
-                        : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                      "relative group cursor-pointer border rounded-2xl p-8 transition-all duration-300 shadow-sm bg-white hover:shadow-xl hover:-translate-y-1",
+                      isSelected
+                        ? "border-orange-500 ring-4 ring-orange-500/20 bg-gradient-to-br from-[#FFF7F2] to-white"
+                        : "border-gray-200"
                     )}
                   >
-                    {selectedPlanId === plan.id ? "Selected" : "Select Plan"}
-                  </button>
+                    {/* Popular Badge */}
+                    {plan.popular && (
+                      <div className="absolute -top-3 right-5 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md animate-bounce">
+                        POPULAR
+                      </div>
+                    )}
 
-                </div>
-              ))}
+                    {/* Plan Header */}
+                    <div className="mb-6 text-center">
+                      <h3 className="text-2xl font-bold text-[#001233]">{plan.name}</h3>
+                      <p className="text-sm text-[#4C5671] mt-1">{plan.tagline}</p>
+                    </div>
+
+                    {/* Price */}
+                    <div className="mb-6 text-center">
+                      <span className="text-5xl font-extrabold text-orange-500 tracking-tight">
+                        ${isYearlyBilling ? plan.yearlyPrice : plan.monthlyPrice}
+                      </span>
+                      <span className="text-gray-500 text-base">/{isYearlyBilling ? "yr" : "mo"}</span>
+                    </div>
+
+                    {/* Features */}
+                    <ul className="space-y-3 mb-8">
+                      {plan.features.map((feature, i) => {
+                        const Icon = feature.icon;
+                        return (
+                          <li key={i} className="flex items-center gap-3 text-gray-700">
+                            <Icon className="h-5 w-5 text-orange-500 shrink-0" />
+                            <span className="text-sm">{feature.text}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+
+                    {/* CTA Button */}
+                    <button
+                      className={cn(
+                        "w-full py-3 rounded-full font-semibold text-sm transition-all",
+                        isSelected
+                          ? "bg-orange-500 text-white hover:bg-orange-600 shadow-md"
+                          : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                      )}
+                    >
+                      {isSelected ? "✓ Selected" : "Select Plan"}
+                    </button>
+                  </div>
+                );
+              })}
             </div>
-            <div className="mt-10 flex justify-center">
+
+            {/* Order Now CTA */}
+            <div className="mt-14 flex justify-center">
               <Button
                 onClick={handleOrder}
-                className="bg-orange-500 text-white px-10 py-4 rounded-lg text-xl hover:bg-orange-600 transition-all shadow-lg"
+                className="bg-orange-500 text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                Order Now
+                🚀 Order Now
               </Button>
             </div>
+
 
             {/* Included features */}
             <div className="mt-12 text-center">
@@ -497,44 +510,67 @@ export default function ProductDetailV3Page() {
         </div>
 
         {/* Add-ons Section */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl  p-8 mb-12 border border-white">
-          <h2 className="text-5xl font-bold text-[#001233] mb-2 text-center">Boost Your Hosting with Add-ons</h2>
-          <p className="text-[#4C5671] text-center mb-8 max-w-2xl mx-auto">Customize your hosting package with these powerful add-ons to get exactly what you need.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="relative bg-white/60 backdrop-blur-lg border border-white/30 shadow-none rounded-3xl px-8 py-16 mb-20">
+          <h2 className="text-5xl font-extrabold text-center text-[#001233] drop-shadow-sm mb-3">
+            Boost Your Hosting with Add-ons
+          </h2>
+          <p className="text-center text-[#4C5671] text-lg mb-12 max-w-2xl mx-auto">
+            Power up your plan with smart, performance-driven tools tailored for your hosting needs.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
             {addons.map((addon) => {
-              const Icon = addon.icon
+              const Icon = addon.icon;
+              const isSelected = selectedAddons.has(addon.id);
               return (
                 <div
                   key={addon.id}
                   className={cn(
-                    "flex flex-col items-center text-center p-6 rounded-lg border-2 transition-all duration-300 bg-white hover:shadow-lg",
-                    selectedAddons.has(addon.id)
-                      ? "border-[#FD5D07] bg-gradient-to-b from-[#FFF8F4] to-white"
-                      : "border-gray-200 hover:border-[#FD5D07]/20",
+                    "group relative p-6 rounded-2xl border-2 transition-all duration-300 overflow-hidden hover:shadow-2xl hover:-translate-y-1 bg-white/90 backdrop-blur-md",
+                    isSelected
+                      ? "border-[#FD5D07] bg-gradient-to-b from-[#FFF4E7] to-white"
+                      : "border-gray-200 hover:border-[#FD5D07]/50"
                   )}
                 >
-                  <div className="w-20 h-20 bg-[#FD5D07]/10 rounded-full flex items-center justify-center mb-4">
-                    <Icon className="h-10 w-10 text-[#FD5D07]" />
+                  {/* Glow Animation */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-[#FD5D07]/10 to-transparent blur-xl opacity-0 group-hover:opacity-60 transition-all duration-300 pointer-events-none"></div>
+
+                  {/* Floating Icon */}
+                  <div className="w-16 h-16 mb-4 bg-[#FD5D07]/20 rounded-full flex items-center justify-center mx-auto shadow-md group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="h-8 w-8 text-[#FD5D07]" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#001233] mb-2">{addon.name}</h3>
-                  <p className="text-[#4C5671] text-sm flex-1 mb-4">{addon.description}</p>
-                  <span className="text-2xl font-bold text-[#FD5D07] mb-4">${addon.price.toFixed(2)}/mo</span>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={addon.id}
-                      checked={selectedAddons.has(addon.id)}
-                      onCheckedChange={(checked) => handleAddonToggle(addon.id, !!checked)}
-                      className="border-[#FD5D07] data-[state=checked]:bg-[#FD5D07] data-[state=checked]:text-white h-5 w-5 mr-3"
-                    />
-                    <Label htmlFor={addon.id} className="text-[#001233] text-base cursor-pointer">
-                      Add to Plan
-                    </Label>
+
+                  <h3 className="text-xl font-semibold text-center text-[#001233] mb-2">{addon.name}</h3>
+                  <p className="text-sm text-center text-[#4C5671] mb-6 min-h-[60px]">{addon.description}</p>
+                  <div className="text-center text-2xl font-extrabold text-[#FD5D07] mb-4">
+                    ${addon.price.toFixed(2)}/mo
                   </div>
+
+                  <button
+                    onClick={() => handleAddonToggle(addon.id, !isSelected)}
+                    className={cn(
+                      "relative inline-flex justify-center w-full px-5 py-2.5 rounded-full font-medium text-sm transition duration-300 shadow-sm",
+                      isSelected
+                        ? "bg-[#FD5D07] text-white hover:bg-[#e25506]"
+                        : "bg-[#f6f6f6] text-[#001233] hover:bg-[#FD5D07]/10"
+                    )}
+                  >
+                    {isSelected ? "✓ Added to Plan" : "Add to Plan"}
+                  </button>
+
+                  {/* Optional: Recommended Tag */}
+                  {addon.recommended && (
+                    <span className="absolute top-2 right-2 bg-[#FD5D07] text-white text-xs px-2 py-0.5 rounded-full shadow-sm">
+                      Recommended
+                    </span>
+                  )}
                 </div>
-              )
+              );
             })}
           </div>
         </div>
+
+
 
 
 
