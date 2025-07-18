@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// ✅ Automatically attach token to all requests
+// ✅ Automatically attach token to all requests 
 axiosInstance.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined") {
