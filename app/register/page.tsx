@@ -7,6 +7,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import axiosInstance from "@/app/AxiosInstance/axiosInstance";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Eye,
@@ -29,6 +32,7 @@ import {
   MapPin,
   UserCheck,
 } from "lucide-react"
+import { Router } from "next/router"
 
 interface SlideData {
   title: string
@@ -54,6 +58,7 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const router = useRouter()
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -64,12 +69,54 @@ export default function RegisterForm() {
     role: "",
   })
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post("/users/register", formData);
+
+      console.log("Registration successful:", response.data);
+
+      // Show SweetAlert success message and redirect on confirmation
+      Swal.fire({
+        icon: "success",
+        title: "Account Created",
+        text: "Registration successful!",
+        confirmButtonText: "Go to Login",
+        allowOutsideClick: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/login");
+        }
+      });
+
+      // Clear the form after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+        company_name: "",
+        address: "",
+        role: "",
+      });
+
+    } catch (error: any) {
+      console.error("Registration error:", error.response?.data || error.message);
+
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error.response?.data?.message || "Something went wrong!",
+      });
+    }
+  };
+
   const slides: SlideData[] = [
     {
       title: "Lightning Fast",
       subtitle: "Web Hosting",
       description:
-          "Experience blazing-fast performance with our premium SSD hosting.",
+        "Experience blazing-fast performance with our premium SSD hosting.",
       buttonText: "Start Hosting",
       bgGradient: "from-[#FD5D07] via-[#FF8C44] to-orange-600",
       accentColor: "from-yellow-400 to-orange-500",
@@ -154,7 +201,7 @@ export default function RegisterForm() {
                 />
                 <path
                   d="M180 100C170 100 160 90 160 80C160 70 170 60 180 60C185 50 195 45 205 45C215 45 225 50 230 60C240 60 250 70 250 80C250 90 240 100 230 100H180Z"
-                     fill="rgba(220, 220, 220, 1)"
+                  fill="rgba(220, 220, 220, 1)"
                   className="animate-pulse delay-500"
                 />
                 <path
@@ -187,7 +234,7 @@ export default function RegisterForm() {
       title: "Secure Domain",
       subtitle: "Management",
       description:
-    "Manage all your domains with enterprise-grade security. ",
+        "Manage all your domains with enterprise-grade security. ",
       buttonText: "Secure Now",
       bgGradient: "from-[#FD5D07] via-orange-500 to-red-600",
       accentColor: "from-green-400 to-emerald-500",
@@ -248,11 +295,11 @@ export default function RegisterForm() {
     return () => clearInterval(timer)
   }, [slides.length])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Registration attempt:", formData)
-    // Here you would typically send the data to your backend
-  }
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   console.log("Registration attempt:", formData)
+  //   // Here you would typically send the data to your backend
+  // }
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({
@@ -368,9 +415,8 @@ export default function RegisterForm() {
               <button
                 key={index}
                 onClick={() => changeSlide(index)}
-                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${
-                  index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
-                }`}
+                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
+                  }`}
               >
                 {index === currentSlide && (
                   <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black animate-pulse"></div>
@@ -423,9 +469,8 @@ export default function RegisterForm() {
                   <button
                     key={index}
                     onClick={() => changeSlide(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/40"
-                    }`}
+                    className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/40"
+                      }`}
                   />
                 ))}
               </div>
@@ -445,7 +490,7 @@ export default function RegisterForm() {
             <CardContent className="px-10 relative">
               {/* Enhanced Greeting */}
               <div className="mb-6 ">
-                
+
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
                   Join Us!
                 </h2>
@@ -454,130 +499,130 @@ export default function RegisterForm() {
 
               {/* Enhanced Registration Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
-           <div className="grid grid-cols-2 gap-4">
-                 {/* Name Field */}
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-gray-700 font-semibold text-lg">
-                    Full Name
-                  </Label>
-                  <div className="relative group">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={formData.name}
-                      onChange={(e) => handleInputChange("name", e.target.value)}
-                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
-                      required
-                    />
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Name Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-gray-700 font-semibold text-lg">
+                      Full Name
+                    </Label>
+                    <div className="relative group">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="Enter your full name"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange("name", e.target.value)}
+                        className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Email Field */}
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-700 font-semibold text-lg">
-                    Email Address
-                  </Label>
-                  <div className="relative group">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
-                      required
-                    />
+                  {/* Email Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-gray-700 font-semibold text-lg">
+                      Email Address
+                    </Label>
+                    <div className="relative group">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange("email", e.target.value)}
+                        className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Password Field */}
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-gray-700 font-semibold text-lg">
-                    Password
-                  </Label>
-                  <div className="relative group">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Create a strong password"
-                      value={formData.password}
-                      onChange={(e) => handleInputChange("password", e.target.value)}
-                      className="pl-12 pr-14 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors p-2"
-                    >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </button>
+                  {/* Password Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-gray-700 font-semibold text-lg">
+                      Password
+                    </Label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Create a strong password"
+                        value={formData.password}
+                        onChange={(e) => handleInputChange("password", e.target.value)}
+                        className="pl-12 pr-14 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors p-2"
+                      >
+                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Phone Field */}
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-gray-700 font-semibold text-lg">
-                    Phone Number
-                  </Label>
-                  <div className="relative group">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
-                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
-                      required
-                    />
+                  {/* Phone Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-gray-700 font-semibold text-lg">
+                      Phone Number
+                    </Label>
+                    <div className="relative group">
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="Enter your phone number"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange("phone", e.target.value)}
+                        className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Company Name Field */}
-                <div className="space-y-2">
-                  <Label htmlFor="company_name" className="text-gray-700 font-semibold text-lg">
-                    Company Name
-                  </Label>
-                  <div className="relative group">
-                    <Building className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                    <Input
-                      id="company_name"
-                      type="text"
-                      placeholder="Enter your company name"
-                      value={formData.company_name}
-                      onChange={(e) => handleInputChange("company_name", e.target.value)}
-                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
-                      required
-                    />
+                  {/* Company Name Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="company_name" className="text-gray-700 font-semibold text-lg">
+                      Company Name
+                    </Label>
+                    <div className="relative group">
+                      <Building className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                      <Input
+                        id="company_name"
+                        type="text"
+                        placeholder="Enter your company name"
+                        value={formData.company_name}
+                        onChange={(e) => handleInputChange("company_name", e.target.value)}
+                        className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Address Field */}
-                <div className="space-y-2">
-                  <Label htmlFor="address" className="text-gray-700 font-semibold text-lg">
-                    Address
-                  </Label>
-                  <div className="relative group">
-                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                    <Input
-                      id="address"
-                      type="text"
-                      placeholder="Enter your address"
-                      value={formData.address}
-                      onChange={(e) => handleInputChange("address", e.target.value)}
-                      className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
-                      required
-                    />
+                  {/* Address Field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="address" className="text-gray-700 font-semibold text-lg">
+                      Address
+                    </Label>
+                    <div className="relative group">
+                      <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                      <Input
+                        id="address"
+                        type="text"
+                        placeholder="Enter your address"
+                        value={formData.address}
+                        onChange={(e) => handleInputChange("address", e.target.value)}
+                        className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
+                        required
+                      />
+                    </div>
                   </div>
+                  {/* Role Field */}
+
                 </div>
-                     {/* Role Field */}
-           
-           </div>
                 <div className="space-y-2">
                   <Label htmlFor="role" className="text-gray-700 font-semibold text-lg ">
                     Role
@@ -595,7 +640,7 @@ export default function RegisterForm() {
                   </Select>
                 </div>
 
-           
+
 
                 <Button
                   type="submit"
@@ -607,12 +652,12 @@ export default function RegisterForm() {
                 </Button>
 
                 <div className="text-center">
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-orange-500 font-semibold hover:underline transition-colors text-lg"
+                  <p
+                    onClick={() => router.push("/login")}
+                    className="cursor-pointer text-gray-600 hover:text-orange-500 font-semibold hover:underline transition-colors text-lg"
                   >
                     Already have an account? Sign In
-                  </a>
+                  </p>
                 </div>
               </form>
             </CardContent>

@@ -14,7 +14,6 @@ import {
   Truck,
   MapPin,
   Plus,
-  User,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -85,6 +84,11 @@ export default function CheckoutPage() {
   const [newCity, setNewCity] = useState("");
   const [newState, setNewState] = useState("");
   const [newZip, setNewZip] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newCountry, setNewCountry] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newConsent, setNewConsent] = useState(false);
 
   const basePlanAdjustedPrice = useMemo(() => {
     let price = dummySelectedPlan.price;
@@ -98,15 +102,14 @@ export default function CheckoutPage() {
     () => dummySelectedAddons.reduce((sum, addon) => sum + addon.price, 0),
     []
   );
+
   const currentShippingCost = useMemo(
     () =>
-      shippingMethods.find((s) => s.id === selectedShippingMethodId)?.price ||
-      0,
+      shippingMethods.find((s) => s.id === selectedShippingMethodId)?.price || 0,
     [selectedShippingMethodId]
   );
 
-  const subtotal =
-    basePlanAdjustedPrice + addonsTotalPrice + currentShippingCost;
+  const subtotal = basePlanAdjustedPrice + addonsTotalPrice + currentShippingCost;
   const taxRate = 0.18;
   const taxAmount = (subtotal - discountAmount) * taxRate;
   const totalDue = subtotal - discountAmount + taxAmount;
@@ -121,51 +124,36 @@ export default function CheckoutPage() {
       alert("Invalid coupon code!");
     }
   };
-  const [newPhone, setNewPhone] = useState("");
-  const [newEmail, setNewEmail] = useState("");
-  const [newCountry, setNewCountry] = useState("");
-  const [newDescription, setNewDescription] = useState("");
-  const [newConsent, setNewConsent] = useState(false);
 
   return (
     <div className="bg-gradient-to-br from-[#f9fafb] via-[#fefefe] to-[#f9fafb] py-12">
-      {/* Steps Indicator */}
+      {/* Steps */}
       <div className="container mx-auto px-4 mb-8 flex justify-center">
         <div className="flex gap-4 items-center text-[#4C5671] font-medium">
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#FD5D07] text-white text-sm">
-              1
-            </span>
-            Address
-          </div>
-          <span>→</span>
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#FD5D07] text-white text-sm">
-              2
-            </span>
-            Shipping
-          </div>
-          <span>→</span>
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#FD5D07] text-white text-sm">
-              3
-            </span>
-            Payment
-          </div>
+          {["Address", "Shipping", "Payment"].map((label, i) => (
+            <div className="flex items-center gap-2" key={i}>
+              <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#FD5D07] text-white text-sm">
+                {i + 1}
+              </span>
+              {label}
+              {i < 2 && <span>→</span>}
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="container mx-auto px-4 flex flex-col lg:flex-row gap-8">
-        {/* Left Side */}
+        {/* Left Column */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="flex-1 bg-white rounded-xl shadow-xl p-8 space-y-8 relative"
         >
+          {/* Checkout Header */}
           <h2 className="text-3xl font-bold text-[#001233]">Checkout</h2>
 
-          {/* Address */}
+          {/* Address Selection */}
           <div>
             <h3 className="text-xl font-semibold text-[#001233] flex items-center gap-2 mb-4">
               <MapPin className="w-5 h-5 text-[#FD5D07]" /> Delivery Address
@@ -185,17 +173,15 @@ export default function CheckoutPage() {
                       : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
-                  <RadioGroupItem
-                    id={addr.id}
-                    value={addr.id}
-                    className="sr-only"
-                  />
+                  <RadioGroupItem id={addr.id} value={addr.id} className="sr-only" />
                   <div className="font-medium text-[#001233]">{addr.name}</div>
                   <div className="text-sm text-[#4C5671]">
                     {addr.addressLine1}, {addr.city}, {addr.state} {addr.zip}
                   </div>
                 </Label>
               ))}
+
+              {/* Add New Address Option */}
               <Label
                 htmlFor="new"
                 className={`block border rounded-lg p-4 align-baseline text-center cursor-pointer transition ${
@@ -203,13 +189,11 @@ export default function CheckoutPage() {
                     ? "border-[#FD5D07] bg-[#FFF8F4]"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
-                style={{display:"flex"}}
+                style={{ display: "flex" }}
               >
                 <RadioGroupItem id="new" value="new" className="sr-only" />
                 <Plus className="w-5 h-5 text-[#FD5D07] mb-1" />
-                <div className="font-medium text-[#001233]">
-                  Add New Address
-                </div>
+                <div className="font-medium text-[#001233]">Add New Address</div>
               </Label>
             </RadioGroup>
 
@@ -223,24 +207,12 @@ export default function CheckoutPage() {
                   className="mt-4 overflow-hidden space-y-3"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Input
-                      placeholder="Full Name"
-                      value={newName}
-                      onChange={(e) => setNewName(e.target.value)}
-                    />
-                    <Input
-                      placeholder="Phone Number"
-                      value={newPhone}
-                      onChange={(e) => setNewPhone(e.target.value)}
-                    />
+                    <Input placeholder="Full Name" value={newName} onChange={(e) => setNewName(e.target.value)} />
+                    <Input placeholder="Phone Number" value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Input
-                      placeholder="Email Address"
-                      value={newEmail}
-                      onChange={(e) => setNewEmail(e.target.value)}
-                    />
+                    <Input placeholder="Email Address" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
                     <select
                       value={newCountry}
                       onChange={(e) => setNewCountry(e.target.value)}
@@ -255,28 +227,12 @@ export default function CheckoutPage() {
                     </select>
                   </div>
 
-                  <Input
-                    placeholder="Address Line 1"
-                    value={newLine1}
-                    onChange={(e) => setNewLine1(e.target.value)}
-                  />
+                  <Input placeholder="Address Line 1" value={newLine1} onChange={(e) => setNewLine1(e.target.value)} />
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <Input
-                      placeholder="City"
-                      value={newCity}
-                      onChange={(e) => setNewCity(e.target.value)}
-                    />
-                    <Input
-                      placeholder="State/Province"
-                      value={newState}
-                      onChange={(e) => setNewState(e.target.value)}
-                    />
-                    <Input
-                      placeholder="Zip Code"
-                      value={newZip}
-                      onChange={(e) => setNewZip(e.target.value)}
-                    />
+                    <Input placeholder="City" value={newCity} onChange={(e) => setNewCity(e.target.value)} />
+                    <Input placeholder="State/Province" value={newState} onChange={(e) => setNewState(e.target.value)} />
+                    <Input placeholder="Zip Code" value={newZip} onChange={(e) => setNewZip(e.target.value)} />
                   </div>
 
                   <textarea
@@ -295,8 +251,7 @@ export default function CheckoutPage() {
                       className="mt-1"
                     />
                     <label htmlFor="consent" className="text-sm text-[#4C5671]">
-                      By submitting your information you provide written consent
-                      to elitehost and its family of brands contacting you.
+                      By submitting your information you provide written consent to elitehost and its family of brands contacting you.
                     </label>
                   </div>
                 </motion.div>
@@ -324,24 +279,14 @@ export default function CheckoutPage() {
                       : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
-                  <RadioGroupItem
-                    id={method.id}
-                    value={method.id}
-                    className="sr-only"
-                  />
+                  <RadioGroupItem id={method.id} value={method.id} className="sr-only" />
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="font-medium text-[#001233]">
-                        {method.name}
-                      </div>
-                      <div className="text-xs text-[#4C5671]">
-                        {method.description}
-                      </div>
+                      <div className="font-medium text-[#001233]">{method.name}</div>
+                      <div className="text-xs text-[#4C5671]">{method.description}</div>
                     </div>
                     <div className="font-medium text-[#001233]">
-                      {method.price === 0
-                        ? "Free"
-                        : `$${method.price.toFixed(2)}`}
+                      {method.price === 0 ? "Free" : `$${method.price.toFixed(2)}`}
                     </div>
                   </div>
                 </Label>
@@ -369,21 +314,15 @@ export default function CheckoutPage() {
                       : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
-                  <RadioGroupItem
-                    id={method}
-                    value={method}
-                    className="sr-only"
-                  />
-                  <div className="font-medium text-[#001233] capitalize">
-                    {method}
-                  </div>
+                  <RadioGroupItem id={method} value={method} className="sr-only" />
+                  <div className="font-medium text-[#001233] capitalize">{method}</div>
                 </Label>
               ))}
             </RadioGroup>
           </div>
         </motion.div>
 
-        {/* Right Summary */}
+        {/* Right Column: Summary */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -401,18 +340,17 @@ export default function CheckoutPage() {
               </span>
               <span>${basePlanAdjustedPrice.toFixed(2)}</span>
             </div>
+
             {dummySelectedAddons.map((addon) => (
-              <div
-                key={addon.id}
-                className="flex justify-between text-[#4C5671]"
-              >
+              <div key={addon.id} className="flex justify-between text-[#4C5671]">
                 <span className="flex items-center gap-1">
-                  <CheckCircle2 className="w-4 h-4 text-[#FD5D07]" />{" "}
+                  <CheckCircle2 className="w-4 h-4 text-[#FD5D07]" />
                   {addon.name}
                 </span>
                 <span>+${addon.price.toFixed(2)}</span>
               </div>
             ))}
+
             <div className="flex justify-between text-[#4C5671]">
               <span>Shipping</span>
               <span>
@@ -421,21 +359,25 @@ export default function CheckoutPage() {
                   : `$${currentShippingCost.toFixed(2)}`}
               </span>
             </div>
+
             <Separator />
             <div className="flex justify-between font-medium text-[#001233]">
               <span>Subtotal</span>
               <span>${subtotal.toFixed(2)}</span>
             </div>
+
             {discountAmount > 0 && (
               <div className="flex justify-between text-[#FD5D07] font-semibold">
                 <span>Discount</span>
                 <span>-${discountAmount.toFixed(2)}</span>
               </div>
             )}
+
             <div className="flex justify-between text-[#4C5671]">
               <span>Tax (18%)</span>
               <span>${taxAmount.toFixed(2)}</span>
             </div>
+
             <Separator />
             <div className="flex justify-between text-2xl font-bold text-[#001233]">
               <span>Total</span>
@@ -443,8 +385,8 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Coupon */}
-          {/* <div className="mt-6">
+          {/* Coupon Code */}
+          <div className="mt-6">
             <Label htmlFor="coupon" className="text-[#4C5671] block mb-2">
               Coupon Code
             </Label>
@@ -463,7 +405,7 @@ export default function CheckoutPage() {
                 Apply
               </Button>
             </div>
-          </div> */}
+          </div>
 
           <Button
             size="lg"

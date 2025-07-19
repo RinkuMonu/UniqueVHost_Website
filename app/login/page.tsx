@@ -7,10 +7,13 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Swal from "sweetalert2";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import axiosInstance from "@/app/AxiosInstance/axiosInstance";
+import { LogOut, User } from "lucide-react";
 import {
   Eye,
   EyeOff,
-  User,
   Lock,
   ArrowRight,
   ChevronLeft,
@@ -36,17 +39,63 @@ interface SlideData {
 }
 
 export default function LoginPage() {
-    const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const redirectPath = searchParams.get("redirect") || "/";
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
+    try {
+      const response = await axiosInstance.post("/users/login", {
+        email: username,
+        password: password,
+      });
+      setUsername("");
+      setPassword("");
+
+      console.log("tokennnnn", response)
+      localStorage.setItem("token", response?.data?.token);
+      localStorage.setItem("user", JSON.stringify(response?.data?.user));
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${response?.data?.token}`;
+
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+
+        text: "Welcome back!",
+        confirmButtonColor: "#FD5D07",
+        timer: 2000,
+        timerProgressBar: true,
+        willClose: () => {
+          router.push(redirectPath); // ✅ Redirect to original page or home
+        },
+      });
+
+      console.log("Login successful", response.data);
+    } catch (error: any) {
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text:
+          error.response?.data?.message ||
+          "Something went wrong. Please try again later.",
+        confirmButtonColor: "#FD5D07",
+      });
+
+      console.error("Login error", error);
+    }
+  };
   const slides: SlideData[] = [
     {
       title: "Lightning Fast",
-      subtitle: "Web Hosting",
+      subtitle: "WebHosting",
       description:
         "Experience blazing-fast performance with our premium SSD hosting.",
       buttonText: "Start Hosting",
@@ -217,20 +266,27 @@ export default function LoginPage() {
 
   // Enhanced auto-advance with transition effect
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIsTransitioning(true)
-      setTimeout(() => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length)
-        setIsTransitioning(false)
-      }, 300)
-    }, 6000)
-    return () => clearInterval(timer)
-  }, [slides.length])
+    setUsername("");
+    setPassword("");
+  }, [pathname]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Login attempt:", { username, password })
-  }
+  /* --- B. Auto‑advance slide every 6 s --- */
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+        setIsTransitioning(false);
+      }, 300);
+    }, 6000);
+
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   console.log("Login attempt:", { username, password })
+  // }
 
   const changeSlide = (index: number) => {
     if (index !== currentSlide) {
@@ -252,6 +308,7 @@ export default function LoginPage() {
 
   return (
     <div
+      key={pathname}
       className={`min-h-screen flex  transition-all duration-1000`}
     >
       {/* Enhanced Background Effects */}
@@ -339,9 +396,8 @@ export default function LoginPage() {
               <button
                 key={index}
                 onClick={() => changeSlide(index)}
-                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${
-                  index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
-                }`}
+                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
+                  }`}
               >
                 {index === currentSlide && (
                   <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black animate-pulse"></div>
@@ -394,9 +450,8 @@ export default function LoginPage() {
                   <button
                     key={index}
                     onClick={() => changeSlide(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/40"
-                    }`}
+                    className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/40"
+                      }`}
                   />
                 ))}
               </div>
@@ -426,12 +481,14 @@ export default function LoginPage() {
               <form onSubmit={handleSubmit} className="space-y-2">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-gray-700 font-semibold text-lg">
-                    Username
+                    Email
                   </Label>
                   <div className="relative group">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                     <Input
                       id="username"
+                      name="username"
+                      autoComplete="off"
                       type="text"
                       placeholder="Enter your username"
                       value={username}
@@ -450,6 +507,8 @@ export default function LoginPage() {
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                     <Input
                       id="password"
+                      name="new-password"
+                      autoComplete="new-password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       value={password}
@@ -469,15 +528,14 @@ export default function LoginPage() {
 
                 <div className="text-right pt-2">
                   <button
+                    type="button"
                     onClick={() => setShowModal(true)}
                     className="text-orange-500 hover:text-orange-600 font-semibold hover:underline transition-colors text-lg"
                   >
-                  Forgot password?
+                    Forgot password?
                   </button>
-                  
-
                 </div>
-      
+
 
                 <Button
                   type="submit"
@@ -489,12 +547,13 @@ export default function LoginPage() {
                 </Button>
 
                 <div className="text-center pt-6">
-                  <a
-                    href="#"
+                  <button
+                    type="button"
+                    onClick={() => router.push("/register")}
                     className="text-gray-600 hover:text-orange-500 font-semibold hover:underline transition-colors text-lg"
                   >
                     Create New Account
-                  </a>
+                  </button>
                 </div>
               </form>
             </CardContent>
@@ -520,7 +579,7 @@ export default function LoginPage() {
       `}</style>
 
 
-                 <ForgotPasswordModal
+      <ForgotPasswordModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
       />

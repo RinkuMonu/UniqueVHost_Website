@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Mail, Tag, MessageSquare, User, ChevronDown, Menu, X } from "lucide-react"
+import { Mail, Tag, MessageSquare, User, ChevronDown, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import '@/app/styles/style.css'
 import '@/app/styles/header.css'
-
+import { useRouter } from "next/navigation"
+import Swal from "sweetalert2";
 const navLinks = [
   {
     name: "Home",
@@ -72,13 +73,41 @@ const navLinks = [
     type: "dropdown",
     submenus: [
       { title: "FAQ", href: "/faq" },
+      // { title: "Support", href: "/support" },
       { title: "Contact", href: "/contactus" },
     ],
   },
+
 ]
+
 
 const HeaderTop = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    setIsLoggedIn(!!token)
+  }, [])
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+
+    Swal.fire({
+      icon: "success",
+      title: "Logged Out",
+      text: "You have been logged out successfully.",
+      confirmButtonColor: "#FD5D07",
+      timer: 2000,
+      timerProgressBar: true,
+    }).then(() => {
+      router.push("/");
+    });
+  };
 
   return (
     <div className="bg-elite-top-bg text-white py-2 text-sm hidden md:block backdrop-blur-2xl" style={{ background: "#fd5d07" }}>
@@ -100,22 +129,45 @@ const HeaderTop = () => {
               <MessageSquare className="w-4 h-4 mr-1" />
               <span>Live Chat</span>
             </a>
-            <div className="relative group menu-item elitehost-has-dropdown">
-              <button onClick={() => setIsLoginOpen(!isLoginOpen)} className="flex items-center hover:text-white transition-colors focus:outline-none">
-                <User className="w-4 h-4 mr-1" />
-                <span>Login</span>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="flex items-center hover:text-white transition-colors"
+              >
+                <LogOut className="w-4 h-4 mr-1" />
+                <span>Logout</span>
               </button>
-              {isLoginOpen && (
-                <div className="elitehost-submenu absolute right-0 mt-2 w-64 bg-white text-elite-secondary p-4 rounded-md shadow-md-custom z-50">
-                  <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
-                    <Input type="email" placeholder="Your email" required className="w-full" />
-                    <Input type="password" placeholder="Password" required className="w-full" />
-                    <Button type="submit" className="w-full bg-black hover:bg-blue-700 text-white">Log In</Button>
-                    <a href="#" className="text-black hover:underline block text-center">Forgot your password?</a>
-                  </form>
-                </div>
-              )}
-            </div>
+            ) : (
+              <div className="relative group menu-item elitehost-has-dropdown">
+                <button
+                  onClick={() => router.push("/login")}
+                  className="flex items-center hover:text-white transition-colors focus:outline-none"
+                >
+                  <User className="w-4 h-4 mr-1" />
+                  <span>Login</span>
+                </button>
+                {isLoginOpen && (
+                  <div className="elitehost-submenu absolute right-0 mt-2 w-64 bg-white text-elite-secondary p-4 rounded-md shadow-md-custom z-50">
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault()
+                        router.push("/login")
+                      }}
+                      className="space-y-3"
+                    >
+                      <Input type="email" placeholder="Your email" required className="w-full" />
+                      <Input type="password" placeholder="Password" required className="w-full" />
+                      <Button type="submit" className="w-full bg-black hover:bg-blue-700 text-white">
+                        Log In
+                      </Button>
+                      <a href="#" className="text-black hover:underline block text-center">
+                        Forgot your password?
+                      </a>
+                    </form>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -124,24 +176,13 @@ const HeaderTop = () => {
 }
 
 const HeaderMain = ({ isSticky }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
   return (
     <div className={cn("bg-white", isSticky ? "shadow-sm-custom" : "")}>
-      <div className="container mx-auto rts-header__menu px-4 flex justify-between items-center lg:py-0">
+      <div className="container mx-auto rts-header__menu px-4 flex gap-3 items-center lg:py-0">
         <Link href="/" className="block">
           <Image src="/images/logo/logo-1.svg" alt="logo" width={160} height={40} className="h-10 w-auto" />
         </Link>
-
-        {/* Hamburger Menu Icon */}
-        <div className="lg:hidden">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Navigation Menu */}
-        <nav className={`elitehost-menu ${isMenuOpen ? "block" : "hidden"} lg:block`}>
+        <nav className="elitehost-menu hidden lg:block">
           <ul className="elitehost-desktop-menu">
             {navLinks.map((link) => (
               <li key={link.name} className="menu-item elitehost-has-dropdown group relative">
@@ -150,10 +191,14 @@ const HeaderMain = ({ isSticky }) => {
                   {link.type !== "link" && <ChevronDown className="w-3 h-3 ml-1 group-hover:rotate-180 transition-transform" />}
                 </Link>
 
-                {/* Mega Menu for Hosting & Servers */}
                 {(link.type === "mega-hosting" || link.type === "mega-server") && (
                   <div className={cn("rts-mega-menu", link.type === "mega-hosting" ? "big" : "")}>
-                    <div className={cn("grid gap-6", link.type === "mega-server" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-1" : "grid-cols-2")}>
+                    <div
+                      className={cn(
+                        "grid gap-6",
+                        link.type === "mega-server" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-1" : "grid-cols-2"
+                      )}
+                    >
                       {link.submenus?.map((section, secIdx) => (
                         <ul key={secIdx} className="mega-menu-item">
                           {section.section && <h5 className="font-bold text-[15px] mb-3 text-elite-secondary">{section.section}</h5>}
@@ -174,7 +219,7 @@ const HeaderMain = ({ isSticky }) => {
                   </div>
                 )}
 
-                {/* Dropdown for Help Center */}
+
                 {link.type === "dropdown" && (
                   <ul className="elitehost-submenu">
                     {link.submenus?.map((item, idx) => (
@@ -187,6 +232,7 @@ const HeaderMain = ({ isSticky }) => {
               </li>
             ))}
           </ul>
+
         </nav>
       </div>
     </div>
@@ -200,7 +246,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
-  
   return (
     <header className={cn("w-full transition-all duration-300 ease-in-out", isSticky && "fixed top-0 left-0 right-0 z-[99] bg-white shadow-sm-custom")}>
       {!isSticky && <HeaderTop />}
