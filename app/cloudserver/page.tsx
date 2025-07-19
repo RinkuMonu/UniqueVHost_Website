@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "@/app/AxiosInstance/axiosInstance";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -39,7 +40,6 @@ import {
 import Newsletter from "@/components/newsletter";
 import ProductFreture from "@/components/ProductFreture";
 
-/* ---------------- API response ---------------- */
 interface ApiPlan {
   _id: string;
   name: string;
@@ -53,7 +53,6 @@ interface ApiPlan {
   badge?: string;
 }
 
-/* ---------------- Filters helpers ---------------- */
 const REGIONS = [
   "US East (N. Virginia)",
   "US West (Oregon)",
@@ -72,95 +71,55 @@ const budgetRange: Record<BudgetKey, { min?: number; max?: number }> = {
 };
 
 export default function CloudServersPage() {
-const router = useRouter();
+  const router = useRouter();
   const slug = "cloudserver";
-  /* Filters */
+
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
-  const [regions, setRegions] = useState<string[]>([]);
   const [cpuMax, setCpuMax] = useState(2);
   const [ramMax, setRamMax] = useState(4);
   const [budget, setBudget] = useState<BudgetKey>("all");
 
-  /* Plans */
   const [plans, setPlans] = useState<ApiPlan[]>([]);
   const [loading, setLoading] = useState(true);
 
-  /* Build params */
-  const buildParams = () => {
-    const params: Record<string, any> = {
-      cpu_max: cpuMax,
-      ram_max: ramMax,
-      slug: slug,
-    };
-    if (selectedRegions.length)
-      params.location = selectedRegions.join(",");
-    const { min, max } = budgetRange[budget];
-    if (min != null) params.min_price = min;
-    if (max != null) params.max_price = max;
-    return params;
-  };
-
-  /* Fetch plans */
-  const fetchPlans = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { data } = await axiosInstance.get<ApiPlan[]>("/plans", {
-        params: buildParams(),
-      });
-      setPlans(data);
-    } catch (err) {
-      console.error("fetch cloud plans:", err);
-      setPlans([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [regions, cpuMax, ramMax, budget]);
-
   useEffect(() => {
-    fetchPlans();
-  }, [fetchPlans]);
+    const fetchPlans = async () => {
+      setLoading(true);
+      try {
+        const params: Record<string, any> = {
+          cpu_max: cpuMax,
+          ram_max: ramMax,
+          slug,
+        };
+        if (selectedRegions.length)
+          params.location = selectedRegions.join(",");
+        const { min, max } = budgetRange[budget];
+        if (min != null) params.min_price = min;
+        if (max != null) params.max_price = max;
 
-  /* Toggle region */
+        const { data } = await axiosInstance.get<ApiPlan[]>("/plans", { params });
+        setPlans(data);
+      } catch (err: unknown) {
+        console.error("fetch cloud plans:", err);
+        setPlans([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlans();
+  }, [selectedRegions, cpuMax, ramMax, budget]);
+
   const handleRegionToggle = (region: string, checked: boolean) => {
     setSelectedRegions((prev) =>
       checked ? [...prev, region] : prev.filter((r) => r !== region)
     );
   };
-  /* UI transform (+ custom card) */
-  const uiPlans = [
-    ...plans.map((p) => ({
-      id: p._id,
-      title: p.name,
-      description: p.slug,
-      cpu: p.cpu,
-      ram: p.ram,
-      storage: p.storage,
-      transfer: p.bandwidth,
-      price: `$${p.price}`,
-      badge: p.badge,
-      os: p.os_options.length ? p.os_options : ["Ubuntu"],
-      custom: false,
-    })),
-    {
-      id: "custom",
-      title: "Custom",
-      description: "Need something special?",
-      cpu: "",
-      ram: "",
-      storage: "",
-      transfer: "",
-      price: "",
-      badge: undefined,
-      os: [],
-      custom: true,
-    },
-  ];
 
   const handleBuyNow = async (planId: string) => {
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-      // ✅ Check if user is null or invalid
       if (!user || !user.id) {
         Swal.fire({
           icon: "warning",
@@ -191,11 +150,17 @@ const router = useRouter();
         text: res.data.message || "Your order has been created.",
         confirmButtonColor: "#FD5D07",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        (error as any).response?.data?.message;
+
       Swal.fire({
         icon: "error",
         title: "Order Failed",
-        text: error?.response?.data?.message || "Something went wrong while placing your order.",
+        text: message || "Something went wrong while placing your order.",
         confirmButtonColor: "#FD5D07",
       });
     }
