@@ -95,7 +95,7 @@ export default function LoginPage() {
   const slides: SlideData[] = [
     {
       title: "Lightning Fast",
-      subtitle: "Web Hosting",
+      subtitle: "WebHosting",
       description:
         "Experience blazing-fast performance with our premium SSD hosting.",
       buttonText: "Start Hosting",
