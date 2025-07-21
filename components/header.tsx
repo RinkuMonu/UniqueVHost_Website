@@ -304,9 +304,9 @@ const pathname = location.pathname;
                   >
                     <div
                       className={cn(
-                        "grid gap-6",
+                        "md:grid gap-6",
                         link.type === "mega-server"
-                          ? "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-1"
+                          ? ":grid-cols-1 md:grid-cols-2 lg:grid-cols-1"
                           : "grid-cols-2"
                       )}
                     >
@@ -380,7 +380,7 @@ export default function Header() {
       className={cn(
         "w-full transition-all duration-300 ease-in-out",
         isSticky &&
-          "fixed top-0 left-0 right-0 z-[99] bg-white shadow-sm-custom"
+          "md:fixed top-0 left-0 right-0 z-[99] bg-white shadow-sm-custom"
       )}
     >
       {!isSticky && <HeaderTop />}
