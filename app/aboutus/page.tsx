@@ -145,7 +145,6 @@ export default function Page() {
           </div>
         </div>
       </section>
-
       <section className="rts-team-area py-24 body-bg-2">
         <div className="container">
           <div className="rts-section-title-area">
