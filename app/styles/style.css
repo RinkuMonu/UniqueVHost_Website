@@ -10520,7 +10520,14 @@
   }
   .rts-header.style-five .rts-header__wrapper .rts-header__menu .elitehost-menu .elitehost-desktop-menu .menu-item .elitehost-dropdown-main-element:after {
     background: var(--btc);
+
   }
+  .navactive:active{
+        color:var(--primary);
+  }
+  .header-active{
+  color:#FD5D07 !important;
+}
   .rts-header.style-five .rts-header__wrapper .rts-header__right .login__btn {
     background: var(--color-primary);
     border-radius: 4px;
@@ -10720,7 +10727,7 @@
   }
   .elitehost-menu .elitehost-desktop-menu .menu-item .elitehost-dropdown-main-element::after,
   .elitehost-menu .elitehost-desktop-menu .menu-item .main-element::after {
-    content: "";
+    /* content: ""; */
     position: absolute;
     width: 0%;
     height: 2px;

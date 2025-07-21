@@ -17,6 +17,7 @@ import "@/app/styles/style.css";
 import "@/app/styles/header.css";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { useLocation } from "react-use";
 
 // Define TypeScript interfaces
 interface NavLinkBase {
@@ -256,6 +257,8 @@ interface HeaderMainProps {
 }
 
 const HeaderMain = ({ isSticky }: HeaderMainProps) => {
+  const location = useLocation();
+const pathname = location.pathname;
   return (
     <div className={cn("bg-white", isSticky ? "shadow-sm-custom" : "")}>
       <div className="container mx-auto rts-header__menu px-4 flex gap-3 items-center lg:py-0">
@@ -277,7 +280,12 @@ const HeaderMain = ({ isSticky }: HeaderMainProps) => {
               >
                 <Link
                   href={link.href}
-                  className="elitehost-dropdown-main-element flex items-center py-6 relative"
+                   className={cn(
+    "elitehost-dropdown-main-element flex items-center py-6 relative",
+   pathname === link.href 
+      ? "header-active font-semibold"
+      : ""
+  )}
                   style={{ display: "flex", gap: "5px" }}
                 >
                   {link.name}
@@ -298,7 +306,7 @@ const HeaderMain = ({ isSticky }: HeaderMainProps) => {
                       className={cn(
                         "grid gap-6",
                         link.type === "mega-server"
-                          ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-1"
+                          ? "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-1"
                           : "grid-cols-2"
                       )}
                     >

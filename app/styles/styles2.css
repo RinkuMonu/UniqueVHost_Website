@@ -12056,7 +12056,7 @@ xclip
   color: var(--color-white);
 }
 .elitehost-menu .elitehost-desktop-menu .elitehost-has-dropdown:hover .elitehost-dropdown-main-element::after {
-  width: 100%;
+  /* width: 100%; */
 }
 .elitehost-menu .elitehost-desktop-menu .elitehost-has-dropdown:hover .elitehost-submenu {
   visibility: visible;
