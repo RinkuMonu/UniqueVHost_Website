@@ -486,7 +486,7 @@ export default function LoginPage() {
                     Email
                   </Label>
                   <div className="relative group">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    <User className="absolute right-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                     <Input
                       id="username"
                       name="username"
@@ -506,7 +506,7 @@ export default function LoginPage() {
                     Password
                   </Label>
                   <div className="relative group">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                    {/* <Lock className="absolute right-14 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 group-focus-within:text-orange-500 transition-colors" /> */}
                     <Input
                       id="password"
                       name="new-password"
