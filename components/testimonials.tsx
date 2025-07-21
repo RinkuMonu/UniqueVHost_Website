@@ -80,7 +80,7 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <SwiperSlide key={i}>
               <div className="bg-white/40 backdrop-blur-xl border border-white/20 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1 h-full flex flex-col">
-                <p className="text-gray-800 italic mb-6">"{t.content}"</p>
+                <p className="text-gray-800 italic mb-6">{t.content}</p>
                 <div className="flex items-center mt-auto">
                   <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500 mr-4">
                     <Image src={t.authorImg} alt={t.name} width={48} height={48} />

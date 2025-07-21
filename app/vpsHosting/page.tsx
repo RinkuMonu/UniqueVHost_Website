@@ -1,8 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+
 import Image from "next/image";
 import AdditionalServices from "@/components/AdditionalServices";
 import Plans from "@/components/Plans";
+import AdditionalHighlights from "@/components/AdditionalHighlights";
+import CallToActionBanner from "@/components/CallToActionBanner";
+import ClientTestimonials from "@/components/ClientTestimonials";
+import LatestBlogUpdates from "@/components/LatestBlogUpdates";
 import "@/app/styles/style.css";
 import "@/app/styles/plug.css";
 import "@/app/styles/bootstrap.css";
@@ -14,13 +18,16 @@ import "@/app/styles/mobile.css";
 import "@/app/styles/site-elements.css";
 import "@/app/styles/reset.css";
 import "@/app/styles/typography.css";
-import AdditionalHighlights from "@/components/AdditionalHighlights";
-import CallToActionBanner from "@/components/CallToActionBanner";
-import ClientTestimonials from "@/components/ClientTestimonials";
-import LatestBlogUpdates from "@/components/LatestBlogUpdates";
+
+// Define TypeScript interface for feature items
+interface FeatureItem {
+  icon: string;
+  title: string;
+  description: string;
+}
 
 const Page = () => {
-  const features = [
+  const features: FeatureItem[] = [
     {
       icon: "/images/feature/feature-01.svg",
       title: "Free WHM & cPanel",
@@ -69,6 +76,7 @@ const Page = () => {
               width={350}
               height={350}
               className="rounded-xl transition-transform hover:scale-105"
+              priority
             />
           </div>
         </div>
@@ -111,9 +119,19 @@ const Page = () => {
       </section>
 
       {/* Additional Services */}
-      <AdditionalServices />
+       <AdditionalServices onSelectionChange={() => {}} />
 
+      {/* Additional Highlights */}
+      <AdditionalHighlights />
 
+      {/* Call to Action Banner */}
+      <CallToActionBanner />
+
+      {/* Client Testimonials */}
+      <ClientTestimonials />
+
+      {/* Latest Blog Updates */}
+      <LatestBlogUpdates />
     </>
   );
 };

@@ -10,7 +10,7 @@ export default function EliteHostFeatureArea() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 inline-block border-b-4 border-amber-500 pb-2">
-            Why you'll love hosting with Elitehost
+            Why you Will love hosting with Elitehost
           </h2>
           <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
             Enjoy blazing-fast performance, industry-leading security, and support you can always count on — all at an affordable price.

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import AdditionalServices from "@/components/AdditionalServices";
@@ -109,7 +109,7 @@ const Page = () => {
       </section>
 
       {/* Additional Services */}
-      <AdditionalServices />
+     <AdditionalServices onSelectionChange={() => {}} />
     </>
   );
 };

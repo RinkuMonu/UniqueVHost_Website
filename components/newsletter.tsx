@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import "@/app/styles/style.css";
 import "@/app/styles/plug.css";
 import "@/app/styles/bootstrap.css";
@@ -9,17 +9,21 @@ import "@/app/styles/header.css";
 import "@/app/styles/nav.css";
 import "@/app/styles/forms.css";
 import "@/app/styles/mobile.css"; 
-import '@/app/styles/site-elements.css'
+import "@/app/styles/site-elements.css";
 import "@/app/styles/reset.css";
-import "@/app/styles/typography.css"
-export default function Newsletter() {
-  const [email, setEmail] = useState("");
+import "@/app/styles/typography.css";
 
-  const handleSubmit = (e : any) => {
+export default function Newsletter() {
+  const [email, setEmail] = useState<string>("");
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 👉 Replace this with your API call or logic
     console.log("Subscribed with email:", email);
     setEmail("");
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   return (
@@ -36,8 +40,8 @@ export default function Newsletter() {
                   placeholder="Enter your email"
                   required
                   value={email}
-                  onChange={(e : any) => setEmail(e.target.value)}
-                  className="w-full "
+                  onChange={handleChange}
+                  className="w-full"
                 />
                 <button type="submit" className="btn__two secondary__bg secondary__color">
                   Subscribe

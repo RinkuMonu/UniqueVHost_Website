@@ -1,10 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Faqs from "@/components/faqs";
-import LatestBlog from "@/components/latestblog";
-import Testimonials from "@/components/testimonials";
+import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Plans from "@/components/Plans";
 import "@/app/styles/style.css";
 import "@/app/styles/plug.css";
 import "@/app/styles/bootstrap.css";
@@ -16,38 +13,23 @@ import "@/app/styles/mobile.css";
 import "@/app/styles/site-elements.css";
 import "@/app/styles/reset.css";
 import "@/app/styles/typography.css";
-import AdditionalServices from "@/components/AdditionalServices";
-import axiosInstance from "../AxiosInstance/axiosInstance";
-import Plans from "@/components/Plans";
 
-
+// Define TypeScript interfaces
+interface HostingOption {
+  icon: string;
+  title: string;
+  description: string;
+  link: string;
+}
 
 const SharedHostingPage = () => {
-  const [sharedHostingPlan, setSharedHostingPlan] = useState([]);
-
-
-  // useEffect(() => {
-  //   const fetchPlan = async () => {
-  //     try {
-  //       const response = await axiosInstance.get("/plans/slug/sharedHosting");
-  //       console.log(response)
-  //       setSharedHostingPlan(response.data || []);
-  //       console.log("Shared Hosting Plan:", response.data?.plans);
-  //     } catch (error) {
-  //       console.error("Failed to fetch shared hosting plan", error);
-  //     }
-  //   };
-
-  //   fetchPlan();
-  // }, []);
-
   const features = [
     "Data Backup and Recovery",
     "Integration with Other Services",
     "Performance and Speed",
   ];
 
-  const hostingOptions = [
+  const hostingOptions: HostingOption[] = [
     {
       icon: "/images/hosting/01.svg",
       title: "Free SSL Certificates",
@@ -94,12 +76,13 @@ const SharedHostingPage = () => {
             </p>
           </div>
           <div className="flex justify-center">
-            <img
+            <Image
               src="/images/banner/breadcrumb-01.webp"
               alt="Shared Hosting Banner"
-              className=" rounded-xl transition-transform hover:scale-105"
+              className="rounded-xl transition-transform hover:scale-105"
               width={500}
               height={500}
+              priority
             />
           </div>
         </div>
@@ -113,51 +96,15 @@ const SharedHostingPage = () => {
         </div>
       </div>
 
-      {/* Plans Card Section */}
-      <div className="bg-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
-              Our Plans
-            </h2> */}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {sharedHostingPlan.map((plan, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl border border-gray-200 p-6 text-center shadow hover:shadow-lg transition-all"
-              >
-                <h3 className="text-xl font-semibold text-[#001233] mb-2">
-                  {plan.name}
-                </h3>
-                <p className="text-sm text-[#4C5671] mb-4">
-                  Renews at ${plan.price}/month
-                </p>
-
-                <div className="text-3xl font-bold text-orange-500 mb-2">
-                  ${plan.price}
-                  <span className="text-lg font-medium text-[#001233]">
-                    /mo
-                  </span>
-                </div>
-
-                <button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-full transition-all">
-                  Get Started
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Hosting Feature Section */}
       <div className="bg-[#F9FAFB] py-20">
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
           <div className="rounded-xl overflow-hidden">
-            <img
+            <Image
               src="/images/feature/feature-hero-10.webp"
-              alt=""
+              alt="Hosting solutions illustration"
+              width={600}
+              height={400}
               className="w-full object-cover transition-transform hover:scale-105"
             />
           </div>
@@ -182,49 +129,42 @@ const SharedHostingPage = () => {
         </div>
       </div>
 
+      {/* Plans Section */}
       <Plans sharedHosting={"sharedHosting"} />
 
       {/* Hosting Options Cards */}
-      <div className="">
-        <div className=" mx-auto">
-          <div className="text-center">
-            {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
-              Shared Hosting Feature
-            </h2> */}
+      <div className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#001233]">
+              Shared Hosting Features
+            </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {sharedHostingPlan.map((item, idx) => (
+            {hostingOptions.map((item, idx) => (
               <div
                 key={idx}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl p-6 text-center transition-all hover:-translate-y-2"
+                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl p-6 text-center transition-all hover:-translate-y-2 border border-gray-100"
               >
                 <div className="flex justify-center mb-4">
-                  <img
-                    src={item.icon}
-                    alt=""
-                    className="w-16 h-16 transition-transform group-hover:scale-110"
-                  />
+                  <div className="relative w-16 h-16">
+                    <Image
+                      src={item.icon}
+                      alt={item.title}
+                      fill
+                      className="transition-transform group-hover:scale-110"
+                    />
+                  </div>
                 </div>
-                {/* <Link
-                  href={item.link}
-                  className="text-lg font-semibold text-[#001233] hover:text-[#FD5D07] mb-2 block"
-                >
+                <h3 className="text-lg font-semibold text-[#001233] mb-2">
                   {item.title}
-                </Link> */}
+                </h3>
                 <p className="text-sm text-[#4C5671] mb-4">{item.description}</p>
-                {/* <Link
-                  href={item.link}
-                  className="inline-flex items-center px-4 py-2 border border-[#FD5D07] text-[#FD5D07] rounded-full hover:bg-[#FD5D07] hover:text-white transition-all"
-                >
-                  View Details <i className="fa-regular fa-long-arrow-right ml-2"></i>
-                </Link> */}
               </div>
             ))}
           </div>
         </div>
       </div>
-
-      {/* <AdditionalServices /> */}
     </div>
   );
 };

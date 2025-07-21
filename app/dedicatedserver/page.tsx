@@ -83,23 +83,43 @@ export default function DedicatedServersPage() {
   const [plans, setPlans] = useState<ApiPlan[]>([]);
   const [loading, setLoading] = useState(true);
 
-  /* -------- build query params from filters -------- */
-  const buildParams = () => {
-    const params: Record<string, any> = {
-      cpu_max: cpuMax,
-      ram_max: ramMax,
-      slug: slug,
-    };
-    if (selectedRegions.length)
-      params.location = selectedRegions.join(",");
-    const { min, max } = budgetToRange[budget];
-    if (min != null) params.min_price = min;
-    if (max != null) params.max_price = max;
-    return params;
+  /* -------- fetch plans whenever filters change -------- */
+  
+  const fetchPlans = useCallback(async () => {
+    // Moved buildParams inside the callback to avoid dependency issues
+  const buildParams = (): {
+  cpu_max: number;
+  ram_max: number;
+  slug: string;
+  location?: string;
+  min_price?: number;
+  max_price?: number;
+} => {
+  const params = {
+    cpu_max: cpuMax,
+    ram_max: ramMax,
+    slug: slug,
+  } as {
+    cpu_max: number;
+    ram_max: number;
+    slug: string;
+    location?: string;
+    min_price?: number;
+    max_price?: number;
   };
 
-  /* -------- fetch plans whenever filters change -------- */
-  const fetchPlans = useCallback(async () => {
+  if (selectedRegions.length) {
+    params.location = selectedRegions.join(",");
+  }
+
+  const { min, max } = budgetToRange[budget];
+  if (min != null) params.min_price = min;
+  if (max != null) params.max_price = max;
+
+  return params;
+};
+
+
     setLoading(true);
     try {
       const { data } = await axiosInstance.get<ApiPlan[]>("/plans", {
@@ -157,7 +177,7 @@ export default function DedicatedServersPage() {
 
 const handleBuyNow = async (planId: string) => {
   try {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
 
     // ✅ Show alert if user not logged in
     if (!user || !user.id) {
@@ -190,11 +210,23 @@ const handleBuyNow = async (planId: string) => {
       text: res.data.message || "Your server has been deployed.",
       confirmButtonColor: "#FD5D07",
     });
-  } catch (err: any) {
+  } catch (err) {
+    let errorMessage = "Could not complete the order.";
+    
+    // Type-safe error handling
+    if (typeof err === "object" && err !== null) {
+      if ("response" in err) {
+        const axiosError = err as { response?: { data?: { message?: string } } };
+        errorMessage = axiosError.response?.data?.message || errorMessage;
+      } else if ("message" in err) {
+        errorMessage = (err as Error).message;
+      }
+    }
+
     Swal.fire({
       icon: "error",
       title: "Failed",
-      text: err?.response?.data?.message || "Could not complete the order.",
+      text: errorMessage,
       confirmButtonColor: "#FD5D07",
     });
   }
@@ -203,8 +235,7 @@ const handleBuyNow = async (planId: string) => {
   /* -------------------------------------------------------- */
   return (
     <div className="min-h-screen  text-[#4C5671]">
-      {/* ---------------- Hero Section (unchanged) ---------------- */}
-      {/* (kept exactly as in your original code) */}
+      {/* ---------------- Hero Section ---------------- */}
       <div className="relative bg-[#FFF8F4] py-24 overflow-hidden">
         <div className="absolute -top-32 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
         <div className="absolute -bottom-32 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
@@ -245,12 +276,12 @@ const handleBuyNow = async (planId: string) => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* ---------------- Sidebar Filters ---------------- */}
           <div className="lg:col-span-1">
-            {/* (Only filter card is shown below, so sidebar placeholder empty) */}
+            {/* (Only filter card is shown below) */}
           </div>
 
           {/* ---------------- Plans Grid ---------------- */}
           <div className="lg:col-span-3 grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {/* ---------------- Filter Card (unchanged markup) ---------------- */}
+            {/* ---------------- Filter Card ---------------- */}
             <Card className="sticky top-24 bg-white rounded-xl shadow-xl border-0 overflow-hidden transition-all duration-300">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-[#001233]">
@@ -500,8 +531,7 @@ const handleBuyNow = async (planId: string) => {
           </div>
         </div>
 
-        {/* ---------------- Features Section (unchanged) ---------------- */}
-        {/* (kept exactly as in your original file) */}
+        {/* ---------------- Features Section ---------------- */}
         <div className="pt-20">
           <Card className="relative mt-12 bg-gradient-to-br from-[#FFF8F4] to-[#FFFFFF] rounded-2xl shadow-xl border-0 overflow-hidden">
             <div className="absolute -top-24 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>

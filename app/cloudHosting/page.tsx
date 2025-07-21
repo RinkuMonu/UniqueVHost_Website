@@ -102,7 +102,8 @@ const Page = () => {
       </section>
 
       {/* Additional Services Section */}
-      <AdditionalServices />
+    <AdditionalServices onSelectionChange={() => {}} />
+
     </>
   );
 };

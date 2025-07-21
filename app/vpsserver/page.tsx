@@ -27,14 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import {
-  Cpu,
-  HardDrive,
-  MemoryStick,
-  Globe,
-  Shield,
-  Zap,
-} from "lucide-react";
+import { Cpu, HardDrive, MemoryStick, Globe, Shield, Zap } from "lucide-react";
 
 /* -------------------- API response shape -------------------- */
 interface ApiPlan {
@@ -50,6 +43,20 @@ interface ApiPlan {
   isRecommended?: boolean;
 }
 
+interface UiPlan {
+  id: string;
+  title: string;
+  desc: string;
+  cpu: string;
+  ram: string;
+  disk: string;
+  transfer: string;
+  price: string;
+  badge: string | null;
+  os: string[];
+  custom: boolean;
+}
+
 /* -------------------- Filters helpers ----------------------- */
 const regionsList = [
   "US East (N. Virginia)",
@@ -57,7 +64,7 @@ const regionsList = [
   "EU West (Ireland)",
   "Asia Pacific (Singapore)",
   "Canada (Central)",
-];
+] as const;
 
 type BudgetKey = "all" | "under-50" | "50-100" | "100-200" | "over-200";
 
@@ -71,7 +78,6 @@ const budgetToRange: Record<BudgetKey, { min?: number; max?: number }> = {
 
 /* ------------------------------------------------------------ */
 export default function DedicatedServersPage() {
-
   const slug = "vpsserver";
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [cpuMax, setCpuMax] = useState(2);
@@ -82,13 +88,13 @@ export default function DedicatedServersPage() {
   const [loading, setLoading] = useState(true);
 
   const buildParams = () => {
-    const params: Record<string, any> = {
+    const params: Record<string, string | number> = {
       cpu_max: cpuMax,
       ram_max: ramMax,
       slug: slug,
     };
-    if (selectedRegions.length)
-      params.location = selectedRegions.join(",");
+
+    if (selectedRegions.length) params.location = selectedRegions.join(",");
     const { min, max } = budgetToRange[budget];
     if (min != null) params.min_price = min;
     if (max != null) params.max_price = max;
@@ -120,7 +126,7 @@ export default function DedicatedServersPage() {
     );
   };
 
-  const uiPlans = [
+  const uiPlans: UiPlan[] = [
     ...plans.map((p) => ({
       id: p._id,
       title: p.name,
@@ -151,11 +157,12 @@ export default function DedicatedServersPage() {
 
   const handleBuyNow = async (planId: string) => {
     try {
-      const user = JSON.parse(localStorage.getItem('user'));
+      const userString = localStorage.getItem("user");
+      const user = userString ? JSON.parse(userString) : null;
 
-      // 🔒 Check if user is logged in
+      // Check if user is logged in
       if (!user || !user.id) {
-        Swal.fire({
+        await Swal.fire({
           icon: "warning",
           title: "Login Required",
           text: "Please login first to place an order.",
@@ -165,10 +172,12 @@ export default function DedicatedServersPage() {
       }
 
       const payload = {
-        user_id: user.id, // Dummy user ID
+        user_id: user.id,
         plan_id: planId,
         start_date: new Date().toISOString(),
-        end_date: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
+        end_date: new Date(
+          new Date().setMonth(new Date().getMonth() + 1)
+        ).toISOString(),
         server_info: {
           ip: "192.168.1.100",
           panel: "cPanel",
@@ -176,26 +185,30 @@ export default function DedicatedServersPage() {
         },
       };
 
-      const res = await axiosInstance.post("/orders/order/createorder", payload);
+      const res = await axiosInstance.post(
+        "/orders/order/createorder",
+        payload
+      );
 
-      Swal.fire({
+      await Swal.fire({
         icon: "success",
         title: "Order Placed",
         text: res?.data?.message || "Your order has been successfully placed.",
         confirmButtonColor: "#FD5D07",
       });
-    } catch (err: any) {
-      Swal.fire({
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      await Swal.fire({
         icon: "error",
         title: "Order Failed",
-        text: err?.response?.data?.message || "Something went wrong.",
+        text: error?.response?.data?.message || "Something went wrong.",
         confirmButtonColor: "#FD5D07",
       });
     }
   };
 
   return (
-    <div className="min-h-screen  text-[#4C5671]">
+    <div className="min-h-screen text-[#4C5671]">
       <div className="relative bg-[#FFF8F4] py-24 overflow-hidden">
         <div className="absolute -top-32 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
         <div className="absolute -bottom-32 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
@@ -233,11 +246,10 @@ export default function DedicatedServersPage() {
 
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-          </div>
+          <div className="lg:col-span-1"></div>
 
           <div className="lg:col-span-3 grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {/* ---------------- Filter Card (unchanged markup) ---------------- */}
+            {/* ---------------- Filter Card ---------------- */}
             <Card className="sticky top-24 bg-white rounded-xl shadow-xl border-0 overflow-hidden transition-all duration-300">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-[#001233]">
@@ -261,7 +273,7 @@ export default function DedicatedServersPage() {
                         <Checkbox
                           checked={selectedRegions.includes(region)}
                           onCheckedChange={(checked) =>
-                            handleRegionToggle(region, Boolean(checked))
+                            handleRegionToggle(region, checked as boolean)
                           }
                           className="border-[#4C5671] data-[state=checked]:bg-[#FD5D07] rounded-full"
                         />
@@ -356,9 +368,10 @@ export default function DedicatedServersPage() {
                   className={`relative bg-white bg-gradient-to-br from-[#fff] via-[#fdf7f1] to-[#fff8f4]
                     rounded-2xl shadow-xl hover:shadow-2xl transition-all
                     hover:-translate-y-2 hover:scale-[1.02] border
-                    ${plan.badge === "Recommended"
-                      ? "border-[#FD5D07]"
-                      : "border-gray-200"
+                    ${
+                      plan.badge === "Recommended"
+                        ? "border-[#FD5D07]"
+                        : "border-gray-200"
                     }`}
                 >
                   {plan.badge && (
@@ -468,10 +481,11 @@ export default function DedicatedServersPage() {
                           });
                         }
                       }}
-                      className={`w-full ${plan.custom
-                        ? "bg-transparent border-[#FD5D07] text-[#FD5D07] hover:bg-[#FD5D07] hover:text-white"
-                        : "bg-[#FD5D07] text-white hover:bg-[#FD5D07]/90"
-                        }`}
+                      className={`w-full ${
+                        plan.custom
+                          ? "bg-transparent border-[#FD5D07] text-[#FD5D07] hover:bg-[#FD5D07] hover:text-white"
+                          : "bg-[#FD5D07] text-white hover:bg-[#FD5D07]/90"
+                      }`}
                       variant={plan.custom ? "outline" : "default"}
                     >
                       {plan.custom ? (
@@ -489,8 +503,7 @@ export default function DedicatedServersPage() {
           </div>
         </div>
 
-        {/* ---------------- Features Section (unchanged) ---------------- */}
-        {/* (kept exactly as in your original file) */}
+        {/* ---------------- Features Section ---------------- */}
         <div className="pt-20">
           <Card className="relative mt-12 bg-gradient-to-br from-[#FFF8F4] to-[#FFFFFF] rounded-2xl shadow-xl border-0 overflow-hidden">
             <div className="absolute -top-24 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>

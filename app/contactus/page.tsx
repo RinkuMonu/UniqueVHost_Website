@@ -1,12 +1,10 @@
-"use client"
-import React from 'react'
-import { MapPin, Mail, Phone, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button'
-import Newsletter from '@/components/newsletter';
+"use client";
+import React from "react";
+import { MapPin, Mail, Phone, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Newsletter from "@/components/newsletter";
 import Swal from "sweetalert2";
-import axios from "axios";
-import axiosInstance from '../AxiosInstance/axiosInstance';
-
+import axiosInstance from "../AxiosInstance/axiosInstance";
 
 function Page() {
   const [formData, setFormData] = React.useState({
@@ -23,10 +21,12 @@ function Page() {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    const { name, value, type, checked } = e.target;
+    const target = e.target as HTMLInputElement;
+    const { name, value, type } = target;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? target.checked : value,
     }));
   };
 
@@ -52,9 +52,13 @@ function Page() {
           },
         }
       );
-      console.log(response)
+      console.log(response);
       if (response.status == 201) {
-        Swal.fire("Success", "Your message has been sent successfully!", "success");
+        Swal.fire(
+          "Success",
+          "Your message has been sent successfully!",
+          "success"
+        );
         setFormData({
           name: "",
           email: "",
@@ -65,7 +69,9 @@ function Page() {
         });
       }
     } catch (error) {
-      Swal.fire("Error", "Failed to send your message.", "error");
+      const errMsg =
+        error instanceof Error ? error.message : "Something went wrong";
+      Swal.fire("Error", errMsg, "error");
     }
   };
 
@@ -83,9 +89,9 @@ function Page() {
               Contact Us
             </h1>
             <p className="text-lg md:text-xl text-[#313149] max-w-xl mb-8">
-              Experience unparalleled speed and reliability with our dedicated servers,
-              designed for demanding workloads and global reach. Deploy in minutes with
-              full root access.
+              Experience unparalleled speed and reliability with our dedicated
+              servers, designed for demanding workloads and global reach. Deploy
+              in minutes with full root access.
             </p>
             <div className="inline-block relative group">
               <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#FD5D07] to-[#FFB703] blur-xl opacity-60 transition-opacity group-hover:opacity-80 animate-pulse"></div>
@@ -109,7 +115,6 @@ function Page() {
         </div>
       </div>
 
-
       <section className="rts-contact-form no-bg pt-24">
         <div className="container">
           <div className="grid grid-cols-12 gap-4 pb-24 justify-content-sm-center">
@@ -121,7 +126,9 @@ function Page() {
                     <MapPin className="text-2xl" />
                   </div>
                   <div className="content w-220">
-                    <h5 className="info mb-0">123 Main Street, New York, AV 10013</h5>
+                    <h5 className="info mb-0">
+                      123 Main Street, New York, AV 10013
+                    </h5>
                   </div>
                 </div>
               </div>
@@ -136,8 +143,11 @@ function Page() {
                   </div>
                   <div className="content w-220">
                     <h5 className="info mb-0">
-                      <a href="mailto:info@elitehost.com">info@elitehost.com</a> <br />
-                      <a href="mailto:support@elitehost.com">support@elitehost.com</a>
+                      <a href="mailto:info@elitehost.com">info@elitehost.com</a>{" "}
+                      <br />
+                      <a href="mailto:support@elitehost.com">
+                        support@elitehost.com
+                      </a>
                     </h5>
                   </div>
                 </div>
@@ -170,7 +180,8 @@ function Page() {
                   </div>
                   <div className="content w-220">
                     <h5 className="info mb-0">
-                      Mon-Fri: 9 AM – 6 PM<br />
+                      Mon-Fri: 9 AM – 6 PM
+                      <br />
                       Saturday: 9 AM – 4 PM
                     </h5>
                   </div>
@@ -269,7 +280,9 @@ function Page() {
                       to elitehost and its family of brands contacting you.
                     </label>
                   </div>
-                  <button type="submit" className="submit__btn mt-6">Submit Now</button>
+                  <button type="submit" className="submit__btn mt-6">
+                    Submit Now
+                  </button>
                 </form>
                 <div id="form-messages"></div>
               </div>
@@ -280,7 +293,7 @@ function Page() {
 
       <Newsletter />
     </>
-  )
+  );
 }
 
-export default Page
+export default Page;

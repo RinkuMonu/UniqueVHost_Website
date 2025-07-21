@@ -157,8 +157,8 @@ const BlogsDetails = () => {
                       pariatur.
                     </p>
                     <blockquote className="border-l-4 border-[#FD5D07] pl-6 py-4 my-6 bg-[#FFF8F4] rounded-r-lg italic text-[#001233]">
-                      "The barbershop has always been more than just a place for haircuts - it's a community
-                      cornerstone where stories are shared and bonds are formed."
+                      The barbershop has always been more than just a place for haircuts - its a community
+                      cornerstone where stories are shared and bonds are formed.
                     </blockquote>
                     <p>
                       Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.

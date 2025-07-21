@@ -1,0 +1,51 @@
+name: Deploy React App to CWP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies & Build
+        run: |
+          npm install
+          npm run build  # Vite will output to `out/`
+
+      - name: Zip build files
+        run: |
+          tar -czvf out.tar.gz -C out .
+
+      - name: Copy Zip to Server via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22527
+          source: "out.tar.gz"
+          target: "/home/uniquev/"
+
+      - name: Unzip files on Server via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22527
+          script: |
+            rm -rf /home/uniquev/public_html/*
+            mkdir -p /home/uniquev/public_html
+            tar -xzvf /home/uniquev/out.tar.gz -C /home/uniquev/public_html
+            rm /home/uniquev/out.tar.gz

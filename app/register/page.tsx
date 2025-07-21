@@ -1,16 +1,22 @@
-"use client"
+"use client";
 
-import type React from "react"
-import "./style.css"
-import { useState, useEffect } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import type React from "react";
+import "./style.css";
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import axiosInstance from "@/app/AxiosInstance/axiosInstance";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Eye,
   EyeOff,
@@ -30,35 +36,33 @@ import {
   Phone,
   Building,
   MapPin,
-  UserCheck,
-} from "lucide-react"
-import { Router } from "next/router"
+} from "lucide-react";
 
 interface SlideData {
-  title: string
-  subtitle: string
-  description: string
-  buttonText: string
-  illustration: React.ReactNode
-  bgGradient: string
-  accentColor: string
+  title: string;
+  subtitle: string;
+  description: string;
+  buttonText: string;
+  illustration: React.ReactNode;
+  bgGradient: string;
+  accentColor: string;
 }
 
 interface FormData {
-  name: string
-  email: string
-  password: string
-  phone: string
-  company_name: string
-  address: string
-  role: string
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  company_name: string;
+  address: string;
+  role: string;
 }
 
 export default function RegisterForm() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -67,7 +71,7 @@ export default function RegisterForm() {
     company_name: "",
     address: "",
     role: "",
-  })
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +86,7 @@ export default function RegisterForm() {
         title: "Account Created",
         text: "Registration successful!",
         confirmButtonText: "Go to Login",
-        allowOutsideClick: false
+        allowOutsideClick: false,
       }).then((result) => {
         if (result.isConfirmed) {
           router.push("/login");
@@ -99,14 +103,20 @@ export default function RegisterForm() {
         address: "",
         role: "",
       });
+    } catch (error: unknown) {
+      let errorMessage = "Something went wrong!";
 
-    } catch (error: any) {
-      console.error("Registration error:", error.response?.data || error.message);
+      if (typeof error === "object" && error !== null && "response" in error) {
+        const err = error as { response?: { data?: { message?: string } } };
+        errorMessage = err.response?.data?.message || errorMessage;
+      }
+
+      console.error("Registration error:", error);
 
       Swal.fire({
         icon: "error",
         title: "Registration Failed",
-        text: error.response?.data?.message || "Something went wrong!",
+        text: errorMessage,
       });
     }
   };
@@ -132,7 +142,10 @@ export default function RegisterForm() {
               {/* Server Racks */}
               <div className="absolute inset-4 space-y-3">
                 {[...Array(5)].map((_, i) => (
-                  <div key={i} className="h-5 bg-white/20 rounded-lg flex items-center px-3 relative overflow-hidden">
+                  <div
+                    key={i}
+                    className="h-5 bg-white/20 rounded-lg flex items-center px-3 relative overflow-hidden"
+                  >
                     <div
                       className="absolute inset-0 bg-gradient-to-r from-green-400/30 to-blue-400/30 animate-pulse"
                       style={{ animationDelay: `${i * 200}ms` }}
@@ -166,8 +179,7 @@ export default function RegisterForm() {
     {
       title: "Scalable Cloud",
       subtitle: "Infrastructure",
-      description:
-        "Scale effortlessly with our advanced cloud platform. ",
+      description: "Scale effortlessly with our advanced cloud platform. ",
       buttonText: "Go Cloud",
       bgGradient: "from-[#FD5D07] via-[#FF6B35] to-red-500",
       accentColor: "from-blue-400 to-purple-500",
@@ -177,9 +189,20 @@ export default function RegisterForm() {
           <div className="relative">
             {/* Main Cloud */}
             <div className="relative">
-              <svg width="240" height="160" viewBox="0 0 240 160" className="drop-shadow-2xl">
+              <svg
+                width="240"
+                height="160"
+                viewBox="0 0 240 160"
+                className="drop-shadow-2xl"
+              >
                 <defs>
-                  <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient
+                    id="cloudGrad"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
                     <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
                     <stop offset="100%" stopColor="rgba(255,255,255,0.2)" />
                   </linearGradient>
@@ -233,8 +256,7 @@ export default function RegisterForm() {
     {
       title: "Secure Domain",
       subtitle: "Management",
-      description:
-        "Manage all your domains with enterprise-grade security. ",
+      description: "Manage all your domains with enterprise-grade security. ",
       buttonText: "Secure Now",
       bgGradient: "from-[#FD5D07] via-orange-500 to-red-600",
       accentColor: "from-green-400 to-emerald-500",
@@ -281,19 +303,19 @@ export default function RegisterForm() {
         </div>
       ),
     },
-  ]
+  ];
 
   // Enhanced auto-advance with transition effect
   useEffect(() => {
     const timer = setInterval(() => {
-      setIsTransitioning(true)
+      setIsTransitioning(true);
       setTimeout(() => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length)
-        setIsTransitioning(false)
-      }, 300)
-    }, 6000)
-    return () => clearInterval(timer)
-  }, [slides.length])
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+        setIsTransitioning(false);
+      }, 300);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   // const handleSubmit = (e: React.FormEvent) => {
   //   e.preventDefault()
@@ -305,31 +327,29 @@ export default function RegisterForm() {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
-  }
+    }));
+  };
 
   const changeSlide = (index: number) => {
     if (index !== currentSlide) {
-      setIsTransitioning(true)
+      setIsTransitioning(true);
       setTimeout(() => {
-        setCurrentSlide(index)
-        setIsTransitioning(false)
-      }, 300)
+        setCurrentSlide(index);
+        setIsTransitioning(false);
+      }, 300);
     }
-  }
+  };
 
   const nextSlide = () => {
-    changeSlide((currentSlide + 1) % slides.length)
-  }
+    changeSlide((currentSlide + 1) % slides.length);
+  };
 
   const prevSlide = () => {
-    changeSlide((currentSlide - 1 + slides.length) % slides.length)
-  }
+    changeSlide((currentSlide - 1 + slides.length) % slides.length);
+  };
 
   return (
-    <div
-      className={`min-h-screen flex transition-all duration-1000`}
-    >
+    <div className={`min-h-screen flex transition-all duration-1000`}>
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Particles */}
@@ -381,19 +401,27 @@ export default function RegisterForm() {
         {/* Enhanced Slide Content */}
         <div className="relative z-10 px-6 flex flex-col justify-center  h-full">
           <div
-            className={`mb-16 transition-all duration-500 ${isTransitioning ? "opacity-0 transform translate-y-8" : "opacity-100 transform translate-y-0"}`}
+            className={`mb-16 transition-all duration-500 ${
+              isTransitioning
+                ? "opacity-0 transform translate-y-8"
+                : "opacity-100 transform translate-y-0"
+            }`}
           >
             <div className="mb-8">
               <div
                 className={`inline-flex items-center gap-3 bg-gradient-to-r ${slides[currentSlide].accentColor} px-4 py-2 rounded-full mb-6 shadow-lg`}
               >
                 <Sparkles className="h-5 w-5  animate-spin-slow" />
-                <span className=" font-semibold text-sm uppercase tracking-wider">Premium</span>
+                <span className=" font-semibold text-sm uppercase tracking-wider">
+                  Premium
+                </span>
               </div>
               <h1 className="text-6xl font-bold leading-tight mb-4">
                 {slides[currentSlide].title}
               </h1>
-              <h2 className="text-4xl font-semibold  mb-8">{slides[currentSlide].subtitle}</h2>
+              <h2 className="text-4xl font-semibold  mb-8">
+                {slides[currentSlide].subtitle}
+              </h2>
             </div>
 
             <p className="text-xl  leading-relaxed max-w-lg mb-10 font-light">
@@ -415,8 +443,11 @@ export default function RegisterForm() {
               <button
                 key={index}
                 onClick={() => changeSlide(index)}
-                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${index === currentSlide ? "w-12 bg-black shadow-lg" : "w-6 bg-black/40 hover:bg-black/60"
-                  }`}
+                className={`h-2 rounded-full transition-all duration-500 relative overflow-hidden ${
+                  index === currentSlide
+                    ? "w-12 bg-black shadow-lg"
+                    : "w-6 bg-black/40 hover:bg-black/60"
+                }`}
               >
                 {index === currentSlide && (
                   <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black animate-pulse"></div>
@@ -444,7 +475,11 @@ export default function RegisterForm() {
 
         {/* Enhanced Illustration Area */}
         <div
-          className={`absolute bottom-20 right-20 w-72 h-56 transition-all duration-700 ${isTransitioning ? "opacity-0 transform scale-95 rotate-3" : "opacity-100 transform scale-100 rotate-0"}`}
+          className={`absolute bottom-20 right-20 w-72 h-56 transition-all duration-700 ${
+            isTransitioning
+              ? "opacity-0 transform scale-95 rotate-3"
+              : "opacity-100 transform scale-100 rotate-0"
+          }`}
         >
           {slides[currentSlide].illustration}
         </div>
@@ -459,18 +494,31 @@ export default function RegisterForm() {
           {/* Enhanced Mobile Slider */}
           <div className="lg:hidden mb-10">
             <div className="bg-white/10 backdrop-blur-xl p-8 rounded-3xl mb-8 border border-white/20 text-white text-center shadow-2xl">
-              <div className={`transition-all duration-500 ${isTransitioning ? "opacity-0" : "opacity-100"}`}>
-                <h2 className="text-2xl font-bold mb-4">{slides[currentSlide].title}</h2>
-                <h3 className="text-xl font-semibold mb-4">{slides[currentSlide].subtitle}</h3>
-                <p className="text-white/90 text-sm mb-6 leading-relaxed">{slides[currentSlide].description}</p>
+              <div
+                className={`transition-all duration-500 ${
+                  isTransitioning ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                <h2 className="text-2xl font-bold mb-4">
+                  {slides[currentSlide].title}
+                </h2>
+                <h3 className="text-xl font-semibold mb-4">
+                  {slides[currentSlide].subtitle}
+                </h3>
+                <p className="text-white/90 text-sm mb-6 leading-relaxed">
+                  {slides[currentSlide].description}
+                </p>
               </div>
               <div className="flex justify-center gap-3">
                 {slides.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => changeSlide(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? "w-8 bg-white" : "w-4 bg-white/40"
-                      }`}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      index === currentSlide
+                        ? "w-8 bg-white"
+                        : "w-4 bg-white/40"
+                    }`}
                   />
                 ))}
               </div>
@@ -490,11 +538,12 @@ export default function RegisterForm() {
             <CardContent className="px-10 relative">
               {/* Enhanced Greeting */}
               <div className="mb-6 ">
-
                 <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
                   Join Us!
                 </h2>
-                <p className="text-xl text-gray-600 font-medium">Create your hosting account</p>
+                <p className="text-xl text-gray-600 font-medium">
+                  Create your hosting account
+                </p>
               </div>
 
               {/* Enhanced Registration Form */}
@@ -502,7 +551,10 @@ export default function RegisterForm() {
                 <div className="grid grid-cols-2 gap-4">
                   {/* Name Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-gray-700 font-semibold text-lg">
+                    <Label
+                      htmlFor="name"
+                      className="text-gray-700 font-semibold text-lg"
+                    >
                       Full Name
                     </Label>
                     <div className="relative group">
@@ -512,7 +564,9 @@ export default function RegisterForm() {
                         type="text"
                         placeholder="Enter your full name"
                         value={formData.name}
-                        onChange={(e) => handleInputChange("name", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("name", e.target.value)
+                        }
                         className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                         required
                       />
@@ -521,7 +575,10 @@ export default function RegisterForm() {
 
                   {/* Email Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-gray-700 font-semibold text-lg">
+                    <Label
+                      htmlFor="email"
+                      className="text-gray-700 font-semibold text-lg"
+                    >
                       Email Address
                     </Label>
                     <div className="relative group">
@@ -531,7 +588,9 @@ export default function RegisterForm() {
                         type="email"
                         placeholder="Enter your email"
                         value={formData.email}
-                        onChange={(e) => handleInputChange("email", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
+                        }
                         className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                         required
                       />
@@ -540,7 +599,10 @@ export default function RegisterForm() {
 
                   {/* Password Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-gray-700 font-semibold text-lg">
+                    <Label
+                      htmlFor="password"
+                      className="text-gray-700 font-semibold text-lg"
+                    >
                       Password
                     </Label>
                     <div className="relative group">
@@ -550,7 +612,9 @@ export default function RegisterForm() {
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a strong password"
                         value={formData.password}
-                        onChange={(e) => handleInputChange("password", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("password", e.target.value)
+                        }
                         className="pl-12 pr-14 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                         required
                       />
@@ -559,14 +623,21 @@ export default function RegisterForm() {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors p-2"
                       >
-                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
                       </button>
                     </div>
                   </div>
 
                   {/* Phone Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-gray-700 font-semibold text-lg">
+                    <Label
+                      htmlFor="phone"
+                      className="text-gray-700 font-semibold text-lg"
+                    >
                       Phone Number
                     </Label>
                     <div className="relative group">
@@ -576,7 +647,9 @@ export default function RegisterForm() {
                         type="tel"
                         placeholder="Enter your phone number"
                         value={formData.phone}
-                        onChange={(e) => handleInputChange("phone", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("phone", e.target.value)
+                        }
                         className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                         required
                       />
@@ -585,7 +658,10 @@ export default function RegisterForm() {
 
                   {/* Company Name Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="company_name" className="text-gray-700 font-semibold text-lg">
+                    <Label
+                      htmlFor="company_name"
+                      className="text-gray-700 font-semibold text-lg"
+                    >
                       Company Name
                     </Label>
                     <div className="relative group">
@@ -595,7 +671,9 @@ export default function RegisterForm() {
                         type="text"
                         placeholder="Enter your company name"
                         value={formData.company_name}
-                        onChange={(e) => handleInputChange("company_name", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("company_name", e.target.value)
+                        }
                         className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                         required
                       />
@@ -604,7 +682,10 @@ export default function RegisterForm() {
 
                   {/* Address Field */}
                   <div className="space-y-2">
-                    <Label htmlFor="address" className="text-gray-700 font-semibold text-lg">
+                    <Label
+                      htmlFor="address"
+                      className="text-gray-700 font-semibold text-lg"
+                    >
                       Address
                     </Label>
                     <div className="relative group">
@@ -614,22 +695,32 @@ export default function RegisterForm() {
                         type="text"
                         placeholder="Enter your address"
                         value={formData.address}
-                        onChange={(e) => handleInputChange("address", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("address", e.target.value)
+                        }
                         className="pl-12 h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl"
                         required
                       />
                     </div>
                   </div>
                   {/* Role Field */}
-
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="role" className="text-gray-700 font-semibold text-lg ">
+                  <Label
+                    htmlFor="role"
+                    className="text-gray-700 font-semibold text-lg "
+                  >
                     Role
                   </Label>
-                  <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
+                  <Select
+                    value={formData.role}
+                    onValueChange={(value) => handleInputChange("role", value)}
+                  >
                     <SelectTrigger className="h-14 text-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/20 transition-all duration-300 bg-gray-50/50 hover:bg-white rounded-xl">
-                      <SelectValue placeholder="Select your role " className="w-full" />
+                      <SelectValue
+                        placeholder="Select your role "
+                        className="w-full"
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="customer">Customer</SelectItem>
@@ -639,8 +730,6 @@ export default function RegisterForm() {
                     </SelectContent>
                   </Select>
                 </div>
-
-
 
                 <Button
                   type="submit"
@@ -667,12 +756,21 @@ export default function RegisterForm() {
 
       <style jsx>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
+          0%,
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-20px) rotate(5deg);
+          }
         }
         @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
         .animate-float {
           animation: float 6s ease-in-out infinite;
@@ -682,5 +780,5 @@ export default function RegisterForm() {
         }
       `}</style>
     </div>
-  )
+  );
 }

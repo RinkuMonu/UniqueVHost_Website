@@ -86,8 +86,8 @@ export default function RefundPolicyPage() {
             </CardHeader>
             <CardContent className="p-8">
               <p className="text-lg leading-relaxed text-muted-foreground mb-4">
-                We stand behind our hosting services with a comprehensive 30-day money-back guarantee. If you're not
-                completely satisfied with your hosting service within the first 30 days, we'll refund your hosting fees
+                We stand behind our hosting services with a comprehensive 30-day money-back guarantee. If you are not
+                completely satisfied with your hosting service within the first 30 days, we wll refund your hosting fees
                 - no questions asked.
               </p>
               <p className="text-lg leading-relaxed text-muted-foreground">
@@ -338,7 +338,7 @@ export default function RefundPolicyPage() {
               </div>
               <h2 className="mb-4 text-2xl font-bold">Need a Refund?</h2>
               <p className="mb-6 text-orange-100">
-                Contact our billing team to process your refund request. We're here to help make the process as smooth
+                Contact our billing team to process your refund request. We are here to help make the process as smooth
                 as possible:
               </p>
               <div className="flex flex-wrap justify-center gap-6">

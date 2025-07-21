@@ -104,7 +104,8 @@ function Page() {
       </section>
 
       {/* Additional Services */}
-      <AdditionalServices />
+     
+       <AdditionalServices onSelectionChange={() => {}} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "@/app/AxiosInstance/axiosInstance";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
@@ -53,6 +53,37 @@ interface ApiPlan {
   badge?: string;
 }
 
+interface UiPlan {
+  id: string;
+  title: string;
+  description: string;
+  cpu: string;
+  ram: string;
+  storage: string;
+  transfer: string;
+  os: string[];
+  price: string;
+  badge?: string;
+  custom: boolean;
+}
+
+interface QueryParams {
+  cpu_max?: number;
+  ram_max?: number;
+  slug?: string;
+  location?: string;
+  min_price?: number;
+  max_price?: number;
+}
+
+interface AxiosErrorResponse {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 const REGIONS = [
   "US East (N. Virginia)",
   "US West (Oregon)",
@@ -86,20 +117,23 @@ export default function CloudServersPage() {
     const fetchPlans = async () => {
       setLoading(true);
       try {
-        const params: Record<string, any> = {
+        const params: QueryParams = {
           cpu_max: cpuMax,
           ram_max: ramMax,
           slug,
         };
-        if (selectedRegions.length)
+        
+        if (selectedRegions.length) {
           params.location = selectedRegions.join(",");
+        }
+        
         const { min, max } = budgetRange[budget];
-        if (min != null) params.min_price = min;
-        if (max != null) params.max_price = max;
+        if (min !== undefined) params.min_price = min;
+        if (max !== undefined) params.max_price = max;
 
         const { data } = await axiosInstance.get<ApiPlan[]>("/plans", { params });
         setPlans(data);
-      } catch (err: unknown) {
+      } catch (err) {
         console.error("fetch cloud plans:", err);
         setPlans([]);
       } finally {
@@ -109,6 +143,38 @@ export default function CloudServersPage() {
 
     fetchPlans();
   }, [selectedRegions, cpuMax, ramMax, budget]);
+
+  const uiPlans = useMemo<UiPlan[]>(() => {
+    const transformed = plans.map((plan) => ({
+      id: plan._id,
+      title: plan.name,
+      description: `High performance server with ${plan.cpu} CPU, ${plan.ram} RAM, ${plan.storage} Storage`,
+      cpu: plan.cpu,
+      ram: plan.ram,
+      storage: plan.storage,
+      transfer: plan.bandwidth,
+      os: plan.os_options,
+      price: `$${plan.price.toFixed(2)}`,
+      badge: plan.badge,
+      custom: false,
+    }));
+
+    transformed.push({
+      id: "custom",
+      title: "Custom Server",
+      description: "Configure your own server",
+      cpu: "Custom",
+      ram: "Custom",
+      storage: "Custom",
+      transfer: "Custom",
+      os: [],
+      price: "Contact Us",
+      badge: "Enterprise",
+      custom: true,
+    });
+
+    return transformed;
+  }, [plans]);
 
   const handleRegionToggle = (region: string, checked: boolean) => {
     setSelectedRegions((prev) =>
@@ -150,26 +216,28 @@ export default function CloudServersPage() {
         text: res.data.message || "Your order has been created.",
         confirmButtonColor: "#FD5D07",
       });
-    } catch (error: unknown) {
-      const message =
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error &&
-        (error as any).response?.data?.message;
+    } catch (error) {
+      let message = "Something went wrong while placing your order.";
+      
+      if (typeof error === "object" && error !== null) {
+        const axiosError = error as AxiosErrorResponse;
+        if (axiosError.response?.data?.message) {
+          message = axiosError.response.data.message;
+        }
+      }
 
       Swal.fire({
         icon: "error",
         title: "Order Failed",
-        text: message || "Something went wrong while placing your order.",
+        text: message,
         confirmButtonColor: "#FD5D07",
       });
     }
   };
 
-  /* ---------------- UI (all original classes retained) ---------------- */
   return (
     <div className="min-h-screen text-[#4C5671]">
-      {/* Header (unchanged) */}
+      {/* Header */}
       <div className="relative bg-[#FFF8F4] py-24 overflow-hidden">
         <div className="absolute -top-32 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
         <div className="absolute -bottom-32 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
@@ -195,10 +263,13 @@ export default function CloudServersPage() {
             </div>
           </div>
           <div className="flex justify-center">
-            <img
+            <Image
               src="/images/banner/banner-hero-03.webp"
               alt="Cloud Server Illustration"
               className="w-full max-w-md rounded-xl transition-transform hover:scale-105"
+              width={500}
+              height={300}
+              priority
             />
           </div>
         </div>
@@ -222,18 +293,14 @@ export default function CloudServersPage() {
                   <Label className="text-sm font-medium mb-3 block text-[#313149]">
                     Regions
                   </Label>
-                  <div
-                    className="space-y-2"
-                    style={{ display: "grid", gap: "10px" }}
-                  >
+                  <div className="space-y-2">
                     {REGIONS.map((region) => (
                       <Label
                         key={region}
                         className="flex items-center gap-2 font-normal text-sm text-[#4C5671]"
-                        style={{ display: "flex  " }}
                       >
                         <Checkbox
-                          checked={regions.includes(region)}
+                          checked={selectedRegions.includes(region)}
                           onCheckedChange={(c) =>
                             handleRegionToggle(region, Boolean(c))
                           }
@@ -297,7 +364,7 @@ export default function CloudServersPage() {
                     onValueChange={(v) => setBudget(v as BudgetKey)}
                   >
                     <SelectTrigger className="text-[#4C5671] border-[#FD5D07] focus:ring-[#FD5D07]">
-                      <SelectValue />
+                      <SelectValue placeholder="Select budget" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Prices</SelectItem>
@@ -379,7 +446,6 @@ export default function CloudServersPage() {
                                 <Label
                                   key={os}
                                   className="flex items-center gap-2 font-normal text-sm"
-                                  style={{ display: "flex  " }}
                                 >
                                   <RadioGroupItem value={os} />
                                   {os}
@@ -444,11 +510,9 @@ export default function CloudServersPage() {
           </div>
         </div>
 
-        {/* Features Section (unchanged markup) */}
+        {/* Features Section */}
         <div className="pt-20">
-          {/* features card exactly as you had … */}
           <Card className="relative mt-16 bg-gradient-to-br from-[#FFF8F4] to-[#FFFFFF] rounded-2xl shadow-xl border-0 overflow-hidden">
-            {/* blurred circles */}
             <div className="absolute -top-24 -left-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
             <div className="absolute -bottom-24 -right-20 w-72 h-72 bg-[#FD5D07]/10 rounded-full"></div>
 
@@ -463,7 +527,6 @@ export default function CloudServersPage() {
 
             <CardContent className="relative z-10">
               <div className="grid md:grid-cols-3 gap-8">
-                {/* three feature boxes unchanged */}
                 {[
                   {
                     icon: (

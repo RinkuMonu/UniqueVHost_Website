@@ -97,7 +97,7 @@ export default function Page() {
           <div className="section-title-area">
             <h2 className="text-4xl font-extrabold text-gray-900 mb-4 inline-block border-b-4 border-amber-500 pb-1">We empower entrepreneurs by providing the ideal support and resources
               for their journey.</h2>
-            <p className="desc text-center pt-5">This is where people bring their ideas to life, develop a captivating brand and an impressive website, attract customers through digital and social marketing, and efficiently manage their work. When a tool alone isn't enough, we offer direct one-on-one guidance with a personal touch.</p>
+            <p className="desc text-center pt-5">This is where people bring their ideas to life, develop a captivating brand and an impressive website, attract customers through digital and social marketing, and efficiently manage their work. When a tool alone is not enough, we offer direct one-on-one guidance with a personal touch.</p>
           </div>
           <div className="section-inner">
             <div className="image-area">

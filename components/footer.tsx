@@ -13,14 +13,7 @@ import {
 } from "lucide-react"
 
 export default function Footer() {
-  const paymentMethods = [
-    { src: "/placeholder.svg?height=24&width=40", alt: "Visa" },
-    { src: "/placeholder.svg?height=24&width=40", alt: "Mastercard" },
-    { src: "/placeholder.svg?height=24&width=40", alt: "PayPal" },
-    { src: "/placeholder.svg?height=24&width=40", alt: "American Express" },
-    { src: "/placeholder.svg?height=24&width=40", alt: "Wise" },
-    { src: "/placeholder.svg?height=24&width=40", alt: "Skrill" },
-  ]
+ 
 
   const featureLinks = [
     { name: "About Us", href: "/about" },
