@@ -14,7 +14,7 @@ import {  User } from "lucide-react";
 import {
   Eye,
   EyeOff,
-  Lock,
+
   ArrowRight,
   ChevronLeft,
   ChevronRight,

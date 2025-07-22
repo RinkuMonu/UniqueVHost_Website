@@ -21,7 +21,7 @@ import {
   Eye,
   EyeOff,
   User,
-  Lock,
+
   ArrowRight,
   ChevronLeft,
   ChevronRight,
